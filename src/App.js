@@ -32,7 +32,7 @@ function App() {
   const authenticationControl=(Component)=>!isAuth?<Component/>:
   <Navigate replace={true} to="/interviews"></Navigate>
   
-  if(isLoading)
+  if(!isLoading)
    return <Loading></Loading>
   
   return (
@@ -40,7 +40,7 @@ function App() {
      <Routes>
         <Route element={<Main/>}>
             {/*Not protected*/}
-            <Route path='/' element={authenticationControl(Home)}></Route>
+            <Route exact path='/' element={authenticationControl(Home)}></Route>
             <Route path='contact' element={<Contact/>}></Route>
             <Route path='about' element={<About/>}></Route>
             <Route path='login' element={authenticationControl(Login)}></Route>
