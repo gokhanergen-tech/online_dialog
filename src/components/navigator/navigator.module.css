@@ -1,0 +1,28 @@
+.nav_link{
+    text-decoration: none;
+    color: white;
+    transition:background-color 200ms linear;
+    padding: 0.7rem 1.2rem;
+    font-size: 12px;
+}
+
+.nav_link:hover{
+  background-color: #565151;
+  color: white;
+}
+
+.active_navlink{
+    background-color: #565151;
+}
+
+.logo{
+    font-size: x-large;
+}
+
+.logo:hover{
+    cursor: pointer;
+}
+
+.navbar{
+    padding: 1.5rem 0;
+}
