@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useRef, useState } from 'react'
 import {NavLink,useNavigate} from 'react-router-dom'
 import styles from './navigator.module.css'
 const Navigator = () => {
-  
+  const ref=useRef(null)
   const navigate=useNavigate();
+
+  const [isShow,setShow]=useState(false);
 
   return (
     <div className='container'>
