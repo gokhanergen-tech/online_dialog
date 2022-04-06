@@ -9,7 +9,7 @@ import Login from './pages/login/login';
 import NotFound from './pages/not_found/not_found';
 import Interviews from './pages/interviews/interviews';
 import Offices from './pages/offices/offices';
-import Loading from './pages/loading/loading';
+import Loading from './components/loading/loading';
 import { useState } from 'react';
 import Room from './pages/room/room';
 
