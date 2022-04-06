@@ -27,14 +27,5 @@
     padding: 1.5rem 0;
 }
 
-.a{
-    width: 0;
-    transition: width 1s linear;
-    display: none;
-    height: 100px;
-}
 
-.a_active{
-    width:100px
-}
 
