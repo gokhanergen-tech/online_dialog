@@ -12,7 +12,6 @@ const ServiceItem = ({imageUrl,serviceName,content}) => {
              <h5 className='text-center mt-2 '>{serviceName}</h5>
              <p className={'text-center p-3 '+styles.paragraf}>{content}</p>
            </div>
-
          </div>
          </div>
      </div>
