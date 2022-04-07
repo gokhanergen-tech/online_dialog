@@ -1,0 +1,12 @@
+.button{
+    border:none;
+    outline: none;
+    background-color: #524E4E;
+    padding: 0.5rem 2rem;
+    border-radius: 0.8rem;
+    transition: background-color 200ms ease-in-out;
+}
+
+.button:hover{
+    background-color:#524E4E80 ;
+}
