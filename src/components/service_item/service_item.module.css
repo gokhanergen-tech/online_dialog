@@ -1,0 +1,14 @@
+.img{
+    width: 45%;
+    object-fit:fill;
+}
+
+.wrappedService{
+    background-color: #433838;
+    height: 150px;
+}
+
+.paragraf{
+    font-size: 0.7rem;
+    margin-top: 1.5rem;
+}
