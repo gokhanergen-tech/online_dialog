@@ -5,9 +5,9 @@ import styles from './content.module.css'
 const Content = ({children}) => {
   return (
     <div className='container mt-5'>
-      <div className='row justify-content-center'>
-         <div className={'col-sm-8 col-12 '+styles.content}>
-             <div className='d-flex justify-content-center p-3 '>
+      <div className='row justify-content-center m-0'>
+         <div className={'col-md-8 col-12 '+styles.content}>
+             <div className='d-flex h-100 align-items-center justify-content-center p-3 '>
                {
                  children
                }

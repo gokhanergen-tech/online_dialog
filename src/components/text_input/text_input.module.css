@@ -1,0 +1,53 @@
+.base{
+    border-radius: 10px;
+    margin-left: 20px;
+    padding: 0rem 0.5rem;
+    overflow: hidden;
+}
+
+.input{
+    border: none;
+    color: black;
+    width: 100%;
+    font-size: 1.2rem;
+}
+
+.input:focus{
+    outline: none;
+    background-color: rgb(229, 229, 229);
+}
+
+.input{
+    background: linear-gradient(145deg,#ffffff80,#00000020,#ffffff80);
+    animation: placeholder_animation 5s linear infinite;
+    animation-direction: none;
+    animation-play-state: running;
+    animation-fill-mode: none;
+    background-size: 200% 100%;
+    background-repeat:repeat-x;
+    padding-left: 0.5rem;
+}
+
+@keyframes placeholder_animation{
+  from{
+       background-position-x: 0%;
+  }
+  to{
+       background-position-x: -200%;
+  }
+}
+
+
+.icon{
+    font-size: 2rem;
+    padding: 0.5rem;
+    cursor: pointer;
+    background-color: whitesmoke;
+}
+
+
+
+
+
+
+
