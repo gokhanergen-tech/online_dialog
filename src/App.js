@@ -10,7 +10,7 @@ import NotFound from './pages/not_found/not_found';
 import Interviews from './pages/interviews/interviews';
 import Offices from './pages/offices/offices';
 import Loading from './components/loading/loading';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Room from './pages/room/room';
 
 const isAuth=false;
@@ -32,6 +32,7 @@ function App() {
 
   const authenticationControl=(Component)=>!isAuth?<Component/>:
   <Navigate replace={true} to="/interviews"></Navigate>
+ 
   
   if(!isLoading)
    return <Loading></Loading>

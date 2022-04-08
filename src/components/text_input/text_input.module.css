@@ -39,11 +39,25 @@
 
 
 .icon{
-    font-size: 2rem;
+    font-size: 1.5rem;
     padding: 0.5rem;
     cursor: pointer;
     background-color: whitesmoke;
 }
+
+.anim{
+    animation: rotateAnim 1s linear infinite alternate;
+}
+
+@keyframes rotateAnim{
+    from {
+        transform:scale(1)
+    }
+    to{
+        transform: scale(1.2);
+    }
+}
+
 
 
 
