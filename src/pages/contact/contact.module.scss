@@ -1,0 +1,51 @@
+.follow_us {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 300;
+  font-size: 1rem;
+  line-height: 18px;
+  align-items: center;
+  text-align: center;
+}
+
+.social_span {
+  width: 47px;
+  height: 47px;
+  background-color: #fff;
+  display: inline-block;
+  animation: float 5s ease-in-out infinite;
+}
+.facebook {
+  animation-delay: 0ms;
+}
+.instagram {
+  animation-delay: 1s;
+}
+.twitter {
+  animation-delay: 2s;
+}
+.linkedin {
+  animation-delay: 3s;
+}
+@keyframes float {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+a {
+}
+
+.aTag {
+  text-decoration: none;
+  color: #fff;
+  &:hover {
+    color: #4282e1;
+  }
+}
