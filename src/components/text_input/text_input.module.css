@@ -70,6 +70,10 @@
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
+.base .bi::before, [class^="bi-"]::before,.base [class*=" bi-"]::before {
+    display: block;
+  }
+
 
 
 

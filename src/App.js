@@ -13,7 +13,7 @@ import Loading from './components/loading/loading';
 import { useEffect, useState } from 'react';
 import Room from './pages/room/room';
 
-const isAuth=false;
+const isAuth=true;
 
 function Main(){
   return <>
@@ -53,8 +53,7 @@ function App() {
         </Route>
            
         <Route path='/interview/:id' element={protectedPage(Room)}></Route>
-        <Route path='/office/:id' element={protectedPage(Room)}></Route>
-
+        
         <Route path='*' element={<NotFound></NotFound>}></Route>
      </Routes>
     </>
