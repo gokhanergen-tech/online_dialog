@@ -2,7 +2,7 @@ import React from 'react'
 
 const Interviews = () => {
   return (
-      <div>
+      <div className="container">
           İnterview
      
       </div>

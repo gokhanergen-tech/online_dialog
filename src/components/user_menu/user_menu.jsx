@@ -26,9 +26,9 @@ const UserMenu = () => {
   },[])
 
   return (
-    <div onClick={(e)=>{
+    <div id="menu" onClick={(e)=>{
         e.stopPropagation();
-    }} id="menu" className={styles.wrappedMenu}>
+    }} className={styles.wrappedMenu}>
      <div>
       <div className="bg-white">
         <div className="p-1">

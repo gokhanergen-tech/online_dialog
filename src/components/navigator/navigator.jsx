@@ -1,9 +1,11 @@
 import React, { useRef, useState } from 'react'
 import {NavLink,useNavigate} from 'react-router-dom'
+import OwnerMenu from '../owner_menu/owner_menu';
 import UserMenu from '../user_menu/user_menu';
 import styles from './navigator.module.css'
 
 const isAuth=true;
+const isOwner=true;
 
 const Navigator = () => {
   const ref=useRef(null)
@@ -36,8 +38,12 @@ const Navigator = () => {
        }
 
        {
-         isAuth?<UserMenu/>:""
+         isAuth&&<UserMenu/>
        }
+
+       {
+         isAuth&&isOwner&&<OwnerMenu/>
+       }   
        
       </nav>
       

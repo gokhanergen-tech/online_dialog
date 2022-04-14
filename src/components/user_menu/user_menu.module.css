@@ -1,15 +1,14 @@
 .wrappedMenu{
     position: fixed;
-    background-color: #00000040;
     height: 100vh;
-    right: 0;
     top:0;
-    overflow: hidden;
+    right:0;
+    height: 100vh;
+    background-color: #00000040;
     transition: transform 200ms linear;
     transform: translateX(100%);
     display: none;
 }
-
 
 .user_icon{
     color: black;
