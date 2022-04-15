@@ -13,7 +13,7 @@ import Loading from './components/loading/loading';
 import { useEffect, useState } from 'react';
 import Room from './pages/room/room';
 
-const isAuth=false;
+const isAuth=true;
 
 function Main(){
   return <>
