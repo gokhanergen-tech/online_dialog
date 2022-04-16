@@ -5,7 +5,7 @@ import UserMenu from '../user_menu/user_menu';
 import styles from './navigator.module.css'
 
 const isAuth=true;
-const isOwner=true;
+const isOwner=false;
 
 const Navigator = () => {
   const ref=useRef(null)
