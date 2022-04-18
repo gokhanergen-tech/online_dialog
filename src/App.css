@@ -3,6 +3,4 @@
   color: #fff;
 }
 
-.bi::before, [class^="bi-"]::before, [class*=" bi-"]::before {
-  display: block !important;
-}
+

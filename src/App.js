@@ -52,9 +52,9 @@ function App() {
             <Route path='offices' element={protectedPage(Offices)}></Route>
         </Route>
            
-        <Route path='/interview/:id' element={protectedPage(Room)}></Route>
-        <Route path='/office/:id' element={protectedPage(Room)}></Route>
-
+        <Route path='/interview/:id' element={protectedPage(Room)}
+          ></Route>
+        
         <Route path='*' element={<NotFound></NotFound>}></Route>
      </Routes>
     </>

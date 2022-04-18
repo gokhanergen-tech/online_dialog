@@ -1,0 +1,52 @@
+.wrappedMenu{
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+}
+
+.wrappedMenu i{
+ font-size: 1.5rem;
+}
+
+.content{
+    height: 100%;
+    background-color: #00000080;
+    overflow: hidden;
+    width: 0%;
+    transition: width 200ms linear;
+}
+
+.title{
+    padding: 1rem 6rem;
+    background-color: black;
+}
+
+.setting:hover{
+   box-shadow: 0 0 10px black;
+}
+
+.rooms{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.headerRooms{
+    background-color: #c4c4c4;
+}
+
+.headerRooms h5{
+    padding: 0.5rem;
+    color:black;
+}
+
+.room{
+    background-color: #f0f0f0;
+    cursor: pointer;
+    transition: 200ms linear;
+}
+
+.room:hover{
+    box-shadow: 0 0 5px black;
+}
