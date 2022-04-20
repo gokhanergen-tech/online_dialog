@@ -1,6 +1,7 @@
 package com.od.backend.Usecases.Api.Entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.od.backend.BaseEntities.Base;
 import com.od.backend.Security.Entities.LoginCredentials;
 import lombok.Getter;
@@ -28,7 +29,8 @@ public class User extends Base {
     @Column(name = "isOwner",columnDefinition = "boolean default 'false'")
     private boolean isOwner;
 
-    @OneToOne(mappedBy = "user",cascade = {CascadeType.ALL})
+    @JsonIgnore
+    @OneToOne(mappedBy = "user",cascade = {CascadeType.ALL},orphanRemoval = true)
     private LoginCredentials loginCredentials;
 
 }

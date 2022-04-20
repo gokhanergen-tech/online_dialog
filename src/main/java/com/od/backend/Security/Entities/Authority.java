@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "authorities",schema = "auth")
@@ -18,7 +19,7 @@ public class Authority implements GrantedAuthority {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "authority",nullable = false)
+    @Column(name = "authority",nullable = false,unique = true)
     private String authority;
 
 }

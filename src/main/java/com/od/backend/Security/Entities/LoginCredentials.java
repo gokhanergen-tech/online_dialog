@@ -30,11 +30,11 @@ public class LoginCredentials implements UserDetails, CredentialsContainer {
     @Column(name = "password",nullable = false)
     private String password;
 
-    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER,orphanRemoval = true)
     @JoinColumn(name = "pk_user_id",referencedColumnName = "id",nullable = false,updatable = false)
     private User user;
 
-    @ManyToMany(fetch = FetchType.LAZY,cascade = {CascadeType.ALL})
+    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinTable(name = "user_authorities"
     ,joinColumns = @JoinColumn(name = "login_id")
     ,inverseJoinColumns = @JoinColumn(name = "authority_id")

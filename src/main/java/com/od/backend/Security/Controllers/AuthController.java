@@ -1,30 +1,40 @@
 package com.od.backend.Security.Controllers;
 
+import com.od.backend.Security.DTO.LoginCredentialDto;
 import com.od.backend.Security.Entities.LoginCredentials;
 import com.od.backend.Security.Entities.LoginRequest;
 import com.od.backend.Security.Entities.LoginResponse;
+import com.od.backend.Security.Service.CookieService;
 import com.od.backend.Security.Service.LoginService;
+import com.od.backend.Security.Service.RefreshTokenService;
 import com.od.backend.Security.Service.UserDetailsService;
+import com.od.backend.Usecases.Api.Entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/api")
+@CrossOrigin("*")
 public class AuthController {
 
     @Autowired
     private UserDetailsService userDetailsService;
     @Autowired
     private LoginService loginService;
+    @Autowired
+    private CookieService cookieService;
+    @Autowired
+    private RefreshTokenService refreshTokenService;
+
 
     @PostMapping(value = "/register")
-    @CrossOrigin(origins = "*")
     public ResponseEntity<Map<String,Object>> register(@RequestBody LoginCredentials loginCredentials){
         try{
             if(!userDetailsService.userExists(loginCredentials.getEmail())){
@@ -32,7 +42,7 @@ public class AuthController {
             }else{
                 return new ResponseEntity<Map<String,Object>>(new HashMap(){
                     {
-                        put("message","Zaten böyle bir kullanıcı bulunmaktadır!");
+                        put("message","Kullanıcı oluşturulamadı!");
                     }
                 },HttpStatus.BAD_REQUEST);
             }
@@ -53,16 +63,46 @@ public class AuthController {
     }
 
     @PostMapping(value = "/login")
-    @CrossOrigin(origins = "*")
-    public LoginResponse login(@RequestBody LoginRequest loginRequest){
+    public ResponseEntity<Map<String,Object>> login(HttpServletResponse httpServletResponse, @RequestBody LoginRequest loginRequest){
         try {
-            return loginService.loginResponse(loginRequest,2);
+            //Login
+            LoginResponse loginResponse=loginService.loginResponse(loginRequest);
+
+            //Get user from the database
+            User user=((LoginCredentials)userDetailsService.loadUserByUsername(loginRequest.getEmail())).getUser();
+
+            //Saved the refresh token to the database
+            refreshTokenService.saveRefreshToken(loginResponse.getRefreshToken(),user);
+
+            //Added Cookies
+            cookieService.addCookie(httpServletResponse,"accessToken", loginResponse.getAccessToken());
+            cookieService.addCookie(httpServletResponse,"refreshToken", loginResponse.getRefreshToken());
+
+            LoginCredentialDto loginCredentialDto=loginService.getLoginCredentialMapper().mapToDTO(user.getLoginCredentials());
+            //Finally login is successful
+            return new ResponseEntity<Map<String,Object>>(new HashMap<String,Object>(){
+                {
+                    put("user",loginCredentialDto);
+                    put("isAuth",true);
+                }
+            },HttpStatus.OK);
         } catch (AuthenticationException authenticationException) {
-            return new LoginResponse(authenticationException.getMessage(),"error");
+            return new ResponseEntity<Map<String,Object>>(new HashMap<String,Object>(){
+                {
+                    put("message","Kullanıcı adı veya şifre yanlış");
+                }
+            },HttpStatus.UNAUTHORIZED);
         } catch (Exception exception) {
-            exception.printStackTrace();
-            return null;
+            return new ResponseEntity<Map<String,Object>>(new HashMap<String,Object>(){
+                {
+                    put("message",exception.getMessage());
+                }
+            },HttpStatus.BAD_REQUEST);
         }
     }
 
+    @GetMapping(value = "/refresh_token")
+    public ResponseEntity<Map<String,String>> refreshToken(){
+       return null;
+    }
 }

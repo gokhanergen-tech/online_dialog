@@ -13,7 +13,6 @@ public class TestController {
         ResponseEntity<List> listResponseEntity=template.getForEntity("http://localhost:8003/api/rooms", List.class);
         List<String> list=(List<String>) listResponseEntity.getBody();
         return list;
-
     }
 
     @Test

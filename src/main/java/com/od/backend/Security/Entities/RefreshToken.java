@@ -21,11 +21,11 @@ public class RefreshToken extends Base {
     private long id;
 
     @NotNull
-    @Column(name = "refresh_token",nullable = false)
+    @Column(name = "refresh_token",nullable = false,columnDefinition = "VARCHAR")
     private String refreshToken;
 
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id",nullable = false,referencedColumnName = "id")
+    @JoinColumn(name = "user_id",nullable = false,referencedColumnName = "id",unique = true)
     private User user;
 
 }
