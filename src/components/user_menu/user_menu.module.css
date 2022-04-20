@@ -8,6 +8,7 @@
     transition: transform 200ms linear;
     transform: translateX(100%);
     display: none;
+    z-index: 1;
 }
 
 .user_icon{
@@ -23,6 +24,10 @@
 .exit{
     color:black;
     cursor: pointer;
+}
+
+.base_buttons{
+    background-color: #C4C4C4;
 }
 
 .base_buttons .link{

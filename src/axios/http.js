@@ -8,6 +8,8 @@ const resApi=axios.create({
         "Accept":"application/json"
     }
 })
+
+const login=(data)=>resApi.post("/api/login",data);
 //This is for http requests to Api
-export {}
+export {login}
 export default resApi;

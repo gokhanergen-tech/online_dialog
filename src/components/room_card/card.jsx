@@ -1,8 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
+
+import styles from './card.module.css'
+
 const Card = ({ roomName, title, teacher, id }) => {
   return (
-    <div className="card col-md-3 col-sm-5 col-10 p-4 mt-3 bg-white">
+    <div className="p-3 col-xl-4 col-md-6 p-4 mt-3">
+     <div className="card bg-white">
       <div className="first  text-center">
         <div className="heading text-black fs-4" style={{ fontWeight: "bold" }}>
           {roomName}
@@ -29,6 +33,8 @@ const Card = ({ roomName, title, teacher, id }) => {
         </Link>
       </div>
     </div>
+   </div>
+    
   );
 };
 
