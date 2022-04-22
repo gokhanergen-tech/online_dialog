@@ -3,7 +3,7 @@ package com.od.backend.Usecases.Api.Entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.od.backend.BaseEntities.Base;
-import com.od.backend.Security.Entities.LoginCredentials;
+import com.od.backend.Security.Entities.LoginCredential;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -31,6 +31,6 @@ public class User extends Base {
 
     @JsonIgnore
     @OneToOne(mappedBy = "user",cascade = {CascadeType.ALL},orphanRemoval = true)
-    private LoginCredentials loginCredentials;
+    private LoginCredential loginCredential;
 
 }

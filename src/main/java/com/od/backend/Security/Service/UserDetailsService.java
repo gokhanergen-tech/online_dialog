@@ -1,6 +1,6 @@
 package com.od.backend.Security.Service;
 
-import com.od.backend.Security.Entities.LoginCredentials;
+import com.od.backend.Security.Entities.LoginCredential;
 import com.od.backend.Security.Repositories.LoginCredentialsRepository;
 import com.od.backend.Usecases.Api.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +33,8 @@ public class UserDetailsService implements UserDetailsManager {
 
     @Override
     public void createUser(UserDetails user) {
-            ((LoginCredentials)user).setPassword(passwordEncoder.encode(user.getPassword()+salt));
-            loginCredentialsRepository.save((LoginCredentials) user);
+            ((LoginCredential)user).setPassword(passwordEncoder.encode(user.getPassword()+salt));
+            loginCredentialsRepository.save((LoginCredential) user);
     }
 
     @Override
@@ -59,9 +59,9 @@ public class UserDetailsService implements UserDetailsManager {
             String email=authentication.getName();
             UserDetails userDetails=loadUserByUsername(email);
             String encodedNewPassword=passwordEncoder.encode(newPassword+salt);
-            LoginCredentials loginCredentials=(LoginCredentials) userDetails;
-            loginCredentials.setPassword(encodedNewPassword);
-            loginCredentialsRepository.save(loginCredentials);
+            LoginCredential loginCredential =(LoginCredential) userDetails;
+            loginCredential.setPassword(encodedNewPassword);
+            loginCredentialsRepository.save(loginCredential);
 
             authentication=new UsernamePasswordAuthenticationToken(email,encodedNewPassword);
             SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -70,7 +70,7 @@ public class UserDetailsService implements UserDetailsManager {
 
     @Override
     public boolean userExists(String email) {
-        Optional<LoginCredentials> loginCredentialsOptional=loginCredentialsRepository.findByEmail(email);
+        Optional<LoginCredential> loginCredentialsOptional=loginCredentialsRepository.findByEmail(email);
         return loginCredentialsOptional.orElse(null)!=null;
     }
 

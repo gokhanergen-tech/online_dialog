@@ -17,7 +17,7 @@ import java.util.Set;
 @Getter
 @Setter
 @RequiredArgsConstructor
-public class LoginCredentials implements UserDetails, CredentialsContainer {
+public class LoginCredential implements UserDetails, CredentialsContainer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

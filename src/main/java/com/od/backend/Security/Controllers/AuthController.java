@@ -1,7 +1,7 @@
 package com.od.backend.Security.Controllers;
 
 import com.od.backend.Security.DTO.LoginCredentialDto;
-import com.od.backend.Security.Entities.LoginCredentials;
+import com.od.backend.Security.Entities.LoginCredential;
 import com.od.backend.Security.Entities.LoginRequest;
 import com.od.backend.Security.Entities.LoginResponse;
 import com.od.backend.Security.Service.CookieService;
@@ -21,7 +21,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/api")
-@CrossOrigin("*")
 public class AuthController {
 
     @Autowired
@@ -35,10 +34,10 @@ public class AuthController {
 
 
     @PostMapping(value = "/register")
-    public ResponseEntity<Map<String,Object>> register(@RequestBody LoginCredentials loginCredentials){
+    public ResponseEntity<Map<String,Object>> register(@RequestBody LoginCredential loginCredential){
         try{
-            if(!userDetailsService.userExists(loginCredentials.getEmail())){
-                userDetailsService.createUser(loginCredentials);
+            if(!userDetailsService.userExists(loginCredential.getEmail())){
+                userDetailsService.createUser(loginCredential);
             }else{
                 return new ResponseEntity<Map<String,Object>>(new HashMap(){
                     {
@@ -69,16 +68,16 @@ public class AuthController {
             LoginResponse loginResponse=loginService.loginResponse(loginRequest);
 
             //Get user from the database
-            User user=((LoginCredentials)userDetailsService.loadUserByUsername(loginRequest.getEmail())).getUser();
+            User user=((LoginCredential)userDetailsService.loadUserByUsername(loginRequest.getEmail())).getUser();
 
             //Saved the refresh token to the database
             refreshTokenService.saveRefreshToken(loginResponse.getRefreshToken(),user);
 
             //Added Cookies
-            cookieService.addCookie(httpServletResponse,"accessToken", loginResponse.getAccessToken());
-            cookieService.addCookie(httpServletResponse,"refreshToken", loginResponse.getRefreshToken());
+            cookieService.addCookie(httpServletResponse,"accessToken", loginResponse.getAccessToken(),60*60*24*2);
+            cookieService.addCookie(httpServletResponse,"refreshToken", loginResponse.getRefreshToken(),60*60*24*10);
 
-            LoginCredentialDto loginCredentialDto=loginService.getLoginCredentialMapper().mapToDTO(user.getLoginCredentials());
+            LoginCredentialDto loginCredentialDto=loginService.getLoginCredentialMapper().mapToDTO(user.getLoginCredential());
             //Finally login is successful
             return new ResponseEntity<Map<String,Object>>(new HashMap<String,Object>(){
                 {

@@ -1,7 +1,7 @@
 package com.od.backend.Security.MapperImplements;
 
 import com.od.backend.Security.DTO.LoginCredentialDto;
-import com.od.backend.Security.Entities.LoginCredentials;
+import com.od.backend.Security.Entities.LoginCredential;
 import com.od.backend.Security.Mapped.LoginCredentialMapper;
 import com.od.backend.Usecases.Api.DTO.UserDto;
 import com.od.backend.Usecases.Api.Mapped.UserMapper;
@@ -18,20 +18,24 @@ public class LoginCredentialMapperImplement implements LoginCredentialMapper {
 
 
     @Override
-    public LoginCredentials mapToEntity(LoginCredentialDto loginCredentialDto) {
+    public LoginCredential mapToEntity(LoginCredentialDto loginCredentialDto) {
         if(loginCredentialDto==null)
             throw new IllegalArgumentException();
 
-        return loginCredentialMapper.mapToEntity(loginCredentialDto);
+        LoginCredential loginCredential=loginCredentialMapper.mapToEntity(loginCredentialDto);
+        loginCredential.setUser(userDtoMapper.mapToEntity(loginCredentialDto.getUserDto()));
+
+        return loginCredential;
     }
 
     @Override
-    public LoginCredentialDto mapToDTO(LoginCredentials loginCredentials) {
-        if(loginCredentials==null)
+    public LoginCredentialDto mapToDTO(LoginCredential loginCredential) {
+        if(loginCredential ==null)
             throw new IllegalArgumentException();
 
-        String email=loginCredentials.getEmail();
-        UserDto userDto=userDtoMapper.mapToDTO(loginCredentials.getUser());
+        String email= loginCredential.getEmail();
+        UserDto userDto=userDtoMapper.mapToDto(loginCredential.getUser());
+
         return new LoginCredentialDto(email,userDto);
     }
 }

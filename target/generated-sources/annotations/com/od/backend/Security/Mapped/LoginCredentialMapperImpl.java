@@ -1,41 +1,41 @@
 package com.od.backend.Security.Mapped;
 
 import com.od.backend.Security.DTO.LoginCredentialDto;
-import com.od.backend.Security.Entities.LoginCredentials;
+import com.od.backend.Security.Entities.LoginCredential;
 import com.od.backend.Usecases.Api.DTO.UserDto;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-04-20T17:01:03+0300",
+    date = "2022-04-21T21:38:32+0300",
     comments = "version: 1.4.1.Final, compiler: javac, environment: Java 14.0.1 (Oracle Corporation)"
 )
 @Component
 public class LoginCredentialMapperImpl implements LoginCredentialMapper {
 
     @Override
-    public LoginCredentials mapToEntity(LoginCredentialDto loginCredentialDto) {
+    public LoginCredential mapToEntity(LoginCredentialDto loginCredentialDto) {
         if ( loginCredentialDto == null ) {
             return null;
         }
 
-        LoginCredentials loginCredentials = new LoginCredentials();
+        LoginCredential loginCredential = new LoginCredential();
 
-        loginCredentials.setEmail( loginCredentialDto.getEmail() );
+        loginCredential.setEmail( loginCredentialDto.getEmail() );
 
-        return loginCredentials;
+        return loginCredential;
     }
 
     @Override
-    public LoginCredentialDto mapToDTO(LoginCredentials loginCredentials) {
-        if ( loginCredentials == null ) {
+    public LoginCredentialDto mapToDTO(LoginCredential loginCredential) {
+        if ( loginCredential == null ) {
             return null;
         }
 
         String email = null;
 
-        email = loginCredentials.getEmail();
+        email = loginCredential.getEmail();
 
         UserDto userDto = null;
 

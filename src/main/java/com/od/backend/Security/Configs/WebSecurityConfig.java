@@ -6,6 +6,7 @@ import com.od.backend.Security.Util.LoginRequestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -18,12 +19,16 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
+import java.util.List;
 
 @EnableWebSecurity
-@Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -70,9 +75,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                    .invalidateHttpSession(true)
                    .deleteCookies("accessToken","refreshToken"))
                 .httpBasic().disable();
-
-
-
     }
 
     @Bean
@@ -82,4 +84,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
          daoAuthenticationProvider.setPasswordEncoder(passwordEncoder);
          return daoAuthenticationProvider;
     }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource(){
+        CorsConfiguration corsConfiguration=new CorsConfiguration();
+        corsConfiguration.setAllowCredentials(true);
+
+        corsConfiguration.setAllowedOrigins(List.of("http://localhost:3000"));
+        corsConfiguration.setAllowedMethods(List.of("GET","POST","DELETE","PUT"));
+        corsConfiguration.setAllowedHeaders(List.of("Content-Type"));
+
+        UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource=new UrlBasedCorsConfigurationSource();
+        urlBasedCorsConfigurationSource.registerCorsConfiguration("/**",corsConfiguration);
+        return urlBasedCorsConfigurationSource;
+    }
+
+
 }
