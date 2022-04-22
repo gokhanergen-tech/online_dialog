@@ -51,6 +51,7 @@
 
 .anim{
     animation: rotateAnim 1s linear infinite alternate;
+    z-index: 0;
 }
 
 @keyframes rotateAnim{

@@ -1,13 +1,12 @@
 import React, { useRef, useState } from 'react'
+import { useSelector } from 'react-redux';
 import {NavLink,useNavigate} from 'react-router-dom'
 import OwnerMenu from '../owner_menu/owner_menu';
 import UserMenu from '../user_menu/user_menu';
 import styles from './navigator.module.css'
 
-const isAuth=true;
-const isOwner=true;
-
 const Navigator = () => {
+  const {isOwner,isAuth}=useSelector(state=>({isOwner:state.authReducer.user?.isOwner,isAuth:state.authReducer.isAuth}));
   const ref=useRef(null)
   const navigate=useNavigate();
 

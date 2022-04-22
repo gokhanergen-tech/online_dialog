@@ -1,9 +1,16 @@
 import React, { useEffect } from 'react'
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
+import {useDispatch} from 'react-redux'
+
+import {logout} from '../../axios/http'
 import styles from './user_menu.module.css'
+import {clearAuth} from '../../redux_store/actions/auth_actions/actions'
+
 let closeTimeout=null;
 
 const UserMenu = () => {
+  const dispatch=useDispatch();
+  const navigate=useNavigate();
 
   function closeHandler(){
       document.getElementById("menu").style["transform"]="translateX(100%)";
@@ -12,6 +19,15 @@ const UserMenu = () => {
         document.getElementById("menu").style.display="none";
       },500)
   }   
+
+  async function handleLogout() {
+     try{
+       await logout();
+       dispatch(clearAuth())
+     }catch(err){
+       console.log(err.message)
+     }
+  }
 
   const eventOnBodyClick=document.onclick=()=>{
       closeHandler();
@@ -59,7 +75,7 @@ const UserMenu = () => {
                <span className='col-3 p-0'>Offices</span>
             </div>
          </Link>
-         <button className={styles.link}>
+         <button onClick={handleLogout} className={styles.link}>
             <div className='row align-items-center m-0'>
                <i className="col-auto bi bi-box-arrow-right p-0"></i>
                <span className='col-3 p-0'>Logout</span>

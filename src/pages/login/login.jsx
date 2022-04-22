@@ -1,22 +1,29 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import TextInput from '../../components/text_input/text_input'
 
 import styles from './login.module.css'
 import Content from "../../components/content_base/content"
 import Button from '../../components/button/button'
+import { login } from '../../axios/http'
+import { useDispatch } from 'react-redux'
+
+import {setLogin} from '../../redux_store/actions/auth_actions/actions'
 
 const Login = () => {
   const [isPasswordShow,setPasswordShow]=useState(false);
   
   const [warnings,setWarnings]=useState([{type:"mail",message:""},{type:"password",message:""}])
+  const [backendMessage,setBackendMessage]=useState();
 
   const [mail,setMail]=useState("");
   const [password,setPassword]=useState("");
   
-  const handleLogin=(e)=>{
+  const dispatch=useDispatch();
+
+  const handleLogin=useCallback(async (e)=>{
      e.preventDefault();
      const copy=[...warnings];
-
+     
      if(!mail){
         copy[0].message="Empty field is not acceptable";
      }else{
@@ -35,8 +42,22 @@ const Login = () => {
        copy[1].message=""
       }
 
-      setWarnings(copy);
-  }
+      if(!copy[0].message && !copy[1].message ){
+        try{
+          const {data}=await login({email:mail,password:password})
+          dispatch(setLogin(data));
+        }catch(err){
+          const message=err.response.data.message;
+          setBackendMessage(message)
+        }
+        
+      }else{
+        setBackendMessage("")
+        setWarnings(copy);
+      }
+
+     
+  },[warnings,password,mail])
   
   useEffect(()=>{
       document.title="Login"
@@ -60,8 +81,16 @@ const Login = () => {
          <Button onClick={handleLogin} value={"Sign in"}></Button>
          <span className={styles.forget_password}>Forget Password?</span>
         </div>
-
+         
+        {/*This is for backend error */}
+        {
+          backendMessage&&<div className='mt-2 text-center'>
+          <span className="text-warning font-monospace">{backendMessage}</span>
+        </div>
+        }
+       
      </div>
+    
    </Content>
     
   )

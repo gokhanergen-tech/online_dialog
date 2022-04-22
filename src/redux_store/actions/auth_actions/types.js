@@ -1,3 +1,6 @@
 const SET_LOGIN="SET_LOGIN";
+const SET_CLEAR_AUTH="SET_CLEAR_AUTH"
 
-export default {SET_LOGIN};
+const TYPES={SET_LOGIN,SET_CLEAR_AUTH};
+
+export default TYPES;

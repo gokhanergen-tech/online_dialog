@@ -40,18 +40,13 @@ const Home = () => {
           <div className="col-7 text-center mt-4">
             <p>
               İf you have an account,{" "}
-              <a className={styles.aTag} href="/login">
-                sign in
-              </a>
+              <span onClick={()=>history("/login")} className={styles.aTag}>sign in</span>
             </p>
           </div>
           <div className="col-7 text-center mt-4 ">
             <p>
               You can read our{" "}
-              <a className={styles.aTag} href="/policy">
-                {" "}
-                policy{" "}
-              </a>
+              <span onClick={()=>history("/policy")} className={styles.aTag}>policy</span>
             </p>
           </div>
         </div>

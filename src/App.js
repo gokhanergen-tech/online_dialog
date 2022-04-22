@@ -10,10 +10,10 @@ import NotFound from './pages/not_found/not_found';
 import Interviews from './pages/interviews/interviews';
 import Offices from './pages/offices/offices';
 import Loading from './components/loading/loading';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Room from './pages/room/room';
+import { useSelector } from 'react-redux';
 
-const isAuth=true;
 
 function Main(){
   return <>
@@ -26,6 +26,8 @@ function Main(){
 function App() {
 
   const [isLoading,setLoadingState]=useState(true);
+
+  const isAuth=useSelector(state=>state.authReducer.isAuth)
 
   const protectedPage=(Component)=>isAuth?<Component/>:
   <Navigate replace={true} to="/login"></Navigate>

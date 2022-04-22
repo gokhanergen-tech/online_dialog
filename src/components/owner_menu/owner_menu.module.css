@@ -3,6 +3,7 @@
     left: 0;
     top: 0;
     height: 100vh;
+    z-index: 1;
 }
 
 .wrappedMenu i{
@@ -15,6 +16,7 @@
     overflow: hidden;
     width: 0%;
     transition: width 200ms linear;
+    display: none;
 }
 
 .title{

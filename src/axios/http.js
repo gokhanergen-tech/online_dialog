@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const resApi=axios.create({
+const restApi=axios.create({
     baseURL:process.env.REACT_APP_REST_API_IP,
     withCredentials:true,
     headers:{
@@ -9,7 +9,7 @@ const resApi=axios.create({
     }
 })
 
-const login=(data)=>resApi.post("/api/login",data);
+const login=(data)=>restApi.post("/api/login",data);
+const logout=(data)=>restApi.get("/api/logout")
 //This is for http requests to Api
-export {login}
-export default resApi;
+export {login,logout}
