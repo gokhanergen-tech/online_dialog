@@ -1,0 +1,14 @@
+.card {
+  box-shadow: 0 0.5rem 1rem rgba(white, 0.15);
+  background-color: rgb(51, 48, 48) !important;
+}
+
+.title {
+  font-weight: bold;
+}
+
+.button {
+ color: rgb(51, 48, 48);
+ box-shadow: 0 0.5rem 1rem rgba(white, 0.15) ;
+}
+
