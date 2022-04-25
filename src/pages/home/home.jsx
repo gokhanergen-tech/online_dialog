@@ -12,7 +12,7 @@ const Home = () => {
   }
   return (
     <Content>
-      <div className={"row mb-5 m-0 px-0 "}>
+      <div className={"row m-0 px-0 "}>
         <h3 className={"text-center mb-5 "}>
           {" "}
           <b>Connect to Education</b>
@@ -29,7 +29,7 @@ const Home = () => {
             content={"Our goal is that you have a good class"}
           />
         </div>
-        <div className="row d-flex  justify-content-center my-4 ">
+        <div className="row d-flex  justify-content-center ">
           <div className="col-7 text-center">
             <Button
               value={"Sing up"}
