@@ -33,7 +33,7 @@ public class LoginCredentialMapperImplement implements LoginCredentialMapper {
         if(loginCredential ==null)
             throw new IllegalArgumentException();
 
-        String email= loginCredential.getEmail();
+        String email=loginCredential.getEmail();
         UserDto userDto=userDtoMapper.mapToDto(loginCredential.getUser());
 
         return new LoginCredentialDto(email,userDto);

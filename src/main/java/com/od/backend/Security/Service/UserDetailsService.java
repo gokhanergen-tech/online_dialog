@@ -1,6 +1,8 @@
 package com.od.backend.Security.Service;
 
+import com.od.backend.Security.Entities.Authority;
 import com.od.backend.Security.Entities.LoginCredential;
+import com.od.backend.Security.Repositories.AuthorityRepository;
 import com.od.backend.Security.Repositories.LoginCredentialsRepository;
 import com.od.backend.Usecases.Api.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +17,11 @@ import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-@Transactional
 @Service
 public class UserDetailsService implements UserDetailsManager {
     @Autowired
@@ -27,15 +31,26 @@ public class UserDetailsService implements UserDetailsManager {
     private LoginCredentialsRepository loginCredentialsRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private AuthorityRepository authorityRepository;
 
     @Value("${jwt.security.password_salt}")
     private String salt;
 
+    @Transactional
     @Override
     public void createUser(UserDetails user) {
-            ((LoginCredential)user).setPassword(passwordEncoder.encode(user.getPassword()+salt));
-            loginCredentialsRepository.save((LoginCredential) user);
+            LoginCredential loginCredential=((LoginCredential)user);
+            loginCredential.setPassword(passwordEncoder.encode(user.getPassword()+salt));
+            Set<Authority> authorities=loginCredential.getAuthorities();
+            loginCredential.setAuthorities(authorities.stream()
+                    .map(authority->authorityRepository.findByAuthority(authority.getAuthority()).orElse(null))
+                    .filter(authority->authority.getAuthority()!=null)
+                    .collect(Collectors.toSet()));
+            loginCredentialsRepository.save(loginCredential);
     }
+
+
 
     @Override
     public void updateUser(UserDetails user) {

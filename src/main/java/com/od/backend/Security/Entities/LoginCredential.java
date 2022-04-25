@@ -34,7 +34,7 @@ public class LoginCredential implements UserDetails, CredentialsContainer {
     @JoinColumn(name = "pk_user_id",referencedColumnName = "id",nullable = false,updatable = false)
     private User user;
 
-    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER,cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "user_authorities"
     ,joinColumns = @JoinColumn(name = "login_id")
     ,inverseJoinColumns = @JoinColumn(name = "authority_id")

@@ -26,8 +26,8 @@ public class User extends Base {
     @Column(name = "full_name",nullable = false)
     private String fullName;
 
-    @Column(name = "isOwner",columnDefinition = "boolean default 'false'")
-    private boolean isOwner;
+    @Column(name = "is_owner",nullable = false)
+    private boolean owner=false;
 
     @JsonIgnore
     @OneToOne(mappedBy = "user",cascade = {CascadeType.ALL},orphanRemoval = true)

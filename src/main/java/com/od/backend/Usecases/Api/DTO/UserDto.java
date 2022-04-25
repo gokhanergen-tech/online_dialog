@@ -8,6 +8,6 @@ import lombok.Setter;
 public class UserDto {
 
     private String fullName;
-    private boolean isOwner;
+    private boolean owner;
 
 }
