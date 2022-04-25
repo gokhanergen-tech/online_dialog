@@ -45,6 +45,7 @@ const Login = () => {
       if(!copy[0].message && !copy[1].message ){
         try{
           const {data}=await login({email:mail,password:password})
+          console.log(data)
           dispatch(setLogin(data));
         }catch(err){
           const message=err.response.data.message;

@@ -10,7 +10,6 @@ let closeTimeout=null;
 
 const UserMenu = () => {
   const dispatch=useDispatch();
-  const navigate=useNavigate();
 
   function closeHandler(){
       document.getElementById("menu").style["transform"]="translateX(100%)";

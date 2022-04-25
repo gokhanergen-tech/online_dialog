@@ -3,7 +3,7 @@ import AUTH_TYPES from "../../../actions/auth_actions/types";
 
 const initialState={
     isAuth:false,
-    user:null
+    user:{}
 }
 
 
@@ -11,7 +11,7 @@ const authReducer=(state=initialState,action)=>{
     switch(action.type){
         case AUTH_TYPES.SET_LOGIN:
             return {
-                ...state,...action.payload
+                ...action.payload
             }
         case AUTH_TYPES.SET_CLEAR_AUTH:
             return {

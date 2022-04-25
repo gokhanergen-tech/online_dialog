@@ -6,8 +6,8 @@ import UserMenu from '../user_menu/user_menu';
 import styles from './navigator.module.css'
 
 const Navigator = () => {
-  const {isOwner,isAuth}=useSelector(state=>({isOwner:state.authReducer.user?.isOwner,isAuth:state.authReducer.isAuth}));
-  const ref=useRef(null)
+  const {owner:isOwner,isAuth}=useSelector(state=>({owner:state.authReducer.user?.userDto?.owner,isAuth:state.authReducer.isAuth}));
+  
   const navigate=useNavigate();
 
   function handleOpenMenu(e){
