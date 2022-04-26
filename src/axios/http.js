@@ -10,6 +10,7 @@ const restApi=axios.create({
 })
 
 const login=(data)=>restApi.post("/api/login",data);
-const logout=(data)=>restApi.get("/api/logout")
+const logout=()=>restApi.get("/api/logout")
+const authControl=()=>restApi.get("/api/auth/control")
 //This is for http requests to Api
-export {login,logout}
+export {login,logout,authControl}
