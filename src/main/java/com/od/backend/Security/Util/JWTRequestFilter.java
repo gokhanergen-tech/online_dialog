@@ -34,7 +34,7 @@ public class JWTRequestFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         if(request.getCookies()!=null){
 
-                Optional<Cookie> accessTokenCookie=cookieService.searchCookie(Arrays.stream(request.getCookies()));
+                Optional<Cookie> accessTokenCookie=cookieService.searchCookie(Arrays.stream(request.getCookies()),"accessToken");
                 Cookie accessToken=accessTokenCookie.orElse(null);
 
                 try{

@@ -18,15 +18,10 @@ public class LoginService {
     @Autowired
     private JWTService jwtService;
 
-    @Value("${jwt.security.secret_key_accessToken}")
-    private String accessTokenKey;
-    @Value("${jwt.security.secret_key_refreshToken}")
-    private String refreshTokenKey;
-
     @Autowired
     private DaoAuthenticationProvider authenticationProvider;
 
-    public LoginResponse loginResponse(LoginRequest loginRequest) throws Exception{
+    public LoginResponse loginResponse(LoginRequest loginRequest,String accessTokenKey,String refreshTokenKey ) throws Exception{
         Authentication authentication=new UsernamePasswordAuthenticationToken(loginRequest.getEmail(),loginRequest.getPassword());
         Authentication authUser=authenticationProvider.authenticate(authentication);
 

@@ -21,7 +21,7 @@ public class TestCookieService {
     public void testCookieSearch(){
         CookieService cookieService=new CookieService();
         Stream<Cookie> cookieStream=getCookieStream();
-        Optional<Cookie> cookieOptional=cookieService.searchCookie(cookieStream);
+        Optional<Cookie> cookieOptional=cookieService.searchCookie(cookieStream,"accessToken");
         Cookie cookie=cookieOptional.orElse(new Cookie("notfound","notfound"));
 
         assertEquals("accessToken",cookie.getName());

@@ -34,14 +34,14 @@ public class UserDetailsService implements UserDetailsManager {
     @Autowired
     private AuthorityRepository authorityRepository;
 
-    @Value("${jwt.security.password_salt}")
-    private String salt;
+    @Value("${jwt.security.password_pepper}")
+    private String pepper;
 
     @Transactional
     @Override
     public void createUser(UserDetails user) {
             LoginCredential loginCredential=((LoginCredential)user);
-            loginCredential.setPassword(passwordEncoder.encode(user.getPassword()+salt));
+            loginCredential.setPassword(passwordEncoder.encode(user.getPassword()+pepper));
             Set<Authority> authorities=loginCredential.getAuthorities();
             loginCredential.setAuthorities(authorities.stream()
                     .map(authority->authorityRepository.findByAuthority(authority.getAuthority()).orElse(null))
@@ -73,7 +73,7 @@ public class UserDetailsService implements UserDetailsManager {
         if(authentication.isAuthenticated()){
             String email=authentication.getName();
             UserDetails userDetails=loadUserByUsername(email);
-            String encodedNewPassword=passwordEncoder.encode(newPassword+salt);
+            String encodedNewPassword=passwordEncoder.encode(newPassword+pepper);
             LoginCredential loginCredential =(LoginCredential) userDetails;
             loginCredential.setPassword(encodedNewPassword);
             loginCredentialsRepository.save(loginCredential);

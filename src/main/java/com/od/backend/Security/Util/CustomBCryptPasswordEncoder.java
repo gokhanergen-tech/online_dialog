@@ -9,8 +9,8 @@ public class CustomBCryptPasswordEncoder extends BCryptPasswordEncoder {
 
     private final Log logger=LogFactory.getLog(getClass());
 
-    @Value("${jwt.security.password_salt}")
-    private String salt;
+    @Value("${jwt.security.password_pepper}")
+    private String pepper;
 
     public CustomBCryptPasswordEncoder(int strength) {
         super(strength);
@@ -18,6 +18,6 @@ public class CustomBCryptPasswordEncoder extends BCryptPasswordEncoder {
 
     @Override
     public boolean matches(CharSequence rawPassword, String encodedPassword) {
-       return super.matches(rawPassword+salt,encodedPassword);
+       return super.matches(rawPassword+pepper,encodedPassword);
     }
 }

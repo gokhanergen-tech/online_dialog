@@ -34,8 +34,8 @@ public class CookieService {
         return true;
     }
 
-    public Optional<Cookie> searchCookie(Stream<Cookie> cookieStream){
-        return cookieStream.filter(cookie->cookie.getName().equals("accessToken")).findAny();
+    public Optional<Cookie> searchCookie(Stream<Cookie> cookieStream,String name){
+        return cookieStream.filter(cookie->cookie.getName().equals(name)).findAny();
     }
 
 }
