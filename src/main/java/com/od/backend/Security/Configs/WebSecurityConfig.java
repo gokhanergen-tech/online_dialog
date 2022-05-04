@@ -3,10 +3,11 @@ package com.od.backend.Security.Configs;
 import com.od.backend.Security.Service.UserDetailsService;
 import com.od.backend.Security.Util.JWTRequestFilter;
 import com.od.backend.Security.Util.LoginRequestFilter;
+import org.springframework.security.config.Customizer;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -20,12 +21,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Arrays;
 import java.util.List;
 
 @EnableWebSecurity
@@ -91,10 +90,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         CorsConfiguration corsConfiguration=new CorsConfiguration();
         corsConfiguration.setAllowCredentials(true);
 
-        corsConfiguration.setAllowedOrigins(List.of("http://localhost:3000"));
+        corsConfiguration.setAllowedOrigins(List.of("http://localhost:3000","http://127.0.0.1:3000"));
         corsConfiguration.setAllowedMethods(List.of("GET","POST","DELETE","PUT"));
-        corsConfiguration.setAllowedHeaders(List.of("Content-Type"));
-
+        corsConfiguration.setAllowedHeaders(List.of("Content-Type","Origin","Accept"));
         UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource=new UrlBasedCorsConfigurationSource();
         urlBasedCorsConfigurationSource.registerCorsConfiguration("/**",corsConfiguration);
         return urlBasedCorsConfigurationSource;
