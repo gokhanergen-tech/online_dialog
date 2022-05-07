@@ -30,7 +30,7 @@ public class User extends Base {
     @Column(name = "is_owner",nullable = false)
     private boolean owner=false;
 
-    @OneToOne(mappedBy = "user",cascade = {CascadeType.ALL},orphanRemoval = true)
+    @OneToOne(mappedBy = "user",cascade = {CascadeType.ALL},orphanRemoval = true,optional = false)
     private LoginCredential loginCredential;
 
     @ManyToMany(fetch = FetchType.LAZY,cascade=CascadeType.ALL)
@@ -39,7 +39,10 @@ public class User extends Base {
     inverseJoinColumns = {@JoinColumn(name = "room_id")})
     private Set<Room> rooms;
 
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "ownerOfTheRoom",orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "ownerOfTheRoom",cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REMOVE},orphanRemoval = true)
     private Set<Room> ownerRooms;
+
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)
+    private Set<QuestionEvent> questionEvents;
 
 }

@@ -13,8 +13,6 @@ public class LoginCredentialMapperImplement implements LoginCredentialMapper {
 
     @Autowired
     private UserMapper userDtoMapper;
-    @Autowired
-    private LoginCredentialMapper loginCredentialMapper;
 
 
     @Override
@@ -22,7 +20,8 @@ public class LoginCredentialMapperImplement implements LoginCredentialMapper {
         if(loginCredentialDto==null)
             throw new IllegalArgumentException();
 
-        LoginCredential loginCredential=loginCredentialMapper.mapToEntity(loginCredentialDto);
+        LoginCredential loginCredential=new LoginCredential();
+        loginCredential.setEmail(loginCredentialDto.getEmail());
         loginCredential.setUser(userDtoMapper.mapToEntity(loginCredentialDto.getUserDto()));
 
         return loginCredential;

@@ -3,6 +3,7 @@ package com.od.backend.Security.Configs;
 import com.od.backend.Security.Service.UserDetailsService;
 import com.od.backend.Security.Util.JWTRequestFilter;
 import com.od.backend.Security.Util.LoginRequestFilter;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -56,6 +57,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                   .antMatchers("/api/auth/control").permitAll()
                   .antMatchers("/api/delete").hasAuthority("ADMIN_ROLE")
                   .antMatchers("/api/rooms").hasAuthority("USER_ROLE")
+                  .antMatchers(HttpMethod.POST,"/api/room").hasAuthority("ADMIN_ROLE")
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()

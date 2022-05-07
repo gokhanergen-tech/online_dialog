@@ -2,7 +2,6 @@ package com.od.backend.Usecases.Api.Entities;
 
 import com.od.backend.BaseEntities.Base;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
@@ -20,7 +19,7 @@ public class Room extends Base {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "hashed_id",nullable = false)
+    @Column(name = "hashed_id",nullable = true)
     private String hashedId;
 
     @Column(name = "title",nullable = false)
@@ -30,7 +29,7 @@ public class Room extends Base {
     private String subtitle;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id",referencedColumnName = "id",nullable = false)
+    @JoinColumn(name = "created_by_user_id",referencedColumnName = "id",nullable = false)
     private User ownerOfTheRoom;
 
     @OneToOne(fetch = FetchType.EAGER,cascade = {CascadeType.PERSIST,CascadeType.MERGE})
