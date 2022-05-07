@@ -2,6 +2,7 @@ import React from "react";
 import Content from "../../components/content_base/content";
 
 const About = () => {
+  document.title="About"
   return (
     <Content>
       <div className={"row d-flex "}>

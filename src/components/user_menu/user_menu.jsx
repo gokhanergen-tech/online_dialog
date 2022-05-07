@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { Link,useNavigate } from 'react-router-dom';
-import {useDispatch} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 
 import {logout} from '../../axios/http'
 import styles from './user_menu.module.css'
@@ -10,6 +10,7 @@ let closeTimeout=null;
 
 const UserMenu = () => {
   const dispatch=useDispatch();
+  const userFullName=useSelector(state=>state.authReducer.user.userDto.fullName)
 
   function closeHandler(){
       document.getElementById("menu").style["transform"]="translateX(100%)";
@@ -51,7 +52,7 @@ const UserMenu = () => {
         </div>
         <div className='ps-5 px-5 pt-1 pb-2 d-flex flex-column align-items-center'>
           <i className={"bi bi-person-circle "+styles.user_icon}></i>
-          <h6 className={styles.name_surname}>Name Surname</h6>
+          <h6 className={styles.name_surname}>{userFullName}</h6>
         </div>
       </div>
 

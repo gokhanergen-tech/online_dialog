@@ -4,7 +4,7 @@ import styles from "./contact.module.scss";
 
 const Contact = () => {
   const mail = "online_office@guncetek.com";
-
+  document.title="Contact"
   return (
     <Content>
       <div className={"row "}>
