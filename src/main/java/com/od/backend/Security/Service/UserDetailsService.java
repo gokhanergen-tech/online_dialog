@@ -36,6 +36,16 @@ public class UserDetailsService implements UserDetailsManager {
     @Value("${jwt.security.password_pepper}")
     private String pepper;
 
+    public long getUserId() throws UsernameNotFoundException{
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        if(authentication.isAuthenticated()){
+            String email=authentication.getName();
+            long id=((LoginCredential)loadUserByUsername(email)).getUser().getId();
+            return id;
+        }
+        return -1;
+    }
+
     @Transactional
     @Override
     public void createUser(UserDetails user) {
@@ -96,5 +106,6 @@ public class UserDetailsService implements UserDetailsManager {
         }
         return userDetails;
     }
+
 
 }

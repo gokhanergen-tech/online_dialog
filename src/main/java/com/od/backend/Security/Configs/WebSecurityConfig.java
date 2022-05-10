@@ -1,10 +1,15 @@
 package com.od.backend.Security.Configs;
 
+import com.od.backend.Security.Service.CookieService;
+import com.od.backend.Security.Service.RefreshTokenService;
 import com.od.backend.Security.Service.UserDetailsService;
 import com.od.backend.Security.Util.JWTRequestFilter;
 import com.od.backend.Security.Util.LoginRequestFilter;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +29,12 @@ import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -36,6 +44,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UserDetailsService userDetailsService;
+    @Autowired
+    private RefreshTokenService refreshTokenService;
+    @Autowired
+    private CookieService cookieService;
 
     @Autowired
     private JWTRequestFilter jwtRequestFilter;
@@ -58,24 +70,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                   .antMatchers("/api/delete").hasAuthority("ADMIN_ROLE")
                   .antMatchers("/api/rooms").hasAuthority("USER_ROLE")
                   .antMatchers(HttpMethod.POST,"/api/room").hasAuthority("ADMIN_ROLE")
+                .antMatchers("/api/logout").hasAnyAuthority("ADMIN_ROLE","USER_ROLE")
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
+                .logout().disable()
                 .formLogin().disable()
-                .logout(logout->logout.logoutUrl("/api/logout")
-                        .addLogoutHandler(new LogoutHandler() {
-                            @Override
-                            public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
-
-                            }
-                        })
-                   .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK))
-                   .clearAuthentication(true)
-                   .invalidateHttpSession(true)
-                   .deleteCookies("accessToken","refreshToken"))
                 .httpBasic().disable();
     }
 

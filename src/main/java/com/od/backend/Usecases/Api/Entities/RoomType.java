@@ -14,6 +14,9 @@ import javax.persistence.*;
 @Table(name = "room_types",catalog = "user")
 public class RoomType {
 
+    public static RoomType OFFICE_ROOM=new RoomType("OFFICE_ROOM");
+    public static RoomType INTERVIEW_ROOM=new RoomType("INTERVIEW_ROOM");
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;

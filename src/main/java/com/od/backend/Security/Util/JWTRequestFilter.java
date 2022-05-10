@@ -5,6 +5,7 @@ import com.od.backend.Security.Service.JWTService;
 import com.od.backend.Security.Service.UserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -14,6 +15,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -33,30 +35,39 @@ public class JWTRequestFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         if(request.getCookies()!=null){
+            Optional<Cookie> accessTokenCookie=cookieService.searchCookie(Arrays.stream(request.getCookies()),"accessToken");
+            Cookie accessToken=accessTokenCookie.orElse(null);
+            String email=null;
+            response.setContentType("application/json;");
 
-                Optional<Cookie> accessTokenCookie=cookieService.searchCookie(Arrays.stream(request.getCookies()),"accessToken");
-                Cookie accessToken=accessTokenCookie.orElse(null);
-
-                try{
-                    if(accessToken==null){
-                        throw new NullPointerException();
-                    }else{
-                        String accessTokenGet=accessToken.getValue();
-
-                        String email=jwtService.extractMail(accessSecretKey,accessTokenGet);
-                        //Save the user for Authentication
-                        AuthenticateProcesses.authenticate(userDetailsService,request,email);
-                    }
-                }catch (Exception e){
-                    response.setStatus(401);
-                    response.setContentType("application/json;");
-                    response.getWriter().write("{\"message\":\"This request is not permitted\"}");
-                    return;
+            try {
+                if(accessToken==null){
+                    throw new Exception();
                 }
+                String accessTokenGet=accessToken.getValue();
+                email = jwtService.extractMail(accessSecretKey, accessTokenGet);
+            }catch (Exception exception) {
+                response.setStatus(401);
+                response.getWriter().write("{\"message\":\"You are not permitted!\"}");
+                return;
+            }
 
+            //Save the user for Authentication
+            try{
+                AuthenticateProcesses.authenticate(userDetailsService,request,email);
+            }catch (UsernameNotFoundException usernameNotFoundException) {
+                response.setStatus(404);
+                response.getWriter().write("{\"message\":\"There is no such user!\"}");
+                return;
+            }catch (Exception e){
+                response.setStatus(500);
+                response.getWriter().write("{\"message\":\"There is no such user!\"}");
+                return;
+            }
         }
 
         filterChain.doFilter(request,response);
+
     }
 
     @Override

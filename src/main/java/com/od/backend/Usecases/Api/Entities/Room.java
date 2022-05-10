@@ -22,11 +22,14 @@ public class Room extends Base {
     @Column(name = "hashed_id",nullable = true)
     private String hashedId;
 
-    @Column(name = "title",nullable = false)
+    @Column(name = "title",nullable = false,unique = true)
     private String title;
 
     @Column(name = "subtitle",nullable = false)
     private String subtitle;
+
+    @Column(name = "is_open",nullable = false)
+    private boolean open=false;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "created_by_user_id",referencedColumnName = "id",nullable = false)

@@ -13,11 +13,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/api")
@@ -77,14 +84,14 @@ public class AuthController {
             //Get user from the database
             User user=((LoginCredential)userDetailsService.loadUserByUsername(loginRequest.getEmail())).getUser();
 
-            //Saved the refresh token to the database
-            refreshTokenService.saveRefreshToken(loginResponse.getRefreshToken(),user);
-
             //Added Cookies
-            cookieService.addCookie(httpServletResponse,"accessToken", loginResponse.getAccessToken(),60*60*24*2);
-            cookieService.addCookie(httpServletResponse,"refreshToken", loginResponse.getRefreshToken(),60*60*24*10);
+            cookieService.addCookie(httpServletResponse,"accessToken", loginResponse.getAccessToken(),60*60);
+            cookieService.addCookie(httpServletResponse,"refreshToken", loginResponse.getRefreshToken(),60*60*24*12);
 
             LoginCredentialDto loginCredentialDto=loginService.getLoginCredentialMapper().mapToDTO(user.getLoginCredential());
+            refreshTokenService.saveRefreshToken(loginResponse.getRefreshToken(),user);
+
+
             //Finally login is successful
             return new ResponseEntity<Map<String,Object>>(new HashMap<String,Object>(){
                 {
@@ -136,5 +143,33 @@ public class AuthController {
             jsonObject.put("message",err.getMessage());
             return ResponseEntity.status(500).body(jsonObject);
         }
+    }
+
+    @GetMapping(value = "/logout")
+    public ResponseEntity<String> logout(HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse){
+        SecurityContextHolder.clearContext();
+        HttpSession httpSession=httpServletRequest.getSession();
+        if(httpSession!=null)
+            httpSession.invalidate();
+
+        Cookie[] cookies=httpServletRequest.getCookies();
+        if(httpServletRequest.getCookies()!=null){
+            try{
+                Optional<Cookie> refreshToken=cookieService.searchCookie(Arrays.stream(cookies),"refreshToken");
+                if(!refreshToken.isEmpty()){
+                    String getRefreshToken=refreshToken.get().getValue();
+                    refreshTokenService.removeRefreshToken(getRefreshToken);
+                }
+
+                cookieService.addCookie(httpServletResponse,"accessToken","",0);
+                cookieService.addCookie(httpServletResponse,"refreshToken","",0);
+            }catch (Exception exception){
+                ResponseEntity.status(500).body("Server hatası oluştu!");
+            }
+        }
+
+
+        return ResponseEntity.status(200).body("The logout is successful");
+
     }
 }

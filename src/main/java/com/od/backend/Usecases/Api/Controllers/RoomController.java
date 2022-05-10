@@ -2,10 +2,12 @@ package com.od.backend.Usecases.Api.Controllers;
 
 import com.od.backend.Usecases.Api.DTO.RoomDto;
 import com.od.backend.Usecases.Api.Services.RoomService;
+import org.hibernate.NonUniqueObjectException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.ConstraintViolationException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +35,11 @@ public class RoomController {
         }catch (IllegalArgumentException illegalArgumentException){
            response.put("message",illegalArgumentException.getMessage());
            return ResponseEntity.status(400).body(response);
-        }catch (Exception exception){
+        }catch (IllegalStateException illegalStateException) {
+            response.put("message",illegalStateException.getMessage());
+            return ResponseEntity.status(400).body(response);
+        }
+        catch (Exception exception){
            response.put("message",exception.getMessage());
            return ResponseEntity.status(500).body(response);
         }

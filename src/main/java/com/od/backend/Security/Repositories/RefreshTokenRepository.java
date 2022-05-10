@@ -12,4 +12,6 @@ public interface RefreshTokenRepository extends JpaRepository<RefreshToken,Long>
 
     @Query(nativeQuery = true,value = "select * from auth.refresh_tokens  where user_id=?1")
     public Optional<RefreshToken> findByUserId(Long userId);
+
+    public void deleteByRefreshToken(String refreshToken);
 }
