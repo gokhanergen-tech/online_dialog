@@ -4,7 +4,6 @@ import Content from "../../components/content_base/content";
 import ServiceItem from "../../components/service_item/service_item";
 import { useNavigate } from "react-router-dom";
 import styles from "./home.module.scss";
-import Modal from "../../components/modal/modal";
 
 const Home = () => {
   const history = useNavigate();

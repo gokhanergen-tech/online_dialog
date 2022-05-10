@@ -95,7 +95,7 @@ const OwnerMenu = () => {
     </div>
       {
         ReactDOM.createPortal((
-            <Modal>
+          <Modal>
              <div id={styles.wrappedModal} className={"modal-content"}>
       
                <div className="modal-header border-0">   
@@ -105,7 +105,7 @@ const OwnerMenu = () => {
 
              </div>
           </Modal>
-          ),document.getElementById("modalBase"))
+       ),document.getElementById("modalBase"))
        }
     </>
   )
