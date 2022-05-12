@@ -66,7 +66,7 @@ const Login = () => {
 
   return (
    <Content>
-     <div className='w-75'>
+     <div className='w-100 p-5'>
        
         <div>
          <label className='text-center mb-3 w-100'>Email</label>
@@ -78,7 +78,7 @@ const Login = () => {
          <TextInput warning={warnings[1].message?warnings[1].message:""}  setValueOnChange={setPassword} clickIcon={()=>setPasswordShow(!isPasswordShow)} placeholder={"Password"} iconClassName={"bi "+(!isPasswordShow?"bi-lock-fill":"bi-unlock-fill")} type={(!isPasswordShow?"password":"text")}></TextInput>
         </div>
 
-        <div className="mt-5 d-flex justify-content-between me-3 ms-3">
+        <div className="mt-5 d-flex gap-2 flex-sm-row flex-column justify-content-between me-3 ms-3">
          <Button onClick={handleLogin} value={"Sign in"}></Button>
          <span className={styles.forget_password}>Forget Password?</span>
         </div>

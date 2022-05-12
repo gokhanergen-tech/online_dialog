@@ -1,9 +1,7 @@
 import React, { useEffect, useRef, useState} from 'react'
-import ReactDOM from 'react-dom';
-
 import ListOwnerMenu from '../list_owner/list_owner';
-import Modal from "../../components/modal/modal";
 import styles from './owner_menu.module.css'
+import AddRoom from '../add_room_modal/add_room';
 let closeTimeout=null;
 const OwnerMenu = () => {
   const ownerMenu=useRef(null);
@@ -93,20 +91,7 @@ const OwnerMenu = () => {
           <i className="bi bi-gear-fill align-self-center"></i>
        </div>
     </div>
-      {
-        ReactDOM.createPortal((
-          <Modal>
-             <div id={styles.wrappedModal} className={"modal-content"}>
-      
-               <div className="modal-header border-0">   
-                  <span className={styles.titleModal}>New Room</span>
-                  <button className={styles.cancelModalButton} data-bs-dismiss="modal">Cancel</button>
-               </div>
-
-             </div>
-          </Modal>
-       ),document.getElementById("modalBase"))
-       }
+    <AddRoom/>
     </>
   )
 }

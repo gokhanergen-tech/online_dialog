@@ -6,7 +6,7 @@ const TextInput = ({type,setValueOnChange,iconClassName,placeholder,clickIcon,wa
 
   return (<>
     <div className={'bg-white d-flex p-0 m-0 '+styles.base}>
-      <i onClick={()=>clickIcon()} className={iconClassName+" text-black "+styles.icon+" "+styles.anim}></i>
+      <i onClick={()=>clickIcon()} className={iconClassName+" "+styles.icon+" "+styles.anim}></i>
       <input onChange={(e)=>setValueOnChange(e.target.value.trim())} placeholder={placeholder} className={styles.input} type={type}></input>
     </div>
     {

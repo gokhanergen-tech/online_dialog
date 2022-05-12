@@ -12,7 +12,7 @@ const Contact = () => {
           <b>Contact</b>
         </h3>
         <div className={"text-center my-4 " + styles.follow_us}>Follow US</div>
-        <div className={"d-flex justify-content-center gap-5 " + styles.icons}>
+        <div className={"d-flex justify-content-center gap-sm-5 gap-3 " + styles.icons}>
           <a
             href={"https://www.facebook.com"}
             className={`${"rounded-circle"}  ${styles.social_span}  ${
@@ -46,33 +46,33 @@ const Contact = () => {
             <img className={"mx-0"} src={"/icons/linkedin.svg"} alt="" />
           </a>
         </div>
-        <div className={"row mt-5 "}>
-          <div className="col-1 offset-3 p-1 py-0 ">
+        <div className={"row mt-5"}>
+          <div className="col-2 offset-sm-2 offset-0  p-1 py-0 ">
             <b>Adress</b>
           </div>
 
-          <div className="col-6 p-3 py-0 ">
+          <div className="col-sm-6 col-9 offset-sm-0 offset-1 p-3 py-0 ">
             It is a long established fact that a reader will be distracted by
             the readable content of a page when looking at its layout.
           </div>
         </div>
         <div className={"row mt-2 "}>
-          <div className="col-1 offset-3 p-1 py-0 ">
+          <div className="col-2 offset-sm-2 offset-0 p-1 py-0 ">
             <b>Telefon</b>
           </div>
 
-          <div className="col-6 p-1 py-0 px-3 ">
+          <div className="col-sm-6 col-9 offset-sm-0 offset-1 py-0 px-3 ">
             <a className={styles.aTag} href={"+905000000000"}>
               {"+90 500 000 00 00"}
             </a>
           </div>
         </div>
         <div className={"row mt-2 "}>
-          <div className="col-1 offset-3 p-1 py-0 ">
+          <div className="col-2 offset-sm-2 offset-0 py-0 ">
             <b>Mail</b>
           </div>
 
-          <div className="col-6 p-1 py-0 px-3 ">
+          <div className="col-sm-6 col-9 offset-sm-0 offset-1 p-1 py-0 px-3 ">
             <a className={styles.aTag} href={"mailto:" + mail}>
               {mail}{" "}
             </a>

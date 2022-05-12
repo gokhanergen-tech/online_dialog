@@ -34,20 +34,20 @@ const Home = () => {
           />
         </div>
         <div className="row d-flex  justify-content-center ">
-          <div className="col-7 text-center">
+          <div className="col-sm-7 col-12 text-center">
             <Button
               value={"Sing up"}
               onClick={onClick}
               customClassName={""}
             ></Button>
           </div>
-          <div className="col-7 text-center mt-4">
+          <div className="col-sm-7 col-12 text-center mt-4">
             <p>
               İf you have an account,{" "}
               <span onClick={()=>history("/login")} className={styles.aTag}>sign in</span>
             </p>
           </div>
-          <div className="col-7 text-center mt-4 ">
+          <div className="col-sm-7 col-12 text-center mt-4 ">
             <p>
               You can read our{" "}
               <span onClick={()=>history("/policy")} className={styles.aTag}>policy</span>

@@ -7,7 +7,7 @@ const Modal = ({children}) => {
         e.stopPropagation();
     }} onMouseLeave={(e)=>{
         e.stopPropagation();
-    }} tabIndex={"-1"} className='modal fade' id="modal" >
+    }} tabIndex={"-1"} className={'modal fade show d-block'} id="modal" >
         <div className={'modal-dialog '+styles.wrapped}>
             {children}
         </div>
@@ -15,4 +15,4 @@ const Modal = ({children}) => {
   )
 }
 
-export default Modal
+export default React.memo(Modal)

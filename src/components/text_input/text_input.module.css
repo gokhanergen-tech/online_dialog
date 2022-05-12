@@ -5,26 +5,12 @@
     overflow: hidden;
 }
 
-.input{
-    border: none;
-    color: black;
-    width: 100%;
-    font-size: 1rem;
-}
-
 .input:focus{
     outline: none;
     background-color: rgb(229, 229, 229);
 }
 
 .input{
-    background: linear-gradient(145deg,#ffffff80,#00000020,#ffffff80);
-    animation: placeholder_animation 5s linear infinite;
-    animation-direction: none;
-    animation-play-state: running;
-    animation-fill-mode: none;
-    background-size: 200% 100%;
-    background-repeat:repeat-x;
     padding-left: 0.5rem;
 }
 
@@ -32,36 +18,26 @@
    font-size: 0.9rem;
 }
 
-@keyframes placeholder_animation{
-  from{
-       background-position-x: 0%;
-  }
-  to{
-       background-position-x: -200%;
-  }
+.input:focus{
+    background-color: white;
 }
 
+
+.input{
+    border: none;
+    color: black;
+    width: 100%;
+    font-size: 1rem;
+}
 
 .icon{
     font-size: 1.5rem;
-    padding: 0.5rem;
     cursor: pointer;
-    background-color: whitesmoke;
+    padding: 0.5rem;
+    color: black;
+    width: 8%;
 }
 
-.anim{
-    animation: rotateAnim 1s linear infinite alternate;
-    z-index: 0;
-}
-
-@keyframes rotateAnim{
-    from {
-        transform:scale(1)
-    }
-    to{
-        transform: scale(1.2);
-    }
-}
 
 .warning{
     text-align: center;

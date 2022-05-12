@@ -17,7 +17,7 @@ const UserMenu = () => {
 
       closeTimeout=setTimeout(()=>{
         document.getElementById("menu").style.display="none";
-      },500)
+      },200)
   }   
 
   async function handleLogout() {
@@ -42,10 +42,10 @@ const UserMenu = () => {
   },[])
 
   return (
-    <div id="menu" onClick={(e)=>{
+    <div  onClick={(e)=>{
         e.stopPropagation();
     }} className={styles.wrappedMenu}>
-     <div>
+     <div id="menu" className={styles.subWrapped}>
       <div className="bg-white">
         <div className="p-1">
            <i onClick={closeHandler} className={styles.exit+" bi bi-x-lg"}></i>

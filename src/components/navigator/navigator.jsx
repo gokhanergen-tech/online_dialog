@@ -22,7 +22,7 @@ const Navigator = () => {
   return (
     <div className='container'>
 
-      <nav className={'d-flex align-items-center justify-content-between '+styles.navbar}>
+      <nav className={'d-flex align-items-center flex-sm-row flex-column justify-content-between '+styles.navbar}>
        <span onClick={()=>navigate("/")} className={styles.logo}>OnInterview</span>
        
        {

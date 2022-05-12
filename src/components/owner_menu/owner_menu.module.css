@@ -64,21 +64,3 @@
     box-shadow: 0 0 5px black;
 }
 
-#wrappedModal{
-    background-color: #4A4646;
-}
-
-.titleModal{
-    font-size: 1.3rem;
-}
-
-.cancelModalButton{
-  background:none;
-  border: none;
-  padding: 0.5rem 1rem;
-  transition: 200ms linear;
-}
-
-.cancelModalButton:hover{
-    background-color: black;
-}
