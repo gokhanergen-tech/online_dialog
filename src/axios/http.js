@@ -12,5 +12,7 @@ const restApi=axios.create({
 const login=(data)=>restApi.post("/api/login",data);
 const logout=()=>restApi.get("/api/logout")
 const authControl=()=>restApi.get("/api/auth/control")
+
+const addRoom=(data)=>restApi.post("/api/room",data)
 //This is for http requests to Api
-export {login,logout,authControl}
+export {login,logout,authControl,addRoom}

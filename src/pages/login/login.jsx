@@ -70,12 +70,12 @@ const Login = () => {
        
         <div>
          <label className='text-center mb-3 w-100'>Email</label>
-         <TextInput warning={warnings[0].message?warnings[0].message:""} setValueOnChange={setMail} placeholder={"Email"} iconClassName={"bi bi-envelope-fill"} type={"text"}></TextInput>
+         <TextInput value={mail} warning={warnings[0].message?warnings[0].message:""} setValueOnChange={setMail} placeholder={"Email"} iconClassName={"bi bi-envelope-fill"} type={"text"}></TextInput>
         </div>
 
         <div className="mt-5">
          <label className={'text-center mb-3 w-100 '}>Password</label>
-         <TextInput warning={warnings[1].message?warnings[1].message:""}  setValueOnChange={setPassword} clickIcon={()=>setPasswordShow(!isPasswordShow)} placeholder={"Password"} iconClassName={"bi "+(!isPasswordShow?"bi-lock-fill":"bi-unlock-fill")} type={(!isPasswordShow?"password":"text")}></TextInput>
+         <TextInput value={password} warning={warnings[1].message?warnings[1].message:""}  setValueOnChange={setPassword} clickIcon={()=>setPasswordShow(!isPasswordShow)} placeholder={"Password"} iconClassName={"bi "+(!isPasswordShow?"bi-lock-fill":"bi-unlock-fill")} type={(!isPasswordShow?"password":"text")}></TextInput>
         </div>
 
         <div className="mt-5 d-flex gap-2 flex-sm-row flex-column justify-content-between me-3 ms-3">

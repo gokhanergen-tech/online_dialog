@@ -7,7 +7,7 @@ const Modal = ({children}) => {
         e.stopPropagation();
     }} onMouseLeave={(e)=>{
         e.stopPropagation();
-    }} tabIndex={"-1"} className={'modal fade show d-block'} id="modal" >
+    }} tabIndex={"-1"} className={'modal fade'} id="modal" >
         <div className={'modal-dialog '+styles.wrapped}>
             {children}
         </div>

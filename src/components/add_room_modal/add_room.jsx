@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
+import { useCallback } from 'react';
 import ReactDOM from 'react-dom'
+import { addRoom } from '../../axios/http';
 
 import Modal from "../../components/modal/modal";
 import TextInput from '../text_input/text_input';
@@ -15,13 +17,55 @@ const isSubTitleValid=(subTitle)=>{
 
 const AddRoom = () => {
   
+  const [messages,setMessages]=useState({titleMessage:"",subTitleMessage:"",backendMessage:""})
   const [title,setTitle]=useState("");
   const [subTitle,setSubTitle]=useState("");
-  const [roomType,setRoomType]=useState("");
+  const [roomType,setRoomType]=useState("INTERVIEW_ROOM");
   const [selectType,setType]=useState(0);
 
+  const handleAddRoom=useCallback(async (e)=>{
+    e.preventDefault();
+    const errors={titleMessage:"",subTitleMessage:"",backendMessage:""}
+    if(!isTitleValid(title))
+      errors["titleMessage"]="Title must not be null and smaller than 10 length!"
+    if(!isSubTitleValid(subTitle))
+      errors["subTitleMessage"]="Subtitle must not be null and smaller than 10 length!"
+
+    if(!errors.titleMessage && !errors.subTitleMessage){
+      try{
+        const {data:{room}}=await addRoom({
+          "title":title,
+          "subtitle":subTitle,
+          "roomTypeDto":{"roomType":roomType}
+        })
+        document.getElementById("modal").click();
+      }catch(err){
+        errors["backendMessage"]=err.response.data?.message
+      }
+     
+    }
+     
+    setMessages({...messages,...errors})
+  },[messages,title,subTitle,roomType])
+
+  const hiddenModalListener=useCallback(()=>{
+    setMessages({titleMessage:"",subTitleMessage:"",backendMessage:""})
+    setTitle("")
+    setSubTitle("")
+    setType(0)
+  },[])
+
+  useEffect(()=>{
+   const modal=document.getElementById("modal")
+   modal.addEventListener("hidden.bs.modal",hiddenModalListener)
+
+   return ()=>{
+    modal.removeEventListener(hiddenModalListener);
+   }
+  },[])
+
   return (
-    ReactDOM.createPortal((
+     ReactDOM.createPortal((
         <Modal>
            <div id={styles.wrappedModal} className={"modal-content"}>
     
@@ -31,14 +75,15 @@ const AddRoom = () => {
              </div>
         
              <div className='modal-body'>
+              <form onSubmit={handleAddRoom}>
                <div className='row'>
 
                   <div className='col-12'>
-                      <TextInput clickIcon={()=>{}} iconClassName={"bi "+(!isTitleValid(title)?"bi-x text-danger ":"bi-check2-circle text-success")+" "+styles.iconTitle} setValueOnChange={setTitle} placeholder={"Title"}></TextInput>
+                      <TextInput value={title} warning={messages.titleMessage} clickIcon={()=>{}} iconClassName={"bi "+(!isTitleValid(title)?"bi-x text-danger ":"bi-check2-circle text-success")} setValueOnChange={setTitle} placeholder={"Title"}></TextInput>
                   </div>
 
                   <div className='col-12 mt-4'>
-                      <TextInput clickIcon={()=>{}} iconClassName={"bi "+(!isSubTitleValid(subTitle)?"bi-x text-danger ":"bi-check2-circle text-success")+" "+styles.iconSubTitle} setValueOnChange={setSubTitle} placeholder={"Subtitle"}></TextInput>
+                      <TextInput value={subTitle} warning={messages.subTitleMessage}  clickIcon={()=>{}} iconClassName={"bi "+(!isSubTitleValid(subTitle)?"bi-x text-danger ":"bi-check2-circle text-success")} setValueOnChange={setSubTitle} placeholder={"Subtitle"}></TextInput>
                   </div>
 
                   <div className={'col-12 mt-4'}>
@@ -64,13 +109,24 @@ const AddRoom = () => {
                     </div>
                   </div>
 
+                  <div className='col-12 mt-2'>
+                    {/*This is for backend error */}
+                    {
+                         messages.backendMessage&&<div className='mt-2 text-center'>
+                          <span className="text-warning font-monospace">{messages.backendMessage}</span>
+                        </div>
+                     }
+                  </div>
+
                   <div className="col-12 mt-2">
                     <div className='d-flex justify-content-center'>
-                     <input type={"submit"} className={styles.createRoomButton} value="Create"/>
+                     <input onClick={handleAddRoom} type={"submit"} className={styles.createRoomButton} value="Create"/>
                     </div>
                   </div>
+
                  
                </div>
+              </form>
              </div>
 
            </div>
