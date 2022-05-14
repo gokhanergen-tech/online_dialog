@@ -2,13 +2,32 @@ import React, { useEffect, useRef, useState} from 'react'
 import ListOwnerMenu from '../list_owner/list_owner';
 import styles from './owner_menu.module.css'
 import AddRoom from '../add_room_modal/add_room';
+import { shallowEqual, useSelector } from 'react-redux';
+import { useCallback } from 'react';
+import { getOwnerRoomsByRoomType } from '../../axios/http';
 let closeTimeout=null;
 const OwnerMenu = () => {
   const ownerMenu=useRef(null);
   const [isRoomsShow,setRoomsShow]=useState(false)
   const [isEventsShow,setEventsShow]=useState(false)
 
+  const [rooms,setRooms]=useState([])
+
+  const getRooms=useCallback(async ()=>{
+       try{
+         const {data:{rooms}}=await getOwnerRoomsByRoomType("ALL")
+         setRooms(rooms)
+       }catch(err){
+         console.log(err.response.data?.message)
+       }
+  },[])
+
+  const addRoom=useCallback((room)=>{
+       setRooms([...rooms,room])
+  },[rooms])
+  
   useEffect(()=>{
+     getRooms();
      return ()=>{
          if(closeTimeout)
           clearTimeout(closeTimeout)
@@ -31,30 +50,36 @@ const OwnerMenu = () => {
                   </div>
                   {
                       isRoomsShow&&<ul className={styles.rooms}>
-                      <li>
-                         <div className={"d-flex align-items-center "+styles.room}>
-                            <i className="bi bi-person-workspace text-black ps-2"></i>
-                            <span className='w-100 text-center text-black'>Room</span>
-                         </div>
-                      </li>
-                      <li>
-                         <div className={"d-flex align-items-center "+styles.room}>
-                            <i className="bi bi-person-workspace text-black ps-2"></i>
-                            <span className='w-100 text-center text-black'>Room</span>
-                         </div>
-                      </li>
-                      <li>
-                         <div className={"d-flex align-items-center "+styles.room}>
-                            <i className="bi bi-person-workspace text-black ps-2"></i>
-                            <span className='w-100 text-center text-black'>Room</span>
-                         </div>
-                      </li>
-                      <li>
-                         <div className={"d-flex align-items-center "+styles.room}>
-                            <i className="bi bi-person-workspace text-black ps-2"></i>
-                            <span className='w-100 text-center text-black'>Room</span>
-                         </div>
-                      </li>
+                        <li>
+                           <div className={"d-flex align-items-center "+styles.room}>
+                              <span className='w-100 text-center'><b className='text-black'>Offices</b></span>
+                           </div>
+                        </li>
+                        {
+                           rooms.filter(room=>room.roomTypeDto.roomType==="OFFICE_ROOM").map(room=>{
+                            return (<li key={room.hashedId}>
+                              <div className={"d-flex align-items-center "+styles.room}>
+                                 <i className="bi bi-person-workspace text-black ps-2"></i>
+                                 <span className='w-100 text-center text-black'>{room.title}</span>
+                              </div>
+                           </li>)
+                           })
+                        }
+                        <li>
+                           <div className={"d-flex align-items-center "+styles.room}>
+                              <span className='w-100 text-center'><b className='text-black'>Interviews</b></span>
+                           </div>
+                        </li>
+                        {
+                           rooms.filter(room=>room.roomTypeDto.roomType==="INTERVIEW_ROOM").map(room=>{
+                           return (<li key={room.hashedId}>
+                              <div className={"d-flex align-items-center "+styles.room}>
+                                 <i className="bi bi-person-workspace text-black ps-2"></i>
+                                 <span className='w-100 text-center text-black'>{room.title}</span>
+                              </div>
+                           </li>)
+                           })
+                        }
                   </ul>
                   }
                   <div onClick={()=>{
@@ -91,7 +116,7 @@ const OwnerMenu = () => {
           <i className="bi bi-gear-fill align-self-center"></i>
        </div>
     </div>
-    <AddRoom/>
+    <AddRoom addRoomToOwnerMenu={addRoom}/>
     </>
   )
 }

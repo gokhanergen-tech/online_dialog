@@ -5,11 +5,14 @@ import {useDispatch, useSelector} from 'react-redux'
 import {logout} from '../../axios/http'
 import styles from './user_menu.module.css'
 import {clearAuth} from '../../redux_store/actions/auth_actions/actions'
+import { useState } from 'react';
+import Loading from '../loading/loading';
 
 let closeTimeout=null;
 
 const UserMenu = () => {
   const dispatch=useDispatch();
+  const [isWaiting,setWaiting]=useState(false)
   const userFullName=useSelector(state=>state.authReducer.user.userDto.fullName)
 
   function closeHandler(){
@@ -22,10 +25,12 @@ const UserMenu = () => {
 
   async function handleLogout() {
      try{
+       setWaiting(true)
        await logout();
        dispatch(clearAuth())
      }catch(err){
        console.log(err.message)
+       setWaiting(false)
      }
   }
 
@@ -41,7 +46,10 @@ const UserMenu = () => {
     }
   },[])
 
-  return (
+    if(isWaiting)
+     return <Loading/>
+    else 
+    return(
     <div  onClick={(e)=>{
         e.stopPropagation();
     }} className={styles.wrappedMenu}>
@@ -84,7 +92,8 @@ const UserMenu = () => {
      </div>
      </div> 
     </div>
-  )
+    )
+  
 }
 
 export default React.memo(UserMenu)

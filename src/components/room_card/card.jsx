@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import styles from './card.module.css'
 
-const Card = ({ roomName, title, teacher, id }) => {
+const Card = ({ roomName, title, teacher, id,open }) => {
   return (
     <div className="p-3 col-xl-4 col-md-6 p-4 mt-3">
      <div className={styles.card}>
@@ -23,8 +23,8 @@ const Card = ({ roomName, title, teacher, id }) => {
       </div>
 
       <div className="d-flex justify-content-center mt-4 align-self-center">
-        <Link to={`/interview/${id}`}>
-          <button
+        <Link  to={open?`/interview/${id}`:""}>
+          <button {...{disabled:!open}}
             className={'btn text-white border border-2 border-light' + styles.button}
           >
             Join The Room

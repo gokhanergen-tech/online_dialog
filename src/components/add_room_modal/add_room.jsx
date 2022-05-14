@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { useCallback } from 'react';
 import ReactDOM from 'react-dom'
+import { useDispatch } from 'react-redux';
 import { addRoom } from '../../axios/http';
+import {useNavigate} from 'react-router-dom'
 
 import Modal from "../../components/modal/modal";
 import TextInput from '../text_input/text_input';
 import styles from "./add_room.module.css"
+import { addInterviewRoom, addOfficeRoom } from '../../redux_store/actions/room_actions/actions';
 
 const isTitleValid=(title)=>{
   return title && title.trim().length>=10
@@ -15,7 +18,7 @@ const isSubTitleValid=(subTitle)=>{
     return subTitle && subTitle.trim().length>=10
 }
 
-const AddRoom = () => {
+const AddRoom = ({addRoomToOwnerMenu}) => {
   
   const [messages,setMessages]=useState({titleMessage:"",subTitleMessage:"",backendMessage:""})
   const [title,setTitle]=useState("");
@@ -23,12 +26,17 @@ const AddRoom = () => {
   const [roomType,setRoomType]=useState("INTERVIEW_ROOM");
   const [selectType,setType]=useState(0);
 
+  const dispatch=useDispatch();
+
+  const navigate=useNavigate();
+
   const handleAddRoom=useCallback(async (e)=>{
+  
     e.preventDefault();
     const errors={titleMessage:"",subTitleMessage:"",backendMessage:""}
-    if(!isTitleValid(title))
+    if(!isTitleValid(title.trim()))
       errors["titleMessage"]="Title must not be null and smaller than 10 length!"
-    if(!isSubTitleValid(subTitle))
+    if(!isSubTitleValid(subTitle.trim()))
       errors["subTitleMessage"]="Subtitle must not be null and smaller than 10 length!"
 
     if(!errors.titleMessage && !errors.subTitleMessage){
@@ -38,6 +46,12 @@ const AddRoom = () => {
           "subtitle":subTitle,
           "roomTypeDto":{"roomType":roomType}
         })
+        if(document.title==="Offices" && roomType==="OFFICE_ROOM"){
+          dispatch(addOfficeRoom(room))
+        }else if(document.title==="Interviews" && roomType==="INTERVIEW_ROOM"){
+          dispatch(addInterviewRoom(room))
+        }
+        addRoomToOwnerMenu(room)
         document.getElementById("modal").click();
       }catch(err){
         errors["backendMessage"]=err.response.data?.message

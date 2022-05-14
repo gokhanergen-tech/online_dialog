@@ -14,5 +14,6 @@ const logout=()=>restApi.get("/api/logout")
 const authControl=()=>restApi.get("/api/auth/control")
 
 const addRoom=(data)=>restApi.post("/api/room",data)
+const getOwnerRoomsByRoomType=(roomType)=>restApi.get("http://localhost:8090/api/owner/rooms?roomType="+roomType)
 //This is for http requests to Api
-export {login,logout,authControl,addRoom}
+export {login,logout,authControl,addRoom,getOwnerRoomsByRoomType}
