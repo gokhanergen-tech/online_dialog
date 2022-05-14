@@ -19,11 +19,6 @@
     width: 0%;
 }
 
-.title{
-    padding: 1rem 6rem;
-    background-color: black;
-}
-
 .setting:hover{
    box-shadow: 0 0 10px black;
    z-index: 1;
@@ -54,13 +49,25 @@
     user-select: none;
 }
 
+.title{
+    background-color: black;
+    text-align: center;
+    margin: 0;
+}
+
+
 .room{
     background-color: #f0f0f0;
     cursor: pointer;
     transition: 200ms linear;
+    text-align: center;
 }
 
 .room:hover{
     box-shadow: 0 0 5px black;
+}
+
+.room span{
+    max-width: 80%;
 }
 

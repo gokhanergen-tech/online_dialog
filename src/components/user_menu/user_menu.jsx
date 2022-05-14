@@ -50,7 +50,7 @@ const UserMenu = () => {
      return <Loading/>
     else 
     return(
-    <div  onClick={(e)=>{
+    <div onClick={(e)=>{
         e.stopPropagation();
     }} className={styles.wrappedMenu}>
      <div id="menu" className={styles.subWrapped}>
@@ -65,12 +65,12 @@ const UserMenu = () => {
       </div>
 
      <div className={'d-flex flex-column '+styles.base_buttons}>
-         <button className={styles.link}>
+         <div className={styles.link}>
             <div className='row align-items-center m-0'>
                <i className="col-auto bi bi-person-square p-0"></i>
                <span className='col-3 p-0'>Profile</span>
             </div>
-         </button>
+         </div>
          <Link to="/interviews" className={styles.link}>
            <div className='row align-items-center m-0'>
                <i className="col-auto bi bi-people-fill p-0"></i>
@@ -83,12 +83,12 @@ const UserMenu = () => {
                <span className='col-3 p-0'>Offices</span>
             </div>
          </Link>
-         <button onClick={handleLogout} className={styles.link}>
+         <div onClick={handleLogout} className={styles.link}>
             <div className='row align-items-center m-0'>
                <i className="col-auto bi bi-box-arrow-right p-0"></i>
                <span className='col-3 p-0'>Logout</span>
             </div>
-         </button>
+         </div>
      </div>
      </div> 
     </div>

@@ -5,7 +5,7 @@ import styles from './card.module.css'
 
 const Card = ({ roomName, title, teacher, id,open }) => {
   return (
-    <div className="p-3 col-xl-4 col-md-6 p-4 mt-3">
+    <div className={"p-3 col-xl-4 col-md-6 p-4 mt-3"}>
      <div className={styles.card}>
       <div className="first  text-center">
         <div className={"heading text-white fs-4 "+ styles.title }>
@@ -13,9 +13,11 @@ const Card = ({ roomName, title, teacher, id,open }) => {
         </div>
         <div className=" fs-5 "> {title}</div>
       </div>
-      <div className="second d-flex flex-row mt-2">
-        <div className="image mr-3 border border-light rounded-circle">
-          <img src="/images/office.png" className="rounded-circle" width="60" />
+      <div className="second d-flex flex-row justify-content-around mt-2">
+        <div>
+         <div className={"mr-3 border border-light rounded-circle overflow-hidden "+styles.avatar}>
+          <img src="/images/office.png" className={"w-100 h-100 "+styles.image}/>
+         </div>
         </div>
         <div className=" align-self-center fs-5 m-3 ml-1">
           {teacher}

@@ -38,12 +38,17 @@ const OwnerMenu = () => {
     <>
     <div onMouseEnter={()=>{
         ownerMenu.current.style["width"]="100%";
+        if(window.innerWidth>500)
+         document.body.style["margin-left"]=document.getElementsByClassName(styles.wrappedMenu).item(0).getBoundingClientRect().width+"px";
     }} onMouseLeave={()=>{
         ownerMenu.current.style["width"]="0%";
+        if(window.innerWidth>500)
+         document.body.style["margin-left"]="0px";
     }} className={"d-flex "+styles.wrappedMenu}>
         <div ref={ownerMenu} className={styles.content}>
-          <h3 className={styles.title}>Host</h3>
-            <div>
+         <div style={{width:200}}>
+         <h3 className={styles.title}>Host</h3>
+         <div>
                   <div className={styles.headerRooms}>
                       <h5 className='m-0'>Rooms</h5>
                       <ListOwnerMenu buttonsTagList={[{button:{"data-bs-toggle":"modal","data-bs-target":"#modal"},tag:"New Room"}]} item={0} titleIcon={"Rooms Menu"}></ListOwnerMenu>
@@ -51,31 +56,31 @@ const OwnerMenu = () => {
                   {
                       isRoomsShow&&<ul className={styles.rooms}>
                         <li>
-                           <div className={"d-flex align-items-center "+styles.room}>
-                              <span className='w-100 text-center'><b className='text-black'>Offices</b></span>
+                           <div className={styles.room}>
+                              <span><b className='text-black'>Offices</b></span>
                            </div>
                         </li>
                         {
                            rooms.filter(room=>room.roomTypeDto.roomType==="OFFICE_ROOM").map(room=>{
                             return (<li key={room.hashedId}>
                               <div className={"d-flex align-items-center "+styles.room}>
-                                 <i className="bi bi-person-workspace text-black ps-2"></i>
-                                 <span className='w-100 text-center text-black'>{room.title}</span>
+                                 <i className="bi bi-person-workspace text-black px-2"></i>
+                                 <span title={room.title} className='w-100 text-black'>{room.title.length>20?room.title.substring(0,21)+"...":room.title}</span>
                               </div>
                            </li>)
                            })
                         }
                         <li>
-                           <div className={"d-flex align-items-center "+styles.room}>
-                              <span className='w-100 text-center'><b className='text-black'>Interviews</b></span>
+                           <div className={styles.room}>
+                              <span><b className='text-black'>Interviews</b></span>
                            </div>
                         </li>
                         {
                            rooms.filter(room=>room.roomTypeDto.roomType==="INTERVIEW_ROOM").map(room=>{
                            return (<li key={room.hashedId}>
                               <div className={"d-flex align-items-center "+styles.room}>
-                                 <i className="bi bi-person-workspace text-black ps-2"></i>
-                                 <span className='w-100 text-center text-black'>{room.title}</span>
+                                 <i className="bi bi-person-workspace text-black px-2"></i>
+                                 <span title={room.title} className='w-100 text-black '>{room.title.length>20?room.title.substring(0,21)+"...":room.title}</span>
                               </div>
                            </li>)
                            })
@@ -87,8 +92,8 @@ const OwnerMenu = () => {
                   }} className='text-center bg-white'>
                     <i className={"bi bi-caret-"+(isRoomsShow?"up":"down")+" text-black"}></i>
                   </div>
-            </div>
-            <div>
+              </div>
+              <div>
                   <div className={styles.headerRooms}>
                       <h5 className='m-0'>Question Events</h5>
                       <ListOwnerMenu buttonsTagList={[{click:()=>{
@@ -110,6 +115,8 @@ const OwnerMenu = () => {
                     <i className={"bi bi-caret-"+(isEventsShow?"up":"down")+" text-black"}></i>
                   </div>
             </div>
+         </div>
+          
         </div>
     
        <div className={'bg-info d-flex '+styles.setting}>

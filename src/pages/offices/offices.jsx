@@ -1,9 +1,9 @@
 import React,{useCallback} from 'react'
 import { useEffect } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import { getOwnerRoomsByRoomType } from '../../axios/http';
+import { getOwnerRoomsByRoomType, getUserRoomsByRoomType } from '../../axios/http';
 
-import InterContent from "../../components/interviews_base/interContent";
+import InterContent from "../../components/inter_content/interContent";
 import Card from "../../components/room_card/card";
 import { setOfficeRooms } from '../../redux_store/actions/room_actions/actions';
 const Offices = () => {
@@ -12,11 +12,15 @@ const Offices = () => {
   const rooms=useSelector(state=>state.roomsReducer.officeRooms,shallowEqual);
   const getRoomsFromApi=useCallback(async ()=>{
     try{
+      let allRooms=[]
       if(owner){
         const {data:{rooms}}=await getOwnerRoomsByRoomType("OFFICE_ROOM")
-        dispatch(setOfficeRooms(rooms))
+        allRooms=allRooms.concat(rooms)
       }
-      
+      const {data:{rooms}}=await getUserRoomsByRoomType("OFFICE_ROOM")
+      allRooms=allRooms.concat(rooms)
+
+      dispatch(setOfficeRooms(allRooms))
     }catch(err){
       console.log(err.response.data?.message)
     }
