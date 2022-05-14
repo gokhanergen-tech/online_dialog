@@ -8,10 +8,12 @@ import com.od.backend.Usecases.Api.Mapped.RoomMapper;
 import com.od.backend.Usecases.Api.Mapped.RoomTypeMapper;
 import com.od.backend.Usecases.Api.Mapped.UserMapper;
 import com.od.backend.Usecases.Api.Repositories.RoomTypeRepository;
-import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class RoomMapperImplements implements RoomMapper {
@@ -29,6 +31,8 @@ public class RoomMapperImplements implements RoomMapper {
 
     @Override
     public Room mapToEntity(RoomDto room) {
+        if(room==null)
+            throw new IllegalArgumentException("Null argument error!");
         String email= SecurityContextHolder.getContext().getAuthentication().getName();
 
         User user = loginCredentialsRepository.findByEmail(email).get().getUser();
@@ -44,6 +48,8 @@ public class RoomMapperImplements implements RoomMapper {
 
     @Override
     public RoomDto mapToDto(Room room) {
+        if(room==null)
+            throw new IllegalArgumentException("Null argument error!");
         RoomDto roomDto=new RoomDto();
         roomDto.setSubtitle(room.getSubtitle());
         roomDto.setTitle(room.getTitle());
@@ -52,5 +58,12 @@ public class RoomMapperImplements implements RoomMapper {
         roomDto.setRoomTypeDto(roomTypeMapper.mapToDto(room.getRoomType()));
         roomDto.setOpen(room.isOpen());
         return roomDto;
+    }
+
+    @Override
+    public List<RoomDto> listMapToList(List<Room> rooms) {
+        if(rooms==null)
+            throw new IllegalArgumentException("Null argument error!");
+        return rooms.stream().map(room -> mapToDto(room)).collect(Collectors.toList());
     }
 }

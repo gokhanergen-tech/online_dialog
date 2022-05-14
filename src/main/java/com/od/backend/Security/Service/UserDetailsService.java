@@ -21,6 +21,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Transactional(rollbackFor = {Exception.class})
 @Service
 public class UserDetailsService implements UserDetailsManager {
     @Autowired
@@ -46,7 +47,6 @@ public class UserDetailsService implements UserDetailsManager {
         return -1;
     }
 
-    @Transactional
     @Override
     public void createUser(UserDetails user) {
             LoginCredential loginCredential=((LoginCredential)user);

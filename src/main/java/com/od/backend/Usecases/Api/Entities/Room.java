@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.Set;
 
 @Entity
@@ -13,7 +14,7 @@ import java.util.Set;
 @Setter
 @RequiredArgsConstructor
 @Table(name = "rooms",catalog = "user")
-public class Room extends Base {
+public class Room extends Base implements Comparable<Room> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,4 +43,12 @@ public class Room extends Base {
     @ManyToMany(fetch = FetchType.LAZY,mappedBy = "rooms")
     private Set<User> users;
 
+    @Override
+    public int compareTo(Room o) {
+        if(o==null)
+            return -1;
+        Date createdDate=o.getCreatedDate();
+        Date thisDate=this.getCreatedDate();
+        return thisDate.compareTo(createdDate);
+    }
 }

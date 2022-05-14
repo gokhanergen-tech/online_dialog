@@ -1,5 +1,6 @@
 package com.od.backend.Usecases.Api.Controllers;
 
+import com.od.backend.Security.Service.UserDetailsService;
 import com.od.backend.Usecases.Api.DTO.RoomDto;
 import com.od.backend.Usecases.Api.Services.RoomService;
 import org.hibernate.NonUniqueObjectException;
@@ -19,10 +20,41 @@ public class RoomController {
 
     @Autowired
     private RoomService roomService;
+    @Autowired
+    private UserDetailsService userDetailsService;
 
-    @GetMapping(value = "/rooms")
-    private List<String> rooms(){
-        return List.of("Hello");
+    @GetMapping(value = "/user/rooms")
+    private ResponseEntity<Map<String,Object>> userRooms(@RequestParam(name = "roomType") String roomType){
+        Map<String,Object> response=new HashMap<>();
+        try{
+            List<RoomDto> rooms= roomService.getUserRooms(userDetailsService,roomType);
+            response.put("rooms",rooms);
+            return ResponseEntity.ok(response);
+        }catch (IllegalArgumentException illegalArgumentException){
+            response.put("message",illegalArgumentException.getMessage());
+            return ResponseEntity.status(400).body(response);
+        }
+        catch (Exception err){
+            response.put("message","Server taraflı bir hata oluştu!");
+            return ResponseEntity.status(500).body(response);
+        }
+    }
+
+    @GetMapping(value = "/owner/rooms")
+    private ResponseEntity<Map<String,Object>> ownerUserRooms(@RequestParam(name = "roomType") String roomType){
+        Map<String,Object> response=new HashMap<>();
+        try{
+          List<RoomDto> rooms= roomService.getOwnerRooms(userDetailsService,roomType);
+          response.put("rooms",rooms);
+          return ResponseEntity.ok(response);
+        }catch (IllegalArgumentException illegalArgumentException){
+           response.put("message",illegalArgumentException.getMessage());
+           return ResponseEntity.status(400).body(response);
+        }
+        catch (Exception err){
+           response.put("message","Server taraflı bir hata oluştu!");
+           return ResponseEntity.status(500).body(response);
+        }
     }
 
     @PostMapping(value = "/room")

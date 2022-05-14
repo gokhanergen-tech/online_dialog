@@ -19,7 +19,7 @@ public class RoomValidator {
     }
 
     public void isSubTitleValidate(String subtitle){
-        if(subtitle==null || subtitle.trim()==""||subtitle.trim().length()<10)
+        if(subtitle==null || subtitle.trim()=="")
             throw new IllegalArgumentException("Geçersiz oda alt başlığı girildi!");
         if(subtitle.trim().length()<10)
             throw new IllegalArgumentException("Alt başlık karakter uzunluğu 10 ve 10'dan büyük olmalı!");

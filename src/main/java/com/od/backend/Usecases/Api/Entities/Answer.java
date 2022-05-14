@@ -21,6 +21,10 @@ public class Answer {
     private String answer;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id",nullable = false,referencedColumnName = "id")
+    private User user;
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "question_id",referencedColumnName = "id",nullable = false)
     private Question question;
 
