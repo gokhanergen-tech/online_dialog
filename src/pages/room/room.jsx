@@ -1,7 +1,13 @@
 import React from "react";
+import { useParams } from "react-router-dom";
 
 const Room = () => {
-  return <div>room</div>;
+   const {id}=useParams();
+
+
+  
+
+  return <div>{id}</div>;
 };
 
 export default Room;

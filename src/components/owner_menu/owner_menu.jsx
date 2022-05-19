@@ -65,7 +65,7 @@ const OwnerMenu = () => {
                             return (<li key={room.hashedId}>
                               <div className={"d-flex align-items-center "+styles.room}>
                                  <i className="bi bi-person-workspace text-black px-2"></i>
-                                 <span title={room.title} className='w-100 text-black'>{room.title.length>20?room.title.substring(0,21)+"...":room.title}</span>
+                                 <span title={room.title} className={'w-100 '+(room.open?"text-success":"text-muted")}>{room.title.length>20?room.title.substring(0,21)+"...":room.title}</span>
                               </div>
                            </li>)
                            })
@@ -80,7 +80,7 @@ const OwnerMenu = () => {
                            return (<li key={room.hashedId}>
                               <div className={"d-flex align-items-center "+styles.room}>
                                  <i className="bi bi-person-workspace text-black px-2"></i>
-                                 <span title={room.title} className='w-100 text-black '>{room.title.length>20?room.title.substring(0,21)+"...":room.title}</span>
+                                 <span title={room.title} className={'w-100 '+(room.open?"text-success":"text-muted")}>{room.title.length>20?room.title.substring(0,21)+"...":room.title}</span>
                               </div>
                            </li>)
                            })
@@ -93,6 +93,7 @@ const OwnerMenu = () => {
                     <i className={"bi bi-caret-"+(isRoomsShow?"up":"down")+" text-black"}></i>
                   </div>
               </div>
+              {/*Soru event'leri*/}
               <div>
                   <div className={styles.headerRooms}>
                       <h5 className='m-0'>Question Events</h5>
@@ -123,6 +124,7 @@ const OwnerMenu = () => {
           <i className="bi bi-gear-fill align-self-center"></i>
        </div>
     </div>
+    {/*Oda modal*/}
     <AddRoom addRoomToOwnerMenu={addRoom}/>
     </>
   )
