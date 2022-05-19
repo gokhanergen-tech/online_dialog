@@ -1,14 +1,27 @@
 .card {
   box-shadow: 0 0.5rem 1rem rgba(white, 0.15);
-  background-color: rgb(51, 48, 48) !important;
+  background-color: rgb(51, 48, 48);
+  padding: 1rem;
 }
 
 .title {
   font-weight: bold;
+  word-wrap: break-word;
 }
 
 .button {
  color: rgb(51, 48, 48);
  box-shadow: 0 0.5rem 1rem rgba(white, 0.15) ;
 }
+
+.avatar{
+  width: 60px;
+  height: 60px;
+}
+
+.image{
+  object-fit:cover;
+}
+
+
 

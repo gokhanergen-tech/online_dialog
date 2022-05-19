@@ -3,7 +3,7 @@ import styles from "./service_item.module.css";
 
 const ServiceItem = ({ imageUrl, serviceName, content }) => {
   return (
-    <div className={"col-md-6 col-8 p-0 "}>
+    <div className={"col-md-6 col-12 p-0 "}>
       <div className="p-3">
         <div className={"row m-0 " + styles.wrappedService}>
           <img className={"col-5 p-0 " + styles.img} src={imageUrl}></img>

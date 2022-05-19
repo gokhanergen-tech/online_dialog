@@ -3,27 +3,25 @@
     left: 0;
     top: 0;
     height: 100vh;
+    z-index: 1;
+    pointer-events: none;
 }
 
-.wrappedMenu i{
- font-size: 1.5rem;
+.setting,.content{
+    pointer-events: all;
 }
 
 .content{
     height: 100%;
     background-color: #00000080;
-    overflow: hidden;
-    width: 0%;
+    overflow-y: auto;
     transition: width 200ms linear;
-}
-
-.title{
-    padding: 1rem 6rem;
-    background-color: black;
+    width: 0%;
 }
 
 .setting:hover{
    box-shadow: 0 0 10px black;
+   z-index: 1;
 }
 
 .rooms{
@@ -34,6 +32,10 @@
 
 .headerRooms{
     background-color: #c4c4c4;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
 }
 
 .headerRooms h5{
@@ -41,12 +43,31 @@
     color:black;
 }
 
+.headerRooms i{
+    margin-right: 0.5rem;
+    cursor: pointer;
+    user-select: none;
+}
+
+.title{
+    background-color: black;
+    text-align: center;
+    margin: 0;
+}
+
+
 .room{
     background-color: #f0f0f0;
     cursor: pointer;
     transition: 200ms linear;
+    text-align: center;
 }
 
 .room:hover{
     box-shadow: 0 0 5px black;
 }
+
+.room span{
+    max-width: 80%;
+}
+

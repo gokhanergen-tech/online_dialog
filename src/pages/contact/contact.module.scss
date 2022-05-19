@@ -45,6 +45,7 @@ a {
 .aTag {
   text-decoration: none;
   color: #fff;
+  word-wrap: break-word;
   &:hover {
     color: #4282e1;
   }

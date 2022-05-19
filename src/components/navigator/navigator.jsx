@@ -1,14 +1,13 @@
 import React, { useRef, useState } from 'react'
+import { useSelector } from 'react-redux';
 import {NavLink,useNavigate} from 'react-router-dom'
 import OwnerMenu from '../owner_menu/owner_menu';
 import UserMenu from '../user_menu/user_menu';
 import styles from './navigator.module.css'
 
-const isAuth=true;
-const isOwner=false;
-
 const Navigator = () => {
-  const ref=useRef(null)
+  const {owner:isOwner,isAuth}=useSelector(state=>({owner:state.authReducer.user?.userDto?.owner,isAuth:state.authReducer.isAuth}));
+  
   const navigate=useNavigate();
 
   function handleOpenMenu(e){
@@ -23,7 +22,7 @@ const Navigator = () => {
   return (
     <div className='container'>
 
-      <nav className={'d-flex align-items-center justify-content-between '+styles.navbar}>
+      <nav className={'d-flex align-items-center flex-sm-row flex-column justify-content-between '+styles.navbar}>
        <span onClick={()=>navigate("/")} className={styles.logo}>OnInterview</span>
        
        {

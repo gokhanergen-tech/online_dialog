@@ -1,0 +1,73 @@
+#wrappedModal{
+    background-color: #4A4646;
+    padding: 0px 2rem;
+}
+
+.titleModal{
+    font-size: 1.3rem;
+}
+
+.cancelModalButton{
+  background:none;
+  border: none;
+  padding: 0.5rem 1rem;
+  transition: 200ms linear;
+}
+
+.cancelModalButton:hover{
+  background-color: black;
+}
+
+.createRoomButton{
+  composes:cancelModalButton;
+  background-color: #2E2929;
+  padding: 0.5rem 2rem;
+}
+
+.createRoomButton:hover{
+  background-color: black;
+}
+
+.iconTitle{
+  font-size: 1.2rem;
+}
+
+.iconSubTitle{
+    font-size: 1rem;
+}
+
+.selectTypeHeading{
+    font-size: 1rem;
+}
+
+.selectIcon{
+    font-size: 2rem;
+    color: black;
+}
+
+.selectIconTitle{
+    color: black;
+}
+
+.active{
+    color: white;
+    transition: color 200ms linear;
+}
+
+.roomTypeBox{
+    cursor: pointer;
+    transition: 200ms linear;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    user-select: none;
+}
+
+.roomTypeBox:hover{
+    background-color: #00000050;
+}
+
+.roomTypeBox:hover .selectIconTitle , .roomTypeBox:hover .selectIcon{
+    color: rgb(195, 195, 238);
+}
+
+

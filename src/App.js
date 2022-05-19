@@ -10,10 +10,12 @@ import NotFound from './pages/not_found/not_found';
 import Interviews from './pages/interviews/interviews';
 import Offices from './pages/offices/offices';
 import Loading from './components/loading/loading';
-import { useEffect, useState } from 'react';
+import { useCallback, useState,useEffect } from 'react';
 import Room from './pages/room/room';
+import { useDispatch, useSelector } from 'react-redux';
+import {authControl} from './axios/http'
+import { setLogin } from './redux_store/actions/auth_actions/actions';
 
-const isAuth=true;
 
 function Main(){
   return <>
@@ -24,8 +26,10 @@ function Main(){
 
 
 function App() {
-
+   
   const [isLoading,setLoadingState]=useState(true);
+  const isAuth=useSelector(state=>state.authReducer.isAuth)
+  const dispatch=useDispatch();
 
   const protectedPage=(Component)=>isAuth?<Component/>:
   <Navigate replace={true} to="/login"></Navigate>
@@ -33,10 +37,23 @@ function App() {
   const authenticationControl=(Component)=>!isAuth?<Component/>:
   <Navigate replace={true} to="/interviews"></Navigate>
  
+  const handleAuthControl=useCallback(async ()=>{
+    try{
+      const {data} = await authControl();
+      dispatch(setLogin(data));
+      setLoadingState(false);
+    }catch(err){
+      console.log(err)
+      setLoadingState(false);
+    }
+  },[])
+
+  useEffect(()=>{
+    handleAuthControl();
+  },[])
   
-  if(!isLoading)
+  if(isLoading)
    return <Loading></Loading>
-  
   return (
     <>
      <Routes>

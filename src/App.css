@@ -4,3 +4,23 @@
 }
 
 
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: none; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: white;
+  border-radius: 1rem;
+}
+
+
+
+
+

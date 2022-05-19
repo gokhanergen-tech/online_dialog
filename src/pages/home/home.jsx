@@ -7,12 +7,16 @@ import styles from "./home.module.scss";
 
 const Home = () => {
   const history = useNavigate();
+
+  document.title="Home"
+
   function onClick() {
     history("/login");
   }
+  
   return (
     <Content>
-      <div className={"row mb-5 m-0 px-0 "}>
+      <div className={"row m-0 px-0 "}>
         <h3 className={"text-center mb-5 "}>
           {" "}
           <b>Connect to Education</b>
@@ -29,29 +33,24 @@ const Home = () => {
             content={"Our goal is that you have a good class"}
           />
         </div>
-        <div className="row d-flex  justify-content-center my-4 ">
-          <div className="col-7 text-center">
+        <div className="row d-flex  justify-content-center ">
+          <div className="col-sm-7 col-12 text-center">
             <Button
               value={"Sing up"}
               onClick={onClick}
               customClassName={""}
             ></Button>
           </div>
-          <div className="col-7 text-center mt-4">
+          <div className="col-sm-7 col-12 text-center mt-4">
             <p>
               İf you have an account,{" "}
-              <a className={styles.aTag} href="/login">
-                sign in
-              </a>
+              <span onClick={()=>history("/login")} className={styles.aTag}>sign in</span>
             </p>
           </div>
-          <div className="col-7 text-center mt-4 ">
+          <div className="col-sm-7 col-12 text-center mt-4 ">
             <p>
               You can read our{" "}
-              <a className={styles.aTag} href="/policy">
-                {" "}
-                policy{" "}
-              </a>
+              <span onClick={()=>history("/policy")} className={styles.aTag}>policy</span>
             </p>
           </div>
         </div>
