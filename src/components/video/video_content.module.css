@@ -1,0 +1,17 @@
+.videoScreen{
+    width: 100%;
+    height:100%;
+    object-fit:contain;
+    transition: 200ms linear;
+    
+  }
+  
+.fullScreen{
+      position: fixed;
+      background-color: black;
+      padding: 1.5rem;
+      top: 0;
+      left: 0;
+      box-shadow: 0 0 10px white inset;
+  }
+  

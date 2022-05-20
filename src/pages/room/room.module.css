@@ -1,0 +1,52 @@
+.roomWrapper{
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction:column;
+}
+
+.contentTop{
+  background-color: red;
+  height: 85%;
+}
+
+.contentBottom{
+  height:15%;
+  background-color: black;
+}
+
+.bottomMenuButton{
+    width: 50%;
+    height: 100%;
+    outline: none;
+    border: none;
+    font-size: 2rem;
+    transition: 200ms linear;
+}
+
+.bottomMenuButton i{
+  color: black;
+}
+
+.bottomMenuButton:hover{
+   background-color: #ffffff90;
+}
+
+.bottomMenuButton:hover i{
+    color: black !important;
+ }
+
+.bottomMenuButtonActive{
+    background-color: #00000050;
+}
+
+.bottomMenuButtonActive i{
+    color: white;
+}
+
+
+
+

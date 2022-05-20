@@ -1,0 +1,43 @@
+.iconWrapper{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #ffffff58;
+    border: none;
+    transition: 200ms linear;
+    font-size: 1.3rem;
+}
+
+.iconWrapper:hover{
+    background-color: #ffffff90;
+}
+
+.iconWrapper i[type="mic"]{
+    background: -webkit-linear-gradient(#eee, #eee,#eee);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation:anim 400ms linear infinite alternate;
+}
+
+@keyframes anim{
+    0%{
+        background: -webkit-linear-gradient(rgb(255, 254, 254), rgb(255, 255, 255),rgb(255, 255, 255));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    33%{
+        background: -webkit-linear-gradient(rgb(255, 255, 255), rgb(255, 255, 255),black);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    66%{
+        background: -webkit-linear-gradient(#eee, black,black);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    100%{
+        background: -webkit-linear-gradient(rgb(0, 0, 0), black,black);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+}
