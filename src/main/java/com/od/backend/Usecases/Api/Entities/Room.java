@@ -40,6 +40,7 @@ public class Room extends Base implements Comparable<Room> {
     @JoinColumn(name = "room_type_id",referencedColumnName = "id",nullable = false)
     private RoomType roomType;
 
+    //All Users
     @ManyToMany(fetch = FetchType.LAZY,mappedBy = "rooms")
     private Set<User> users;
 

@@ -26,7 +26,14 @@ public class QuestionEvent extends Base {
     @JoinColumn(name = "user_id",referencedColumnName = "id",nullable = false)
     private User user;
 
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "questionEvent",cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REMOVE},orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "questionEvent",cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.MERGE,CascadeType.REMOVE},orphanRemoval = true)
     private Set<Question> questions;
+
+    //Question Event Rooms
+    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JoinTable(name = "rooms_and_question_events",
+    inverseJoinColumns = {@JoinColumn(name = "room_id")},
+    joinColumns = {@JoinColumn(name = "question_event_id")})
+    private Set<Room> rooms;
 
 }

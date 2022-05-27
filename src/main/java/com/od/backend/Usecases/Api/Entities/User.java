@@ -33,16 +33,25 @@ public class User extends Base {
     @OneToOne(mappedBy = "user",cascade = {CascadeType.ALL},orphanRemoval = true,optional = false)
     private LoginCredential loginCredential;
 
+    //All User
     @ManyToMany(fetch = FetchType.LAZY,cascade=CascadeType.ALL)
     @JoinTable(name = "user_rooms",
     joinColumns = {@JoinColumn(name = "user_id")},
     inverseJoinColumns = {@JoinColumn(name = "room_id")})
     private Set<Room> rooms;
 
+    //All User
+    @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL,mappedBy = "user")
+    private Set<Mark> marksForUserEvents;
+
+    //Owner
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "ownerOfTheRoom",cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REMOVE},orphanRemoval = true)
     private Set<Room> ownerRooms;
 
+    //Owner
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)
-    private Set<QuestionEvent> questionEvents;
+    private Set<QuestionEvent> ownerQuestionEvents;
+
+
 
 }

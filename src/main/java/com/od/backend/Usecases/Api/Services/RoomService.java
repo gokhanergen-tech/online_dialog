@@ -11,13 +11,10 @@ import com.od.backend.Usecases.Api.Repositories.RoomTypeRepository;
 import com.od.backend.Usecases.Api.Util.CryptoMessage;
 import com.od.backend.Usecases.Api.Validators.RoomValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.xml.bind.DatatypeConverter;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -61,10 +58,10 @@ public class RoomService {
         return roomMapperImplements.mapToDto(room);
     }
 
-    public List<RoomDto> getOwnerRooms(UserDetailsService userDetailsService,String roomType) {
+    public List<RoomDto> getOwnerRooms(UserDetailsService userDetailsService, String roomType, Authentication authentication) {
         if(!roomType.equals("ALL"))
          roomValidator.isRoomTypeValidate(roomType);
-        String email= SecurityContextHolder.getContext().getAuthentication().getName();
+        String email= authentication.getName();
         LoginCredential loginCredential=(LoginCredential) userDetailsService.loadUserByUsername(email);
         List<Room> originalRooms=loginCredential
                 .getUser()
@@ -80,7 +77,21 @@ public class RoomService {
         return rooms;
     }
 
-    public List<RoomDto> getUserRooms(UserDetailsService userDetailsService, String roomType) {
-        return null;
+    public List<RoomDto> getUserRooms(UserDetailsService userDetailsService, String roomType,Authentication authentication) {
+        roomValidator.isRoomTypeValidate(roomType);
+        String email= authentication.getName();
+        LoginCredential loginCredential=(LoginCredential) userDetailsService.loadUserByUsername(email);
+        List<Room> originalRooms=loginCredential
+                .getUser()
+                .getRooms()
+                .stream()
+                .filter(room -> room.
+                        getRoomType().
+                        getRoomType().
+                        equals(roomType)).
+                        collect(Collectors.toList());
+        Collections.sort(originalRooms);
+        List<RoomDto> rooms=roomMapperImplements.listMapToList(originalRooms);
+        return rooms;
     }
 }

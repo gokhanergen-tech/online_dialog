@@ -6,6 +6,7 @@ import com.od.backend.Usecases.Api.Services.RoomService;
 import org.hibernate.NonUniqueObjectException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.ConstraintViolationException;
@@ -24,10 +25,10 @@ public class RoomController {
     private UserDetailsService userDetailsService;
 
     @GetMapping(value = "/user/rooms")
-    private ResponseEntity<Map<String,Object>> userRooms(@RequestParam(name = "roomType") String roomType){
+    private ResponseEntity<Map<String,Object>> userRooms(@RequestParam(name = "roomType") String roomType, Authentication authentication){
         Map<String,Object> response=new HashMap<>();
         try{
-            List<RoomDto> rooms= roomService.getUserRooms(userDetailsService,roomType);
+            List<RoomDto> rooms= roomService.getUserRooms(userDetailsService,roomType,authentication);
             response.put("rooms",rooms);
             return ResponseEntity.ok(response);
         }catch (IllegalArgumentException illegalArgumentException){
@@ -41,10 +42,10 @@ public class RoomController {
     }
 
     @GetMapping(value = "/owner/rooms")
-    private ResponseEntity<Map<String,Object>> ownerUserRooms(@RequestParam(name = "roomType") String roomType){
+    private ResponseEntity<Map<String,Object>> ownerUserRooms(@RequestParam(name = "roomType") String roomType,Authentication authentication){
         Map<String,Object> response=new HashMap<>();
         try{
-          List<RoomDto> rooms= roomService.getOwnerRooms(userDetailsService,roomType);
+          List<RoomDto> rooms= roomService.getOwnerRooms(userDetailsService,roomType,authentication);
           response.put("rooms",rooms);
           return ResponseEntity.ok(response);
         }catch (IllegalArgumentException illegalArgumentException){
