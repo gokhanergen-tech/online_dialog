@@ -7,12 +7,19 @@ import org.hibernate.NonUniqueObjectException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.ConstraintViolationException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 
 @RestController
@@ -40,6 +47,12 @@ public class RoomController {
             return ResponseEntity.status(500).body(response);
         }
     }
+
+    /*@PostMapping(value = "/file")
+    private String aa(@RequestParam MultipartFile file, ModelMap modelMap){
+
+        return "";
+    }*/
 
     @GetMapping(value = "/owner/rooms")
     private ResponseEntity<Map<String,Object>> ownerUserRooms(@RequestParam(name = "roomType") String roomType,Authentication authentication){

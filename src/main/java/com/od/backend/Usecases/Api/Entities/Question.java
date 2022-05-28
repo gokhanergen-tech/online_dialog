@@ -21,6 +21,12 @@ public class Question {
     @Column(nullable = false,name = "question",columnDefinition = "VARCHAR")
     private String question;
 
+    @Column(nullable = true,name = "content_text",columnDefinition = "VARCHAR")
+    private String contentText;
+
+    @Column(nullable = true,name = "image",columnDefinition = "VARCHAR")
+    private String image;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "question_event_id",nullable = false,referencedColumnName = "id")
     private QuestionEvent questionEvent;
