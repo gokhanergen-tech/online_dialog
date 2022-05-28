@@ -6,10 +6,17 @@ const io=require("socket.io")(server,{
    cors:
    {
        origin:"http://localhost:3000",
-       methods:['GET','POST']
-    }
+       methods:['GET','POST'],
+       credentials:true,
+    },
+    allowRequest: (req, callback) => {
+        const noOriginHeader = req.headers.origin !== undefined
+        &&req.headers.origin==="http://localhost:3000"
+        //&&req.connection.remoteAddress.includes("localhost")
+        callback(undefined, noOriginHeader);
+      }
 })
-
+dotenv.config();
 startSocket(io);
 
 server.listen(5005,()=>{
@@ -17,4 +24,3 @@ server.listen(5005,()=>{
 })
 
 
-dotenv.config();
