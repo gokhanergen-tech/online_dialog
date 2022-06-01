@@ -5,7 +5,7 @@ const VideoContent = ({isFullScreen,srcVideo,srcObject,setFullScreenState}) => {
   const video=useRef(null)
 
   useEffect(()=>{
-    navigator.mediaDevices.getDisplayMedia({
+    /*navigator.mediaDevices.getDisplayMedia({
       video:{
         width:{
           ideal:1366,
@@ -16,10 +16,10 @@ const VideoContent = ({isFullScreen,srcVideo,srcObject,setFullScreenState}) => {
       }
     }).then(stream=>{
       video.current.srcObject=stream;
-    })
+    })*/
 
 
-    //video.current.src=srcVideo;
+    video.current.src=srcVideo;
     //video.current.playbackRate=5;
   },[])
   

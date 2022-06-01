@@ -8,20 +8,22 @@ import { login } from '../../axios/http'
 import { useDispatch } from 'react-redux'
 
 import {setLogin} from '../../redux_store/actions/auth_actions/actions'
+import Loading from '../../components/loading/loading'
 
 const Login = () => {
   const [isPasswordShow,setPasswordShow]=useState(false);
   
   const [warnings,setWarnings]=useState([{type:"mail",message:""},{type:"password",message:""}])
   const [backendMessage,setBackendMessage]=useState();
-
   const [mail,setMail]=useState("");
   const [password,setPassword]=useState("");
+  const [isLoadingComponentShow,setLoading]=useState(false)
   
   const dispatch=useDispatch();
 
   const handleLogin=useCallback(async (e)=>{
      e.preventDefault();
+     setLoading(true)
      const copy=[...warnings];
      
      if(!mail){
@@ -56,6 +58,7 @@ const Login = () => {
         setBackendMessage("")
         setWarnings(copy);
       }
+      setLoading(false)
 
      
   },[warnings,password,mail])
@@ -64,10 +67,13 @@ const Login = () => {
       document.title="Login"
   },[])
 
+  if(isLoadingComponentShow)
+   return <Loading/>
+
   return (
    <Content>
      <div className='w-100 p-5'>
-       
+       <form onSubmit={handleLogin}>
         <div>
          <label className='text-center mb-3 w-100'>Email</label>
          <TextInput value={mail} warning={warnings[0].message?warnings[0].message:""} setValueOnChange={setMail} placeholder={"Email"} iconClassName={"bi bi-envelope-fill"} type={"text"}></TextInput>
@@ -89,7 +95,7 @@ const Login = () => {
           <span className="text-warning font-monospace">{backendMessage}</span>
         </div>
         }
-       
+       </form>
      </div>
     
    </Content>

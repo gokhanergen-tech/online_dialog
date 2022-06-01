@@ -26,10 +26,10 @@ const Card = ({ roomName, title, teacher, id,open }) => {
 
       <div className="d-flex justify-content-center mt-4 align-self-center">
         <Link  to={open?`/interview/${id}`:""}>
-          <button {...{disabled:!open}}
-            className={'btn text-white border border-2 border-light' + styles.button}
+          <button  {...{disabled:!open,title:open?"Join":"Kapalı"}}
+            className={'text-white ' + styles.button}
           >
-            Join The Room
+            {open?"Join The Room":"Closed"}
           </button>
         </Link>
       </div>
