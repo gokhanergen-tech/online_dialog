@@ -1,7 +1,8 @@
 .card {
-  box-shadow: 0 0.5rem 1rem rgba(white, 0.15);
-  background-color: rgb(51, 48, 48);
+  box-shadow: 0 0 1rem rgba(white, 0.15);
+  background-image: radial-gradient(#2c101020,#a7a3a390);
   padding: 1rem;
+  border-radius: 10px;
 }
 
 .title {
@@ -34,6 +35,12 @@
 
 .image{
   object-fit:cover;
+}
+
+.teacher_name{
+ word-wrap:break-word;
+ font-size: 1rem;
+ min-width: 50px
 }
 
 
