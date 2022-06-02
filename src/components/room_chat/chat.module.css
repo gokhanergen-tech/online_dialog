@@ -1,0 +1,29 @@
+.content{
+  height: 70%;
+  max-height: 70%;
+  overflow: scroll;
+}
+.message{
+width: 98%;
+height: 45% !important;
+resize: none;
+}
+.inputSelect{
+  width: auto !important;
+  
+}
+
+select{
+  max-height: 50px !important;
+}
+
+.drop{
+  
+  background-color: rgb(202, 211, 241) !important;
+ 
+}
+
+option{
+  color: black;
+  background-color:white ;
+}
