@@ -1,0 +1,17 @@
+.message {
+  border-radius: 0.7rem;
+  box-shadow: 0 0 2px gray;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 0.8rem;
+}
+.message_body {
+  width: fit-content;
+}
+.messageMe {
+  color: white;
+  background-color: rgb(139, 183, 246);
+}
+.messageOuther {
+  color: black;
+  background-color: rgba(226, 226, 226, 0.35);
+}
