@@ -1,0 +1,80 @@
+.iconWrapper{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #ffffff58;
+    border: none;
+    transition: 200ms linear;
+    font-size: 1.3rem;
+}
+
+@media screen and (max-height:600px) {
+    .iconWrapper{
+        width: 35px;
+        height: 35px;
+    }
+}
+
+
+.iconWrapper:hover{
+    background-color: #ffffff90;
+}
+
+.iconWrapper[hovertext]:hover{
+    position: relative;
+}
+
+.iconWrapper[hovertext]:hover::after{
+    content: attr(hovertext);
+    background-color: rgb(31, 20, 20); 
+    padding: 20px;
+    padding-top: 10px;
+    border-radius: 10px;
+    position: absolute;
+    right: 30%;
+    clip-path: polygon(0% 0%,100% 0%,100% 80%,80% 100%,60% 80%,0% 80%);
+    top:-50px;
+    opacity: 1;
+    font-size: small;
+    width: max-content;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+.iconWrapper i[type="mic"]{
+    background: -webkit-linear-gradient(#eee, #eee,#eee);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation:anim 400ms linear infinite alternate;
+}
+
+.iconWrapper{
+    transition: transform 200ms linear;
+}
+
+.iconWrapper:hover{
+  transform: scale(1.2);
+}
+
+@keyframes anim{
+    0%{
+        background: -webkit-linear-gradient(rgb(255, 254, 254), rgb(255, 255, 255),rgb(255, 255, 255));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    33%{
+        background: -webkit-linear-gradient(rgb(255, 255, 255), rgb(255, 255, 255),black);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    66%{
+        background: -webkit-linear-gradient(#eee, black,black);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    100%{
+        background: -webkit-linear-gradient(rgb(0, 0, 0), black,black);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+}

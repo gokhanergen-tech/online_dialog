@@ -7,6 +7,7 @@ import styles from './user_menu.module.css'
 import {clearAuth} from '../../redux_store/actions/auth_actions/actions'
 import { useState } from 'react';
 import Loading from '../loading/loading';
+import { setInterviewRooms, setOfficeRooms } from '../../redux_store/actions/room_actions/actions';
 
 let closeTimeout=null;
 
@@ -28,6 +29,8 @@ const UserMenu = () => {
        setWaiting(true)
        await logout();
        dispatch(clearAuth())
+       dispatch(setInterviewRooms([]))
+       dispatch(setOfficeRooms([]))
      }catch(err){
        console.log(err.message)
        setWaiting(false)

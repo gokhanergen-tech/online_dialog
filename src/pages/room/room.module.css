@@ -1,0 +1,59 @@
+.roomWrapper{
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction:column;
+    justify-content: center;
+}
+
+.contentTop{
+  flex:85%;
+}
+
+.contentBottom{
+  flex:15%;
+  background-color: black;
+}
+
+.bottomMenuButton{
+    width: 50%;
+    height: 100%;
+    outline: none;
+    border: none;
+    font-size: 2rem;
+    transition: 200ms linear;
+}
+
+.bottomMenuButton i{
+  color: black;
+}
+
+.bottomMenuButton:hover{
+   background-color: #ffffff90;
+}
+
+.bottomMenuButton:hover i{
+    color: black !important;
+ }
+
+.bottomMenuButtonActive{
+    background-color: #00000050;
+}
+
+.bottomMenuButtonActive i{
+    color: white;
+}
+
+.chatEventMenu{
+ transition: 200ms linear;
+ border-bottom: 5px solid rgb(166, 166, 213);
+ box-shadow: 0 0 10px white;
+}
+
+
+
+
+

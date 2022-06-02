@@ -19,17 +19,17 @@ const Card = ({ roomName, title, teacher, id,open }) => {
           <img src="/images/office.png" className={"w-100 h-100 "+styles.image}/>
          </div>
         </div>
-        <div className=" align-self-center fs-5 m-3 ml-1">
+        <h5 className={" align-self-center  m-3 ml-1 "+styles.teacher_name}>
           {teacher}
-        </div>
+        </h5>
       </div>
 
       <div className="d-flex justify-content-center mt-4 align-self-center">
         <Link  to={open?`/interview/${id}`:""}>
-          <button {...{disabled:!open}}
-            className={'btn text-white border border-2 border-light' + styles.button}
+          <button  {...{disabled:!open,title:open?"Join":"Kapalı"}}
+            className={'text-white ' + styles.button}
           >
-            Join The Room
+            {open?"Join The Room":"Closed"}
           </button>
         </Link>
       </div>
