@@ -25,8 +25,8 @@ public class LoginService {
         Authentication authentication=new UsernamePasswordAuthenticationToken(loginRequest.getEmail(),loginRequest.getPassword());
         Authentication authUser=authenticationProvider.authenticate(authentication);
 
-        String accessToken=jwtService.generateToken(accessTokenKey,2,authUser);
-        String refreshToken=jwtService.generateToken(refreshTokenKey,10,authUser);
+        String accessToken=jwtService.generateToken(accessTokenKey,1,authUser);
+        String refreshToken=jwtService.generateToken(refreshTokenKey,3,authUser);
         return new LoginResponse(accessToken,refreshToken);
     }
 

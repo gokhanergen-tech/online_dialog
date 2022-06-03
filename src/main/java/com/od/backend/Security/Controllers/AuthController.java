@@ -83,8 +83,8 @@ public class AuthController {
             User user=((LoginCredential)userDetailsService.loadUserByUsername(loginRequest.getEmail())).getUser();
 
             //Added Cookies
-            cookieService.addCookie(httpServletResponse,"accessToken", loginResponse.getAccessToken(),60*60);
-            cookieService.addCookie(httpServletResponse,"refreshToken", loginResponse.getRefreshToken(),60*60*24*12);
+            cookieService.addCookie(httpServletResponse,"accessToken", loginResponse.getAccessToken(),60*60*24);
+            cookieService.addCookie(httpServletResponse,"refreshToken", loginResponse.getRefreshToken(),60*60*24*3);
 
             LoginCredentialDto loginCredentialDto=loginService.getLoginCredentialMapper().mapToDTO(user.getLoginCredential());
             refreshTokenService.saveRefreshToken(loginResponse.getRefreshToken(),user);
