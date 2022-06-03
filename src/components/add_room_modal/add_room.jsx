@@ -28,8 +28,6 @@ const AddRoom = ({addRoomToOwnerMenu}) => {
 
   const dispatch=useDispatch();
 
-  const navigate=useNavigate();
-
   const handleAddRoom=useCallback(async (e)=>{
   
     e.preventDefault();
@@ -74,7 +72,7 @@ const AddRoom = ({addRoomToOwnerMenu}) => {
    modal.addEventListener("hidden.bs.modal",hiddenModalListener)
 
    return ()=>{
-    modal.removeEventListener(hiddenModalListener);
+    modal.removeEventListener("hidden.bs.modal",hiddenModalListener);
    }
   },[])
 

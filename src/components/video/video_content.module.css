@@ -1,8 +1,9 @@
 .videoScreen{
     width:100%;
-    height: 85vh;
+    height: 100%;
     transition: 200ms linear;
     object-fit: contain;
+    padding: 1rem 0;
   }
   
 .fullScreen{
