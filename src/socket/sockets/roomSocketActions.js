@@ -1,0 +1,3 @@
+const ROOM_ACTIONS={
+    JOIN:"JOIN_ROOM"
+}
