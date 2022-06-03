@@ -2,11 +2,13 @@
   height: 70%;
   max-height: 70%;
   overflow: scroll;
+  position: relative;
 }
 .message{
 width: 98%;
 height: 45% !important;
 resize: none;
+
 }
 .inputSelect{
   width: auto !important;

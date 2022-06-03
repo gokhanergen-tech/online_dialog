@@ -26,3 +26,5 @@ yarn-error.log*
 /test
 .idea 
 .vs
+/public/videos/**
+

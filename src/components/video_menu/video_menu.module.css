@@ -1,0 +1,22 @@
+.videoMenu{
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    visibility: hidden;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: 200ms linear;
+    background-color: #00000050;
+  
+}
+
+
+.menuShow{
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(0%);
+}

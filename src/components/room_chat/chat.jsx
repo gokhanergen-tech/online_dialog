@@ -55,13 +55,15 @@ const Chat = () => {
             <option value="3">Thfsdfdsree</option>
           </select>
         </div>
-        <div class="form-floating">
+        <div class="">
           <textarea
             className={"form-control p-2 " + styles.message}
             placeholder="White a message"
             rows="4"
             id="floatingTextarea2"
           ></textarea>
+          <span class="icon-user"> <img src=""></img>
+        </span>
         </div>
       </div>
     </div>

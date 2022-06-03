@@ -3,9 +3,17 @@
   box-shadow: 0 0 2px gray;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-size: 0.8rem;
+  word-wrap: break-word;
+
 }
+.message_block{
+    max-width:93% ;
+    float: right;
+}
+
 .message_body {
   width: fit-content;
+
 }
 .messageMe {
   color: white;
