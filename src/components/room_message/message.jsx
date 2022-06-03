@@ -11,7 +11,7 @@ const Message = ({sameuser,me,message}) => {
         </small>
       </div>}
       <div className={"mb-1 w-100 " + styles.message_body }>
-        <p className={` m-0 ${styles.message} ${me?styles.messageOuther:styles.messageMe}`} >
+        <p className={` m-0 ${styles.message} ${me?styles.messageMe:styles.messageOuther}`} >
           {message?message:""}
         </p>
       </div>

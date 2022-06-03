@@ -1,4 +1,4 @@
-import React, {useState } from "react";
+import React, {useState, useRef } from "react";
 import { useCallback } from "react";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
@@ -8,7 +8,7 @@ import Chat from "../../components/room_chat/chat";
 import VideoContent from "../../components/video/video_content";
 import VideoMenu from "../../components/video_menu/video_menu";
 import { useUserJoinTheSocket } from "../../hooks/useUserSocketRoomInit";
-
+import User from "../../components/room_user/user"
 import styles from './room.module.css'
 
 var menuTimeOut=null;
@@ -85,8 +85,8 @@ const Room = () => {
     }
   },[])
   
-  if(loading)
-    return <Loading/>
+  /* if(loading)
+    return <Loading/> */
   return <div className={styles.roomWrapper}>
 
       <div className={"row m-0 "+styles.contentTop}>
@@ -121,11 +121,22 @@ const Room = () => {
       </div>
 
       <div className={"row m-0  "+styles.contentBottom}>
-         <div className="col col-lg-8 col-xl-9">
-
+         <div className={"col col-lg-8 col-xl-9 d-flex align-content-stretch gap-2 flex-nowrap " + styles.users} >
+             <User video={true}/>
+             <User video={false}/>
+             <User video={false}/>
+             <User video={true}/>
+             <User video={true}/>
+             <User video={false}/>
+             <User video={false}/>
+             <User video={true}/>
+             <User video={true}/>
+             <User video={false}/>
+             <User video={false}/>
+             <User video={true}/>
          </div>
          <div className="col-6 col-lg-4 col-xl-3 bg-dark p-0 h-100">
-            <div className="d-flex h-100">
+            <div className={"d-flex h-100"}>
              <button onClick={()=>{
                changeBottomMenuState(0)
                }} className={styles.bottomMenuButton+" "+(menuBottomActive===0?(styles.bottomMenuButtonActive):"")}><i className={"bi bi-chat-left-dots"}></i></button>

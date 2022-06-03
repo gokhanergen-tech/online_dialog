@@ -21,7 +21,7 @@ const User = ({ video }) => {
           ></img>
         </div>
       )}
-      <div className={"dropup position-absolute " + styles.option}>
+      <div className={"dropend position-absolute " + styles.option}>
         <button
           type="button"
           class="bg-transparent border-0"
@@ -29,7 +29,7 @@ const User = ({ video }) => {
         >
           <img height={"20px"} width={"20px"} src="/icons/3dot.svg"></img>
         </button>
-        <ul className={"dropdown-menu " + styles.drop}>
+        <ul className={"dropdown-menu  " + styles.drop}>
           <li className="dropdown-item">Direct message</li>
           <li className="dropdown-item">Change name</li>
           <li className="dropdown-item">Kick out</li>

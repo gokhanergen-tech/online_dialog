@@ -1,8 +1,16 @@
 .card {
   height: 15vh;
   width: 18%;
+  min-width: 15rem;
   background-color: rgb(80, 79, 79);
   position: relative;
+   -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+   -khtml-user-select: none; /* Konqueror HTML */
+     -moz-user-select: none; /* Old versions of Firefox */
+      -ms-user-select: none; /* Internet Explorer/Edge */
+          user-select: none; /* Non-prefixed version, currently
+                                supported by Chrome, Edge, Opera and Firefox */
 }
 .profil_img {
   height: auto;
@@ -16,19 +24,14 @@
 
 .drop{
   background-color: gray !important;
-  -webkit-touch-callout: none; /* iOS Safari */
-  -webkit-user-select: none; /* Safari */
-   -khtml-user-select: none; /* Konqueror HTML */
-     -moz-user-select: none; /* Old versions of Firefox */
-      -ms-user-select: none; /* Internet Explorer/Edge */
-          user-select: none; /* Non-prefixed version, currently
-                                supported by Chrome, Edge, Opera and Firefox */
 }
 .name {
   width: 95%;
   white-space: nowrap;
   overflow: hidden;
+ 
 }
+
 li:active{
  background-color: fade-in($color: rgb(85, 84, 84), $amount: 1) !important;
 }

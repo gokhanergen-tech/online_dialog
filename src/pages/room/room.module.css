@@ -21,6 +21,7 @@
   background-color: black;
 }
 
+
 .bottomMenuButton{
     width: 50%;
     height: 100%;
@@ -28,6 +29,7 @@
     border: none;
     font-size: 2rem;
     transition: 200ms linear;
+    z-index: 1001;
 }
 
 .bottomMenuButton i{
@@ -35,7 +37,7 @@
 }
 
 .bottomMenuButton:hover{
-   background-color: #ffffff90;
+   background-color: #ffffff;
 }
 
 .bottomMenuButton:hover i{
@@ -43,11 +45,13 @@
  }
 
 .bottomMenuButtonActive{
-    background-color: #00000050;
+    background-color: #000000;
+    
 }
 
 .bottomMenuButtonActive i{
     color: white;
+  
 }
 
 .chatEventMenu{
@@ -57,6 +61,11 @@
  height: 100%;
 }
 
+
+.users{
+ max-width: 75%;
+ overflow-x: overlay;
+}
 @media screen and (max-height:520px) {
   .chatEventMenu{
     display: none;

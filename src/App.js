@@ -31,10 +31,10 @@ function App() {
   const isAuth=useSelector(state=>state.authReducer.isAuth)
   const dispatch=useDispatch();
 
-  const protectedPage=(Component)=>isAuth?<Component/>:
+  const protectedPage=(Component)=>true?<Component/>:
   <Navigate replace={true} to="/login"></Navigate>
 
-  const authenticationControl=(Component)=>!isAuth?<Component/>:
+  const authenticationControl=(Component)=>!true?<Component/>:
   <Navigate replace={true} to="/interviews"></Navigate>
  
   const handleAuthControl=useCallback(async ()=>{
@@ -52,8 +52,8 @@ function App() {
     handleAuthControl();
   },[])
   
-  if(isLoading)
-   return <Loading></Loading>
+/*   if(isLoading)
+   return <Loading></Loading> */
   return (
     <>
      <Routes>
