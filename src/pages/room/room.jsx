@@ -1,9 +1,13 @@
 import React, {useState } from "react";
 import { useCallback } from "react";
 import { useEffect } from "react";
+import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import Loading from "../../components/loading/loading";
+import Chat from "../../components/room_chat/chat";
 import VideoContent from "../../components/video/video_content";
 import VideoMenu from "../../components/video_menu/video_menu";
+import { useUserJoinTheSocket } from "../../hooks/useUserSocketRoomInit";
 
 import styles from './room.module.css'
 
@@ -14,12 +18,24 @@ const clearEvent=(timeout)=>{
 }
 const Room = () => {
   const {id}=useParams();
+  const user=useSelector(state=>state.authReducer.user);
+
   
   const [isVideoFullScreen,setVideoFullScreenState]=useState(false)
   const [menuBottomActive,setBottomMenuActive]=useState(0);
   const [isMenuShow,setMenuShow]=useState(false);
   const [isShownChatEventMenu,setChatEventMenuShow]=useState(true)
   const [windowWidth,setWindowWidth]=useState(window.innerWidth)
+  const [messages,addMessage]=useState([])
+  const [loading,setLoading]=useState(true)
+
+  const [room,setRoom]=useState(null)
+  const [users]=useUserJoinTheSocket(id,user,setLoading);
+
+  const onChatEventMenuCloseClick=useCallback(()=>{
+    setChatEventMenuShow(false)
+    changeBottomMenuState(-1)
+  },[isShownChatEventMenu])
   
   const videoShowControl=(object)=>{
    if(isShownChatEventMenu && windowWidth<768){
@@ -52,8 +68,10 @@ const Room = () => {
   },[isVideoFullScreen])
   
   useEffect(()=>{
-   const object=document.getElementsByClassName(styles.videoContent).item(0)
-   videoShowControl(object);
+    if(!loading){
+      const object=document.getElementsByClassName(styles.videoContent).item(0)
+      videoShowControl(object);
+    }
   },[windowWidth,isShownChatEventMenu])
 
   useEffect(()=>{
@@ -63,10 +81,12 @@ const Room = () => {
     window.addEventListener("resize",eventSize)
     return ()=>{
         clearEvent(menuTimeOut)
-        window.removeEventListener(eventSize)
+        window.removeEventListener("resize",eventSize)
     }
   },[])
   
+  if(loading)
+    return <Loading/>
   return <div className={styles.roomWrapper}>
 
       <div className={"row m-0 "+styles.contentTop}>
@@ -86,22 +106,16 @@ const Room = () => {
          setMenuShow(false)
          
         }} className={"p-0 overflow-hidden justify-content-center d-flex align-items-center h-100 "+(isVideoFullScreen?"":"position-relative")}>
-          <div className="w-100">
-           <VideoContent setFullScreenState={setVideoFullScreenState} srcVideo={"/videos/dd6.mp4"} isFullScreen={isVideoFullScreen}></VideoContent>
+           <VideoContent setFullScreenState={setVideoFullScreenState} srcVideo={"/videos/test.mp4"} isFullScreen={isVideoFullScreen}></VideoContent>
            <VideoMenu setClickMenu={handleClickMenuItem} isFullScreen={isVideoFullScreen} setFullScreenState={setVideoFullScreenState} isShow={isMenuShow}></VideoMenu>
-          </div>
          </div>
         </div>
        
         <div className={"col-12 col-lg-4 col-xl-3 col-md-5 bg-white "+(!isShownChatEventMenu?"d-none":"")+" "+styles.chatEventMenu}>
-          <div className="p-2">
-             <i onClick={()=>{
-               const object=document.getElementsByClassName(styles.videoContent).item(0)
-               setChatEventMenuShow(false)
-               changeBottomMenuState(-1)
-               object.style.display="block"
-             }} className={"bi bi-x-lg text-black"}></i>
-        
+          <div className="p-2 d-flex flex-column h-100">
+             {
+              menuBottomActive===0?<Chat onClick={onChatEventMenuCloseClick} messages={messages} addMessage={addMessage}/>:""
+             }
           </div>
         </div>
       </div>

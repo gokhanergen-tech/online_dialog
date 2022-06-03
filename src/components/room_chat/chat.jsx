@@ -1,50 +1,72 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
 import styles from "./chat.module.css";
 import Message from "../room_message/message";
-const Chat = () => {
+
+
+const isMessageValid=(message)=>{
+  return message&&message.trim()
+}
+
+const Chat = ({messages,addMessage,socket,user,onClick}) => {
+
+  const [message,setMessage]=useState("");
+
+  const handleSendMessage=useCallback((e)=>{
+      e.preventDefault();
+      const isValid=isMessageValid(message);
+      if(isValid){
+        if(messages[0]?.messageArray){
+          messages[0].messageArray=[message,...messages[0].messageArray]
+          addMessage([...messages])
+        }else
+          addMessage([{messageArray:["fsdfsd","gdfgfdgdf"]},{messageArray:["fsdfsd,gfgdfd"]},...messages])
+        setMessage("");
+      }
+  },[message])
+
   return (
-    <div className={" bg-white h-100 " + styles.title}>
-      <div className="p-2 border-bottom d-flex ">
-        <button
-          type="button"
-          className="btn-close my-auto"
-          aria-label="Close"
-        ></button>
-        <h5 className="text-dark m-auto ">Messages</h5>
+    <div className={styles.wrapper_chat}>
+      <div className={"p-2 border-bottom d-flex "+styles.title}>
+        <button onClick={onClick} className={"btn btn-close"}></button>
+        <h5 className="text-dark text-center w-100 text-center ">Messages</h5>
       </div>
-      <div className={" p-2 border d-flex w-100 " + styles.content}>
-        <div className="w-100">
-          <Message sameuser={false} me={false}/>
-          <Message sameuser={true} me={false}/>
-          <Message sameuser={false} me={false}/>
-          <Message sameuser={true} me={true}/>
-          <Message sameuser={false} me={true}/>
-          <Message sameuser={false} me={false}/>
-          <Message sameuser={true} me={false}/>
-          <Message sameuser={false} me={true}/>
-          <Message sameuser={false} me={false}/>
-          <Message sameuser={false} me={true}/>
-        </div>
-      </div>
-      <div className="">
+      <div className="d-flex flex-column h-100">
+       <div className={" p-2 border  w-100 " + styles.content}>
+          {
+              messages.map((message,index)=>{
+                if(message?.messageArray.length>1)
+                 return message.messageArray.map((messageSub,indexSub)=>{
+                  if(indexSub===message.messageArray.length-1)
+                    return <Message key={indexSub} message={messageSub} sameuser={false} me={true}/>
+                  else
+                    return <Message key={indexSub} message={messageSub} sameuser={true} me={true}/>
+                 })
+                else
+                 return <Message key={index} message={message?.messageArray[0]} sameuser={false} me={true}/>
+              })
+          }
+       </div>
+
+      <div className={styles.chat_bottom}>
         <div
           className={
-            "input-group mb-1 w-50 align-items-center mt-1 " +
+            "d-flex mb-1 w-100 align-items-center mt-1 h-25 " +
             styles.inputSelect
           }
         >
-          <span className="text-dark mx-2" for="inputGroupSelect01">
+          <label className="text-dark mx-2" htmlFor="inputGroupSelect01">
             Send:{" "}
-          </span>
-          <select
+          </label>
+          <div className="w-50">
+           <select
             className={
-              "form-select form-select-sm rounded-2 text-dark border-0 " +
+              "form-select form-select-sm rounded-2 text-dark border-0 w-100 " +
               styles.drop
             }
             aria-label=".form-select-sm example"
             id="inputGroupSelect01"
           >
-            <option selected>Everyone</option>
+            <option defaultValue={"0"}>Everyone</option>
             <option value="1">Onfsdfsdfe</option>
             <option value="2">Twdsfsdfdo</option>
             <option value="3">Thfsdfdsree</option>
@@ -55,19 +77,23 @@ const Chat = () => {
             <option value="3">Thfsdfdsree</option>
           </select>
         </div>
-        <div class="">
-          <textarea
-            className={"form-control p-2 " + styles.message}
+          </div>
+          
+        <div className=" h-75 d-flex mt-1 ">
+          <textarea onKeyUp={(e)=>{
+            if(e.key==="Enter")
+              handleSendMessage(e)
+          }} onChange={(e)=>setMessage(e.target.value)} value={message}
+            className={"form-control p-1 h-100 " + styles.message}
             placeholder="White a message"
-            rows="4"
-            id="floatingTextarea2"
-          ></textarea>
-          <span class="icon-user"> <img src=""></img>
-        </span>
+            id="floatingTextarea2"></textarea>
         </div>
       </div>
+      </div>
+    
+     
     </div>
   );
 };
 
-export default Chat;
+export default React.memo(Chat);

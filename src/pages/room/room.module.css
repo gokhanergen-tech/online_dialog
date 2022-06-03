@@ -10,11 +10,14 @@
 }
 
 .contentTop{
-  flex:85%;
+  flex-grow: 1;
+  height: 85%;
+ 
 }
 
 .contentBottom{
-  flex:15%;
+  flex-grow: 1;
+  height:  15%;
   background-color: black;
 }
 
@@ -51,9 +54,21 @@
  transition: 200ms linear;
  border-bottom: 5px solid rgb(166, 166, 213);
  box-shadow: 0 0 10px white;
+ height: 100%;
 }
 
-
+@media screen and (max-height:520px) {
+  .chatEventMenu{
+    display: none;
+  }
+  .videoContent{
+    display: block !important;
+  }
+  
+  .contentBottom{
+    display: none !important;
+  }
+}
 
 
 

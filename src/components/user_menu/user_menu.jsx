@@ -17,6 +17,9 @@ const UserMenu = () => {
   const userFullName=useSelector(state=>state.authReducer.user.userDto.fullName)
 
   function closeHandler(){
+      if(!document.getElementById("menu"))
+       return;
+
       document.getElementById("menu").style["transform"]="translateX(100%)";
 
       closeTimeout=setTimeout(()=>{
@@ -38,7 +41,10 @@ const UserMenu = () => {
   }
 
   const eventOnBodyClick=document.onclick=()=>{
-      closeHandler();
+    if(closeTimeout)
+      clearTimeout(closeTimeout)
+    if(document.getElementById("menu")?.style.display!=="none")
+     closeHandler();
   }
 
   useEffect(()=>{
