@@ -74,7 +74,7 @@ public class AuthController {
     }
 
     @PostMapping(value = "/login")
-    public ResponseEntity<Map<String,Object>> login(HttpServletResponse httpServletResponse, @RequestBody LoginRequest loginRequest){
+    public ResponseEntity<Map<String,Object>> login(HttpServletResponse httpServletResponse,HttpServletRequest httpServletRequest, @RequestBody LoginRequest loginRequest){
         try {
             //Login
             LoginResponse loginResponse=loginService.loginResponse(loginRequest,accessTokenKey,refreshTokenKey);
@@ -85,7 +85,6 @@ public class AuthController {
             //Added Cookies
             cookieService.addCookie(httpServletResponse,"accessToken", loginResponse.getAccessToken(),60*60*24);
             cookieService.addCookie(httpServletResponse,"refreshToken", loginResponse.getRefreshToken(),60*60*24*3);
-
             LoginCredentialDto loginCredentialDto=loginService.getLoginCredentialMapper().mapToDTO(user.getLoginCredential());
             refreshTokenService.saveRefreshToken(loginResponse.getRefreshToken(),user);
 

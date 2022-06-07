@@ -55,7 +55,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                   .antMatchers("/api/register").permitAll()
                   .antMatchers("/api/auth/control").permitAll()
                   .antMatchers("/api/delete","/api/owner/rooms").hasAuthority("ADMIN_ROLE")
-                  .antMatchers("/api/user/rooms").hasAuthority("USER_ROLE")
+                  .antMatchers("/api/user/rooms","/api/validate").hasAuthority("USER_ROLE")
                   .antMatchers(HttpMethod.POST,"/api/room").hasAuthority("ADMIN_ROLE")
                 .antMatchers("/api/logout").hasAnyAuthority("ADMIN_ROLE","USER_ROLE")
                 .anyRequest().authenticated()
@@ -82,7 +82,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         CorsConfiguration corsConfiguration=new CorsConfiguration();
         corsConfiguration.setAllowCredentials(true);
 
-        corsConfiguration.setAllowedOrigins(List.of("http://localhost:3000","http://127.0.0.1:3000"));
+        corsConfiguration.setAllowedOrigins(List.of("http://192.168.196.58:3000","http://localhost:3000","http://127.0.0.1:3000"));
         corsConfiguration.setAllowedMethods(List.of("GET","POST","DELETE","PUT"));
         corsConfiguration.setAllowedHeaders(List.of("Content-Type","Origin","Accept"));
         UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource=new UrlBasedCorsConfigurationSource();

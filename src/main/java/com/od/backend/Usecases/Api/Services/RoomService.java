@@ -5,16 +5,18 @@ import com.od.backend.Security.Service.UserDetailsService;
 import com.od.backend.Usecases.Api.DTO.RoomDto;
 import com.od.backend.Usecases.Api.Entities.Room;
 import com.od.backend.Usecases.Api.Entities.RoomType;
+import com.od.backend.Usecases.Api.Entities.User;
 import com.od.backend.Usecases.Api.MapperImplements.RoomMapperImplements;
 import com.od.backend.Usecases.Api.Repositories.RoomRepository;
 import com.od.backend.Usecases.Api.Repositories.RoomTypeRepository;
 import com.od.backend.Usecases.Api.Util.CryptoMessage;
 import com.od.backend.Usecases.Api.Validators.RoomValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -93,5 +95,31 @@ public class RoomService {
         Collections.sort(originalRooms);
         List<RoomDto> rooms=roomMapperImplements.listMapToList(originalRooms);
         return rooms;
+    }
+
+    public Map<String,Object> validateRoomForUser(String roomId,Authentication authentication,UserDetailsService userDetailsService) throws AccessDeniedException {
+        if(roomId==null)
+            throw new IllegalArgumentException("Room id is null!");
+
+        String email=authentication.getName();
+        LoginCredential loginCredential=(LoginCredential) userDetailsService.loadUserByUsername(email);
+        User user=loginCredential.getUser();
+
+        List<Set<Room>> roomList=List.of(user.getOwnerRooms(),user.getRooms());
+        Optional<Room> roomOptional=roomList.stream()
+                   .flatMap(roomSet->roomSet.stream())
+                   .filter(roomUser-> roomUser.getHashedId().equals(roomId)).findFirst();
+        Room room=roomOptional.orElse(null);
+        if(room==null){
+            throw new AccessDeniedException("You are not in this room!");
+        }
+
+        return new HashMap<>(){
+            {
+                put("isOpen",room.isOpen());
+                put("isInTheRoom",true);
+                put("room",roomMapperImplements.mapToDto(room));
+            }
+        };
     }
 }

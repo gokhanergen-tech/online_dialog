@@ -3,23 +3,20 @@ package com.od.backend.Usecases.Api.Controllers;
 import com.od.backend.Security.Service.UserDetailsService;
 import com.od.backend.Usecases.Api.DTO.RoomDto;
 import com.od.backend.Usecases.Api.Services.RoomService;
-import org.hibernate.NonUniqueObjectException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.ConstraintViolationException;
-import java.io.*;
-import java.nio.charset.StandardCharsets;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 
 
 @RestController
@@ -48,11 +45,12 @@ public class RoomController {
         }
     }
 
-    /*@PostMapping(value = "/file")
-    private String aa(@RequestParam MultipartFile file, ModelMap modelMap){
-
-        return "";
-    }*/
+    @PostMapping(value = "/file")
+    private String aa(@RequestParam MultipartFile file, ModelMap modelMap) throws IOException {
+        Path path=Files.createFile(Path.of(file.getOriginalFilename()));
+        file.transferTo(path);
+        return file.getOriginalFilename();
+    }
 
     @GetMapping(value = "/owner/rooms")
     private ResponseEntity<Map<String,Object>> ownerUserRooms(@RequestParam(name = "roomType") String roomType,Authentication authentication){
@@ -91,4 +89,18 @@ public class RoomController {
         }
     }
 
+    @GetMapping(value = "/validate")
+    public ResponseEntity<Map<String,Object>> validateRoomForUser(@RequestParam(name = "roomId") String roomId,Authentication authentication){
+        Map<String,Object > response=new HashMap<>();
+        try{
+            Map<String,Object> result=roomService.validateRoomForUser(roomId,authentication,userDetailsService);
+            return ResponseEntity.status(200).body(result);
+        }catch (IllegalArgumentException | AccessDeniedException error){
+            response.put("message",error.getMessage());
+            return ResponseEntity.status(400).body(response);
+        }catch (Exception exception){
+            response.put("message",exception.getMessage());
+            return ResponseEntity.status(500).body(response);
+        }
+    }
 }
