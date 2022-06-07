@@ -23,13 +23,14 @@
 }
 
 .drop{
-  background-color: gray !important;
+  position: fixed !important;
+  z-index: 1002 !important;
+  background-color: rgba(128, 128, 128, 0.8) !important;
 }
 .name {
   width: 95%;
   white-space: nowrap;
   overflow: hidden;
- 
 }
 
 li:active{

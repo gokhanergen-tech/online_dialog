@@ -21,7 +21,7 @@ const User = ({ video }) => {
           ></img>
         </div>
       )}
-      <div className={"dropend position-absolute " + styles.option}>
+      <div className={"dropup position-absolute " + styles.option}>
         <button
           type="button"
           class="bg-transparent border-0"
