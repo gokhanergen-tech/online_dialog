@@ -60,16 +60,18 @@
  height: 100%;
 }
 
-@media screen and (max-height:520px) {
+.wrapped_content{
+  height: 100%;
+}
+
+@media screen and (max-height:520px) and (min-width:720px) {
   .chatEventMenu{
-    display: none;
+     width: 80% !important;
   }
+
   .videoContent{
+    width: 20% !important;
     display: block !important;
-  }
-  
-  .contentBottom{
-    display: none !important;
   }
 }
 

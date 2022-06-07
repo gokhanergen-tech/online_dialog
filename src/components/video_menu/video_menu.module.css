@@ -20,3 +20,24 @@
     opacity: 1;
     transform: translateX(0%);
 }
+
+.menuItems{
+    display: flex;
+    flex-direction: column;
+}
+
+@media screen and (max-height:520px) {
+    .videoMenu{
+        flex-direction: row;
+        bottom: 0;
+        top: auto;
+        width: 100%;
+        height:auto;
+    }
+
+    .menuItems{
+       flex-direction: row;
+       padding: 20px;
+    }
+    
+}

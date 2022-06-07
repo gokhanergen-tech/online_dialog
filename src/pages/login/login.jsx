@@ -73,7 +73,7 @@ const Login = () => {
 
   return (
    <Content>
-     <div className='w-100 p-5'>
+     <div className='w-100 p-2'>
        <form onSubmit={handleLogin}>
         <div>
          <label className='text-center mb-3 w-100'>Email</label>

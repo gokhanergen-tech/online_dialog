@@ -6,7 +6,7 @@ const VideoMenu = ({isShow,isFullScreen,setClickMenu}) => {
 
   return (
     <div className={"position-absolute "+styles.videoMenu+" "+(isShow?styles.menuShow:"")}>
-        <div className={'d-flex flex-column ps-3 px-3 gap-3 '+styles.menuItems+" "}>
+        <div className={'ps-3 px-3 gap-3 '+styles.menuItems+" "}>
           <VideoMenuIcon index={0} onClick={setClickMenu} hoverText={"Microphone"} type={"mic"} icon={"mic-fill"}></VideoMenuIcon>
           <VideoMenuIcon index={1} onClick={setClickMenu} hoverText={"Camera"} icon={"camera-video-fill"}></VideoMenuIcon>
           <VideoMenuIcon index={2} onClick={setClickMenu} hoverText={"Screen Share"} icon={"projector-fill"}></VideoMenuIcon>

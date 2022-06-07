@@ -33,8 +33,17 @@
 .message{
  width: 98%;
  resize: none;
- margin: 0.5rem 0;
+ margin: 1rem 0;
  word-wrap: break-word;
+ outline: none;
+ color: black;
+ border: 1px solid black;
+ border-right: none;
+ border-radius: 5px 0 0 5px;
+}
+
+.message:focus{
+  box-shadow: 0 0 5px black;
 }
 
 select{
@@ -56,14 +65,11 @@ option{
 }
 
 .chatColorChooser{
-
   width: 40px;
   height:40px;
   overflow: hidden;
   border-radius: 50%;
   margin-left: auto;
- 
-  
 }
 
 .chatColorInput{
@@ -71,13 +77,58 @@ option{
   outline: none;
   cursor: pointer;
   border: none;
-  width: 50px;
-  height: 50px;
+  width: 150%;
+  height: 150%;
   position: relative;
   top:-5px;
   left:-5px;
+  z-index: 0;
 }
 
 .userName{
   
 }
+
+.wrapped_content{
+  height: 100%;
+  flex-direction: column;
+}
+
+.send_button{
+  background-color: rgb(128, 128, 223);
+  border: none;
+  color: white;
+  height: 100%;
+  border-radius: 0px 5px 5px 0px;
+}
+
+@media screen and (max-height:520px) and (min-width:720px){
+  .wrapped_content{
+    flex-direction: row;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .content{
+    width: 70%;
+    flex-grow: 1;
+    height: 80%;
+  }
+  
+  .chat_bottom{
+      width: 30%;
+      height: 50%;
+  }
+}
+
+@media screen and (max-height:520px){
+  .wrapped_content{
+    height: 90%;
+  }
+
+  .chatColorChooser{
+    width: 30px;
+    height:30px;
+  }
+}
+

@@ -83,7 +83,7 @@ const Chat = ({socket,users,user,onClick,isActive,roomId}) => {
         <h5 className="text-dark text-center w-100 text-center ">Messages</h5>
       </div>
 
-      <div className="d-flex flex-column h-100">
+      <div className={"d-flex "+styles.wrapped_content}>
        <div className={" border " + styles.content}>
           {
               messages[selectedMessages]?.map((message,index)=>{
@@ -126,22 +126,22 @@ const Chat = ({socket,users,user,onClick,isActive,roomId}) => {
           <input onChange={(e)=>{
            document.getElementsByClassName(styles.content)
            .item(0).style.backgroundColor=e.target.value;
-
-           document.getElementsByClassName(styles.message)
-           .item(0).append("<p>dgfd</p>")
-           
+         
           }} className={styles.chatColorInput}  type={"color"}></input>
          </div>
         </div>
           
-        <div className=" h-75 d-flex mt-1 ">
+        <div className=" h-75 d-flex mt-2 align-items-center ">
           <textarea onKeyUp={(e)=>{
             if(e.key==="Enter")
               handleSendMessage(e)
           }} onChange={(e)=>setMessage(e.target.value)} value={message}
-            className={"form-control p-1 h-100 " + styles.message}
+            className={"p-1 h-100 " + styles.message}
             placeholder="White a message" 
             id="floatingTextarea2"></textarea>
+            <button className={styles.send_button} onClick={e=>{
+              handleSendMessage(e)
+            }}>Send</button>
         </div>
       </div>
       </div>
