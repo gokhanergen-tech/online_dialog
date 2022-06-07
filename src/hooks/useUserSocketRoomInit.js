@@ -1,43 +1,103 @@
-import  { useEffect, useRef }from "react";
+import  { useCallback, useEffect, useRef }from "react";
 import initRoomSocket  from "../socket/socketInit";
 import { useStateWithCallback } from "./useStateWithCallback"
-import cookie from 'react-cookie'
 import { useNavigate } from "react-router-dom";
+import { ROOM_ACTIONS } from "../socket/sockets/roomSocketActions";
 
 
 const useUserJoinTheSocket=(roomId,user,setLoading)=>{
     const [users,setUsers]=useStateWithCallback([]);
+
     const socketRef=useRef(null)
+    const usersRef=useRef([])
+
     const navigate=useNavigate()
 
+    const addUser=useCallback((user,callback)=>{
+      console.log(usersRef.current,user.email)
+        if(!usersRef.current.find(roomUser=>roomUser.email===user.email)){
+          usersRef.current.unshift(user)
+          setUsers(usersRef.current,callback)
+        }
+
+    },[users,setUsers])
+
+    const removeUser=useCallback((user)=>{
+      if(user){
+        setUsers(usersRef.current.filter(userRoom=>userRoom.email!==user.email))
+      }
+    },[users,setUsers])
+
+    const closeAllEvents=()=>{
+      socketRef.current.off(ROOM_ACTIONS.JOIN)
+      socketRef.current.off(ROOM_ACTIONS.LEAVE)
+      socketRef.current.off(ROOM_ACTIONS.ON_JOIN)
+      socketRef.current.off(ROOM_ACTIONS.ON_LEAVE)
+    }
+
+    window.onbeforeunload=(e)=>{
+        closeAllEvents();
+        socketRef.current.emit(ROOM_ACTIONS.LEAVE,{roomId})
+    }
 
     useEffect(()=>{
-    
-      /*socketRef.current=initRoomSocket(); 
-    
-      
-      socketRef.current.on("connect_error",(err)=>{
-        socketRef.current.disconnect()
-        navigate("/")
-      })
+         usersRef.current=users;
+    },[users])
 
-      socketRef.current.on("connect",(err)=>{
-         setLoading(false)
-      })
 
-      socketRef.current.on("disconnect",()=>{
-        navigate("/")
-      })*/
-      
+    useEffect(()=>{
+      socketRef.current=initRoomSocket(); 
     },[])
 
     useEffect(()=>{
-      //socketRef.current.emit()
-      setLoading(false)
+      
+        socketRef.current.on("connect_error",(err)=>{
+         socketRef.current.disconnect();
+         console.log("Socket bağlantı hatası oluştu!")
+        })
+
+        socketRef.current.on("connect",(err)=>{
+         socketRef.current.emit(ROOM_ACTIONS.JOIN,{roomId})
+
+        socketRef.current.on("disconnect",(reason)=>{
+          closeAllEvents();
+          socketRef.current=null;
+          navigate("/")
+        })
+
+        socketRef.current.on(ROOM_ACTIONS.ON_JOIN,()=>{
+           setLoading(false);
+        })
+  
+        socketRef.current.on(ROOM_ACTIONS.ON_LEAVE,()=>{
+          socketRef.current.disconnect();
+        })
+  
+  
+        socketRef.current.on(ROOM_ACTIONS.JOIN,({user})=>{
+           if(user){
+             addUser({...user},()=>{
+                  
+             })
+           }
+        })
+  
+        socketRef.current.on(ROOM_ACTIONS.LEAVE,({user})=>{
+          removeUser(user)
+       })
+  
+      })
+
+      
+
+      return ()=>{
+        socketRef.current?.emit(ROOM_ACTIONS.LEAVE,{roomId})
+      }
     },[])
 
-   
-    return [users]
+
+ 
+    return [users,socketRef.current]
 
 }
 

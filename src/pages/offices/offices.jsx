@@ -41,4 +41,4 @@ const Offices = () => {
   )
 }
 
-export default Offices
+export default React.memo(Offices)

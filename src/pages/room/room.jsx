@@ -2,12 +2,13 @@ import React, {useState } from "react";
 import { useCallback } from "react";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../../components/loading/loading";
 import Chat from "../../components/room_chat/chat";
 import VideoContent from "../../components/video/video_content";
 import VideoMenu from "../../components/video_menu/video_menu";
 import { useUserJoinTheSocket } from "../../hooks/useUserSocketRoomInit";
+import { ROOM_ACTIONS } from "../../socket/sockets/roomSocketActions";
 
 import styles from './room.module.css'
 
@@ -20,24 +21,24 @@ const Room = () => {
   const {id}=useParams();
   const user=useSelector(state=>state.authReducer.user);
 
+  const navigate=useNavigate()
   
   const [isVideoFullScreen,setVideoFullScreenState]=useState(false)
   const [menuBottomActive,setBottomMenuActive]=useState(0);
   const [isMenuShow,setMenuShow]=useState(false);
   const [isShownChatEventMenu,setChatEventMenuShow]=useState(true)
   const [windowWidth,setWindowWidth]=useState(window.innerWidth)
-  const [messages,addMessage]=useState([])
   const [loading,setLoading]=useState(true)
 
   const [room,setRoom]=useState(null)
-  const [users]=useUserJoinTheSocket(id,user,setLoading);
+  const [users,socket]=useUserJoinTheSocket(id,user,setLoading);
 
   const onChatEventMenuCloseClick=useCallback(()=>{
     setChatEventMenuShow(false)
     changeBottomMenuState(-1)
   },[isShownChatEventMenu])
   
-  const videoShowControl=(object)=>{
+  const videoShowControl=useCallback((object)=>{
    if(isShownChatEventMenu && windowWidth<768){
       if(object.style.display!=="none")
         object.style.display="none";
@@ -45,7 +46,7 @@ const Room = () => {
      if(object.style.display!=="block")
        object.style.display="block";
    }
-  }
+  },[isShownChatEventMenu,windowWidth])
 
   const changeBottomMenuState=useCallback((state)=>{
    if([1,0].includes(state)){
@@ -64,27 +65,35 @@ const Room = () => {
         else 
          setVideoFullScreenState(true)
         break;
+      case 4:
+        setLoading(true)
+        socket.emit(ROOM_ACTIONS.LEAVE,{roomId:id})
+      break;
+         
     }
-  },[isVideoFullScreen])
+  },[isVideoFullScreen,socket])
   
   useEffect(()=>{
-    if(!loading){
+    
+  if(!loading){
       const object=document.getElementsByClassName(styles.videoContent).item(0)
       videoShowControl(object);
     }
-  },[windowWidth,isShownChatEventMenu])
+  },[windowWidth,isShownChatEventMenu,loading])
 
   useEffect(()=>{
+    
     const eventSize=(e)=>{
       setWindowWidth(window.innerWidth)
     }
     window.addEventListener("resize",eventSize)
+  
     return ()=>{
         clearEvent(menuTimeOut)
         window.removeEventListener("resize",eventSize)
     }
   },[])
-  
+
   if(loading)
     return <Loading/>
   return <div className={styles.roomWrapper}>
@@ -113,9 +122,11 @@ const Room = () => {
        
         <div className={"col-12 col-lg-4 col-xl-3 col-md-5 bg-white "+(!isShownChatEventMenu?"d-none":"")+" "+styles.chatEventMenu}>
           <div className="p-2 d-flex flex-column h-100">
-             {
-              menuBottomActive===0?<Chat onClick={onChatEventMenuCloseClick} messages={messages} addMessage={addMessage}/>:""
-             }
+             
+              <Chat roomId={id} user={user} isActive={menuBottomActive===0}
+              users={users.map(userRoom=>({email:userRoom.email,name:userRoom?.userDto?.fullName,owner:userRoom?.userDto?.owner}))} 
+              socket={socket} onClick={onChatEventMenuCloseClick}/>
+             
           </div>
         </div>
       </div>

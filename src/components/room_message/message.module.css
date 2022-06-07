@@ -1,7 +1,6 @@
 .message {
   box-shadow: 0 0 5px rgb(34, 28, 28);
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 0.8rem;
+  font-size: 0.88rem;
   padding: 0.4rem 0.4rem;
   border-radius: 5px;
   word-wrap: break-word;
@@ -9,14 +8,11 @@
 }
 
 .message_body {
-  width: fit-content;
-
 }
 
 .messageMe {
-  color: white;
-  background-color: rgb(139, 183, 246);
-  font-weight: bold;
+  background-color: rgb(247, 247, 247);
+  color: black;
 }
 
 .messageOuther {
@@ -25,8 +21,13 @@
 
 .userName{
   font-size: smaller;
+  color: black;
 }
 
 .time{
   font-size: smaller;
+}
+
+.privacyMessage{
+  box-shadow: 0 0 5px red;
 }

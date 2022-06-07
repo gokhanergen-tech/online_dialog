@@ -25,7 +25,7 @@ const VideoContent = ({isFullScreen,srcVideo,srcObject,setFullScreenState}) => {
   
 
   return (
-    <video autoPlay controlsList="nodownload" tabIndex={-1} onContextMenu={(e)=>e.preventDefault()} onDoubleClick={()=>{
+    <video controlsList="nodownload" tabIndex={-1} onContextMenu={(e)=>e.preventDefault()} onDoubleClick={()=>{
         setFullScreenState(!isFullScreen)
      }} ref={video} className={styles.videoScreen+" "+(isFullScreen?styles.fullScreen:"")}>
        Video does not be supported!

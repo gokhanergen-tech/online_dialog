@@ -51,7 +51,10 @@
 }
 
 .chatEventMenu{
- transition: 200ms linear;
+ -moz-transition: 200ms linear;
+ -webkit-transition: 200ms linear;
+ -o-transition: 200ms linear;;
+ transition: 200ms linear;;
  border-bottom: 5px solid rgb(166, 166, 213);
  box-shadow: 0 0 10px white;
  height: 100%;

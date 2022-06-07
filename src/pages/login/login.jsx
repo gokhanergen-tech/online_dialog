@@ -47,19 +47,20 @@ const Login = () => {
       if(!copy[0].message && !copy[1].message ){
         try{
           const {data}=await login({email:mail,password:password})
-          console.log(data)
           dispatch(setLogin(data));
         }catch(err){
-          const message=err.response.data.message;
-          setBackendMessage(message)
+          const message=err.response.data?.message;
+          if(message)
+           setBackendMessage(message)
+          setLoading(false)
         }
         
       }else{
         setBackendMessage("")
         setWarnings(copy);
+        setLoading(false)
       }
-      setLoading(false)
-
+      
      
   },[warnings,password,mail])
   

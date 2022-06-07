@@ -43,4 +43,4 @@ const Interviews = () => {
   );
 };
 
-export default Interviews;
+export default React.memo(Interviews);

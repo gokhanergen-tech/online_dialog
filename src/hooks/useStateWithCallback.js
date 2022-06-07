@@ -5,7 +5,7 @@ const useStateWithCallback=(initialState)=>{
      const callbackRef=useRef(null)
      const newSetState=(userState,callback)=>{
         callbackRef.current=callback;
-        setState(prev=>typeof userState==="function"?userState(prev):useState)
+        setState(prev=>(typeof userState==="function"?userState(prev):userState))
      }
 
      useEffect(()=>{
