@@ -15,7 +15,7 @@ const socketInit=()=>{
         }
     }
 
-    return io("http://localhost:5005/offices",options);
+    return io("http://localhost:5005/room",options);
 
 }
 
