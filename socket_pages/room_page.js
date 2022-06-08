@@ -63,6 +63,7 @@ const roomPage=(socket,io)=>{
                             roomToMapMessages[roomId]=[]
                     }
                     socketMapToUser[socket.id]={user,room};
+                    socket.roomId=roomId;
                     socket.join(roomId);
                     socket.emit(ROOM_ACTIONS.ON_JOIN,{})
                 }else{
@@ -75,19 +76,20 @@ const roomPage=(socket,io)=>{
         }
     })
 
-    socket.on(ROOM_ACTIONS.LEAVE,({roomId})=>{
-         leave(roomId)
+    socket.on(ROOM_ACTIONS.LEAVE,()=>{
+         leave(socket.roomId)
          socket.emit(ROOM_ACTIONS.ON_LEAVE,{})  
     })
 
-    socket.on(ROOM_ACTIONS.SEND_MESSAGE,({roomId,toUser,message})=>{
+    socket.on(ROOM_ACTIONS.SEND_MESSAGE,({toUser,message})=>{
         const authUser=socket.userData;
 
-        if(roomId){
+        if(socket.roomId){
+            const roomId=socket.roomId;
             const currentDate=Date.now()
            
             const editedMessage={
-                user:socket.userData.user,
+                user:authUser.user,
                 message:message,
                 messageDate:currentDate
             };

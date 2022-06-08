@@ -7,13 +7,13 @@ const io=require("socket.io")(server,{
    pingInterval:10000,
    cors:
     {
-       origin:"http://192.168.196.58:3000",
+       origin:process.env.FRONTEND_IP,
        methods:['GET','POST'],
        credentials:true,
     },
     allowRequest: (req, callback) => {
         const noOriginHeader = req.headers.origin !== undefined
-        &&req.headers.origin==="http://192.168.196.58:3000"
+        &&req.headers.origin===process.env.FRONTEND_IP
         //&&req.connection.remoteAddress.includes("localhost")
         callback(undefined, noOriginHeader);
       }
