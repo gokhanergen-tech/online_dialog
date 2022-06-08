@@ -13,6 +13,7 @@ import "../node_modules/bootstrap/dist/js/bootstrap.min.js"
 import "bootstrap-icons/font/bootstrap-icons.css"
 
 
+
 ReactDOM.render(
   <React.StrictMode>
    <Provider store={store}>

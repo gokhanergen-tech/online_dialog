@@ -14,10 +14,8 @@ const useUserJoinTheSocket=(roomId,user,setLoading)=>{
     const navigate=useNavigate()
 
     const addUser=useCallback((user,callback)=>{
-      console.log(usersRef.current,user.email)
         if(!usersRef.current.find(roomUser=>roomUser.email===user.email)){
-          usersRef.current.unshift(user)
-          setUsers(usersRef.current,callback)
+          setUsers([user,...usersRef.current],callback)
         }
 
     },[users,setUsers])
@@ -37,7 +35,7 @@ const useUserJoinTheSocket=(roomId,user,setLoading)=>{
 
     window.onbeforeunload=(e)=>{
         closeAllEvents();
-        socketRef.current.emit(ROOM_ACTIONS.LEAVE,{roomId})
+        socketRef.current.emit(ROOM_ACTIONS.LEAVE,{})
     }
 
     useEffect(()=>{
@@ -91,7 +89,7 @@ const useUserJoinTheSocket=(roomId,user,setLoading)=>{
       
 
       return ()=>{
-        socketRef.current?.emit(ROOM_ACTIONS.LEAVE,{roomId})
+        socketRef.current?.emit(ROOM_ACTIONS.LEAVE,{})
       }
     },[])
 

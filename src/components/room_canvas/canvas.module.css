@@ -1,0 +1,22 @@
+
+.canvasBase{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+canvas{
+    width: 100%;
+    height: 90%;
+    align-self: center;
+    object-fit:fill;
+}
+
+.fullScreen{
+    padding: 0 !important;
+    composes:fullScreen from '../video/video_content.module.css'; 
+    margin-right: 100px;
+}
+
+

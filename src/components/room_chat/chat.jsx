@@ -22,9 +22,9 @@ const Chat = ({socket,users,user,onClick,isActive,roomId}) => {
     setMessage("");
     if(isValid){
       if(selectedMessages==="0")
-       socket.emit(ROOM_ACTIONS.SEND_MESSAGE,{roomId,message})
+       socket.emit(ROOM_ACTIONS.SEND_MESSAGE,{message})
       else
-       socket.emit(ROOM_ACTIONS.SEND_MESSAGE,{roomId,message,toUser:selectedMessages})
+       socket.emit(ROOM_ACTIONS.SEND_MESSAGE,{message,toUser:selectedMessages})
     
     }
   },[message])

@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../../components/loading/loading";
+import Canvas from "../../components/room_canvas/canvas";
 import Chat from "../../components/room_chat/chat";
 import VideoContent from "../../components/video/video_content";
 import VideoMenu from "../../components/video_menu/video_menu";
@@ -17,6 +18,7 @@ const clearEvent=(timeout)=>{
    if(timeout!=null)
     clearTimeout(timeout)
 }
+
 const Room = () => {
   const {id}=useParams();
   const user=useSelector(state=>state.authReducer.user);
@@ -29,31 +31,33 @@ const Room = () => {
   const [isShownChatEventMenu,setChatEventMenuShow]=useState(true)
   const [windowWidth,setWindowWidth]=useState(window.innerWidth)
   const [loading,setLoading]=useState(true)
-
+  const [isWhiteBoardActive,setCanvasActive]=useState(true)
   const [room,setRoom]=useState(null)
+
   const [users,socket]=useUserJoinTheSocket(id,user,setLoading);
 
   const onChatEventMenuCloseClick=useCallback(()=>{
     setChatEventMenuShow(false)
     changeBottomMenuState(-1)
   },[isShownChatEventMenu])
+
   
-  const videoShowControl=useCallback((object)=>{
-   if(isShownChatEventMenu && windowWidth<768){
+  const stateControl=useCallback((object)=>{
+   if((isShownChatEventMenu) && windowWidth<768){
       if(object.style.display!=="none")
         object.style.display="none";
    }else{
      if(object.style.display!=="block")
        object.style.display="block";
    }
-  },[isShownChatEventMenu,windowWidth])
+  },[windowWidth,isShownChatEventMenu])
 
   const changeBottomMenuState=useCallback((state)=>{
    if([1,0].includes(state)){
       setChatEventMenuShow(true)
-      setWindowWidth(window.innerWidth)
+   }else{
+      setChatEventMenuShow(false)
    }
-      
    setBottomMenuActive(state)
   },[])
 
@@ -67,7 +71,7 @@ const Room = () => {
         break;
       case 4:
         setLoading(true)
-        socket.emit(ROOM_ACTIONS.LEAVE,{roomId:id})
+        socket.emit(ROOM_ACTIONS.LEAVE,{})
       break;
          
     }
@@ -77,9 +81,9 @@ const Room = () => {
     
   if(!loading){
       const object=document.getElementsByClassName(styles.videoContent).item(0)
-      videoShowControl(object);
+      stateControl(object);
     }
-  },[windowWidth,isShownChatEventMenu,loading])
+  },[windowWidth,isShownChatEventMenu])
 
   useEffect(()=>{
     
@@ -107,15 +111,18 @@ const Room = () => {
          }
          clearEvent(menuTimeOut)
          menuTimeOut=setTimeout(()=>{
-          setMenuShow(false)
+           if(isMenuShow)
+             setMenuShow(false)
          },3000)
         }
         } onMouseLeave={()=>{
-         clearEvent(menuTimeOut)
-         setMenuShow(false)
-         
+          setMenuShow(false)
+          clearEvent(menuTimeOut)
         }} className={"p-0 overflow-hidden justify-content-center d-flex align-items-center h-100 "+(isVideoFullScreen?"":"position-relative")}>
-           <VideoContent setFullScreenState={setVideoFullScreenState} srcVideo={"/videos/test.mp4"} isFullScreen={isVideoFullScreen}></VideoContent>
+           {
+             isWhiteBoardActive?<Canvas isFullScreen={isVideoFullScreen} setFullScreenState={setVideoFullScreenState}/>:
+             <VideoContent setFullScreenState={setVideoFullScreenState} srcVideo={"/videos/test.mp4"} isFullScreen={isVideoFullScreen}></VideoContent>
+           }
            <VideoMenu setClickMenu={handleClickMenuItem} isFullScreen={isVideoFullScreen} setFullScreenState={setVideoFullScreenState} isShow={isMenuShow}></VideoMenu>
          </div>
         </div>
