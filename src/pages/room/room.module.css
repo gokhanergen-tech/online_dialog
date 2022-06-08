@@ -11,13 +11,13 @@
 
 .contentTop{
   flex-grow: 1;
-  height: 85%;
+  height: 80%;
  
 }
 
 .contentBottom{
   flex-grow: 1;
-  height:  15%;
+  height:  20%;
   background-color: black;
 }
 
@@ -50,6 +50,11 @@
     color: white;
 }
 
+.bottom_menu{
+  position: relative;
+  z-index: 2;
+}
+
 .chatEventMenu{
  -moz-transition: 200ms linear;
  -webkit-transition: 200ms linear;
@@ -58,6 +63,8 @@
  border-bottom: 5px solid rgb(166, 166, 213);
  box-shadow: 0 0 10px white;
  height: 100%;
+ position: relative;
+ z-index: 3;
 }
 
 .wrapped_content{

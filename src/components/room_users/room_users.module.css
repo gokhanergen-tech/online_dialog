@@ -1,0 +1,24 @@
+.room_users{
+    overflow: auto;
+    display: flex;
+    height: 100%;
+    gap: 1rem;
+    padding: 1rem 0;
+ }
+
+ .room_users::-webkit-scrollbar {
+    height: 8px;
+  }
+  
+  /* Track */
+  .room_users::-webkit-scrollbar-track {
+    background: none; 
+  }
+   
+  /* Handle */
+  .room_users::-webkit-scrollbar-thumb {
+    background: rgb(136, 49, 49);
+    border-radius: 1rem;
+  }
+  
+ 

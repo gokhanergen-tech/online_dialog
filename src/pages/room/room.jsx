@@ -6,6 +6,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../../components/loading/loading";
 import Canvas from "../../components/room_canvas/canvas";
 import Chat from "../../components/room_chat/chat";
+
+import RoomUsers from "../../components/room_users/room_users";
 import VideoContent from "../../components/video/video_content";
 import VideoMenu from "../../components/video_menu/video_menu";
 import { useUserJoinTheSocket } from "../../hooks/useUserSocketRoomInit";
@@ -31,7 +33,7 @@ const Room = () => {
   const [isShownChatEventMenu,setChatEventMenuShow]=useState(true)
   const [windowWidth,setWindowWidth]=useState(window.innerWidth)
   const [loading,setLoading]=useState(true)
-  const [isWhiteBoardActive,setCanvasActive]=useState(true)
+  const [isWhiteBoardActive,setCanvasActive]=useState(false)
   const [room,setRoom]=useState(null)
 
   const [users,socket]=useUserJoinTheSocket(id,user,setLoading);
@@ -39,11 +41,12 @@ const Room = () => {
   const onChatEventMenuCloseClick=useCallback(()=>{
     setChatEventMenuShow(false)
     changeBottomMenuState(-1)
-  },[isShownChatEventMenu])
+  },[])
 
   
   const stateControl=useCallback((object)=>{
    if((isShownChatEventMenu) && windowWidth<768){
+     
       if(object.style.display!=="none")
         object.style.display="none";
    }else{
@@ -83,7 +86,7 @@ const Room = () => {
       const object=document.getElementsByClassName(styles.videoContent).item(0)
       stateControl(object);
     }
-  },[windowWidth,isShownChatEventMenu])
+  },[windowWidth,isShownChatEventMenu,loading])
 
   useEffect(()=>{
     
@@ -111,7 +114,6 @@ const Room = () => {
          }
          clearEvent(menuTimeOut)
          menuTimeOut=setTimeout(()=>{
-           if(isMenuShow)
              setMenuShow(false)
          },3000)
         }
@@ -139,10 +141,8 @@ const Room = () => {
       </div>
 
       <div className={"row m-0  "+styles.contentBottom}>
-         <div className="col col-lg-8 col-xl-9">
-
-         </div>
-         <div className="col-6 col-lg-4 col-xl-3 bg-dark p-0 h-100">
+         <RoomUsers users={users}></RoomUsers>
+         <div className={"col-6 col-lg-4 col-xl-3 bg-dark p-0 h-100 "+styles.bottom_menu}>
             <div className="d-flex h-100">
              <button onClick={()=>{
                changeBottomMenuState(0)
