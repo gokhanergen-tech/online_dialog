@@ -1,15 +1,37 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
 import styles from "./user.module.scss";
 
-const User = ({ video,fullName }) => {
+
+
+const User = ({ fullName, email, isLoginUserOwner, isAuthUser, addVideoObject }) => {
+  const [isMenuActive, setActiveMenu] = useState(false)
+
+  const getItems = useCallback(() => {
+    return [
+      {
+        text: "Change Name", handle: () => {
+          alert("Name")
+        }, willAdded: isAuthUser, index: 0
+      },
+      {
+        text: "Kick User", handle: () => {
+          alert("Kick")
+        }, willAdded: isLoginUserOwner, index: 1
+      }
+    ]
+  }, [isLoginUserOwner, isAuthUser])
+
+
+
   return (
     <div draggable="false" className={"bd-info rounded-3 d-flex " + styles.card}>
-      {video ? (
-        <video
+      {true ? (
+        <video ref={(instance) => addVideoObject(instance, email)} draggable={false}
           className={"rounded-3 " + styles.video}
-          width={"100%"}
-          src="https://media.geeksforgeeks.org/wp-content/uploads/20190616234019/Canvas.move_.mp4"
           controlsList="nodownload"
+          muted
+          autoPlay
+          onContextMenu={(e) => e.preventDefault()}
         ></video>
       ) : (
         <div className={"mx-auto " + styles.content}>
@@ -23,22 +45,32 @@ const User = ({ video,fullName }) => {
         </div>
       )}
       <div className={"dropup position-absolute " + styles.option}>
-        <button
-          type="button"
-          className="bg-transparent border-0"
-          data-bs-toggle="dropdown"
-        >
-          <img height={"20px"} width={"20px"} src="/icons/3dot.svg"></img>
-        </button>
-        <ul className={"dropdown-menu  " + styles.drop}>
-          <li className="dropdown-item">Direct message</li>
-          <li className="dropdown-item">Change name</li>
-          <li className="dropdown-item">Kick out</li>
-        </ul>
+        {
+          (isLoginUserOwner || isAuthUser) && <>
+            {isMenuActive && <ul className={"" + styles.drop}>
+              {
+                getItems().filter((menuItem) => menuItem.willAdded).
+                  map(menuItem => (<li onClick={() => {
+                    menuItem.handle()
+                    setActiveMenu(false)
+                  }} key={menuItem.index}>{menuItem.text}</li>))
+              }
+            </ul>}
+            <button
+              className="bg-transparent border-0"
+              onClick={() => setActiveMenu(!isMenuActive)}
+            >
+              <img className={styles.threeDot} height={"20px"} width={"20px"} src="/icons/3dot.svg"></img>
+            </button>
+
+
+          </>
+        }
+
       </div>
-      <div
+      <div title={fullName}
         className={
-          "px-1 position-absolute bottom-0 start-0 fs-6 " +
+          "px-1 position-absolute bottom-0 start-0 " +
           styles.name
         }
       >
@@ -48,4 +80,4 @@ const User = ({ video,fullName }) => {
   );
 };
 
-export default User;
+export default React.memo(User);

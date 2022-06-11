@@ -14,8 +14,6 @@ const Chat = ({socket,users,user,onClick,isActive,roomId}) => {
   const [selectedMessages,setSelectedMessages]=useState("0")
   const [message,setMessage]=useState("");
 
-
-
   const handleSendMessage=useCallback((e)=>{
     e.preventDefault();
     const isValid=isMessageValid(message);
@@ -52,7 +50,6 @@ const Chat = ({socket,users,user,onClick,isActive,roomId}) => {
       if(document.getElementsByClassName(styles.drop).item(0).value!==selectedMessages){
           setSelectedMessages("0")
       }
-    
    },[users,selectedMessages])
 
 
@@ -70,12 +67,12 @@ const Chat = ({socket,users,user,onClick,isActive,roomId}) => {
           addMessage(prev=>({...prev,["0"]:[{privacyMessage:true,isSameUserMessage:(false),user:messageUser.user,messageArray:[messageUser.message],date:messageUser.messageDate},...selected]}))
         }
     })
-
+ 
     return ()=>{
       socket.off(ROOM_ACTIONS.ON_MESSAGE)
     }
   },[messages,selectedMessages])
-  
+
   return (
     <div className={styles.wrapper_chat+" "+(!isActive?"d-none":"d-block")}>
       <div className={"p-1 border-bottom d-flex "+styles.title}>

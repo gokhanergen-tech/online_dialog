@@ -1,12 +1,20 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import { useSelector } from 'react-redux';
 import User from "../room_user/user";
 
 import styles from './room_users.module.css'
-const RoomUsers = ({users}) => {
+const RoomUsers = ({users,isAllUsersActive,setAllUsersActive,addVideoObject}) => {
 
   const usersRef=useRef(null)
   const wrappedRef=useRef(null)
+
+  const {isOwner,email}=useSelector(state=>({isOwner:state.authReducer.user?.userDto.owner,email:state.authReducer.user?.email}))
   
+
+  useEffect(()=>{
+    usersRef.current.style.setProperty("--usersCount",users.length)
+  },[users])
+
   useEffect(()=>{
     const usersSlider=usersRef.current;
     const bounding=wrappedRef.current.getBoundingClientRect();
@@ -30,25 +38,34 @@ const RoomUsers = ({users}) => {
       usersSlider.scrollLeft=scrollLeft-goScrollValue;
     }
 
-    wrappedRef.current.addEventListener("mousedown",mouseDown)
-    wrappedRef.current.addEventListener("mouseup",mouseUp)
-    wrappedRef.current.addEventListener("mouseover",mouseMove)
+    wrappedRef.current?.addEventListener("mousedown",mouseDown)
+    wrappedRef.current?.addEventListener("mouseup",mouseUp)
+    wrappedRef.current?.addEventListener("mouseover",mouseMove)
 
     
     return ()=>{
-      wrappedRef.current.removeEventListener("mousedown",mouseDown)
-      wrappedRef.current.removeEventListener("mouseup",mouseUp)
-      wrappedRef.current.removeEventListener("mouseover",mouseMove)
+      wrappedRef.current?.removeEventListener("mousedown",mouseDown)
+      wrappedRef.current?.removeEventListener("mouseup",mouseUp)
+      wrappedRef.current?.removeEventListener("mouseover",mouseMove)
     }
   },[])
+
   return (
     <div ref={wrappedRef} className={"col-6 col-lg-8 col-xl-9 "}>
-     <div ref={usersRef} className={styles.room_users}>
+     <div ref={usersRef} className={styles.room_users+" "+(isAllUsersActive&&styles.allUsersMode)}>
+     
         {
-          users.map((user,index)=>{
-            return <div key={index}><User areYouOwner={""}   video={true} fullName={user.userDto.fullName}></User></div>
+          isAllUsersActive&&<menu className='d-flex justify-content-end'>
+            <span onClick={()=>setAllUsersActive(false)} className={styles.fullUsersExit}>Close</span>
+          </menu>
+        }
+    
+        {
+          users.map((user)=>{
+            return <div key={user.email}><User email={user.email} isAuthUser={user.email===email} addVideoObject={addVideoObject} video={false}  isLoginUserOwner={user.email===email?false:isOwner} fullName={user.userDto.fullName}></User></div>
           })
         }
+      
     </div>
    </div>
   )

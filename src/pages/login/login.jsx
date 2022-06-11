@@ -14,7 +14,7 @@ const Login = () => {
   const [isPasswordShow,setPasswordShow]=useState(false);
   
   const [warnings,setWarnings]=useState([{type:"mail",message:""},{type:"password",message:""}])
-  const [backendMessage,setBackendMessage]=useState();
+  const [backendMessage,setBackendMessage]=useState("");
   const [mail,setMail]=useState("");
   const [password,setPassword]=useState("");
   const [isLoadingComponentShow,setLoading]=useState(false)
@@ -25,7 +25,7 @@ const Login = () => {
      e.preventDefault();
      setLoading(true)
      const copy=[...warnings];
-     
+   
      if(!mail){
         copy[0].message="Empty field is not acceptable";
      }else{
@@ -49,23 +49,25 @@ const Login = () => {
           const {data}=await login({email:mail,password:password})
           dispatch(setLogin(data));
         }catch(err){
-          const message=err.response.data?.message;
+          const message=err.response?.data?.message;
           if(message)
            setBackendMessage(message)
+          else
+           setBackendMessage(err.message)
           setLoading(false)
         }
         
       }else{
         setBackendMessage("")
         setWarnings(copy);
-        setLoading(false)
+        setLoading(false);
       }
       
      
   },[warnings,password,mail])
   
-  useEffect(()=>{
-      document.title="Login"
+  useEffect(()=>{    
+      document.title="Login"  
   },[])
 
   if(isLoadingComponentShow)

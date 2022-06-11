@@ -1,8 +1,10 @@
 .card {
-  height: 130px;
-  width: 200px;
-  background-color: rgb(80, 79, 79);
+  height: 100%;
+  width: 100%;
+  background: transparent;
   position: relative;
+  border: 1px solid gray;
+  border-bottom: 2px solid rgb(157, 157, 223);
    -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */
    -khtml-user-select: none; /* Konqueror HTML */
@@ -22,16 +24,28 @@
 }
 
 .drop{
-  position: fixed !important;
-  z-index: 1 !important;
-  background-color: rgba(128, 128, 128, 0.8) !important;
+  list-style: none;
+  position: fixed;
+  background-color: #18141490;
+  padding: 0;
+  z-index: 1;
+  transform: translate(-50%,-120%);
+  
 }
+
+.drop li{
+  padding: 0.3rem 1rem;
+  cursor: pointer;
+  font-size: 0.7rem;
+}
+
 .name {
   width: 100%;
   white-space: nowrap;
   overflow: hidden;
   color: wheat;
-  background-color: rgb(37, 29, 29);
+  background-color:rgba(37, 29, 29, 0.3);
+  font-size: 0.8rem;
 }
 
 li:active{
@@ -39,7 +53,7 @@ li:active{
 }
 
 .video{
-  object-fit: contain;
+  object-fit:contain;
   height: 100%;
   width: 100%;
 }
