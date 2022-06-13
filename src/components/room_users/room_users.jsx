@@ -1,15 +1,16 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState} from 'react'
 import { useSelector } from 'react-redux';
+import { UsersContext } from '../../pages/room/room';
 import User from "../room_user/user";
 
 import styles from './room_users.module.css'
-const RoomUsers = ({users,isAllUsersActive,setAllUsersActive,addVideoObject}) => {
+const RoomUsers = ({isAllUsersActive}) => {
 
   const usersRef=useRef(null)
   const wrappedRef=useRef(null)
 
   const {isOwner,email}=useSelector(state=>({isOwner:state.authReducer.user?.userDto.owner,email:state.authReducer.user?.email}))
-  
+  const {users,setAllUsersActive}=React.useContext(UsersContext);
 
   useEffect(()=>{
     usersRef.current.style.setProperty("--usersCount",users.length)
@@ -59,13 +60,14 @@ const RoomUsers = ({users,isAllUsersActive,setAllUsersActive,addVideoObject}) =>
             <span onClick={()=>setAllUsersActive(false)} className={styles.fullUsersExit}>Close</span>
           </menu>
         }
-    
-        {
-          users.map((user)=>{
-            return <div key={user.email}><User email={user.email} isAuthUser={user.email===email} addVideoObject={addVideoObject} video={false}  isLoginUserOwner={user.email===email?false:isOwner} fullName={user.userDto.fullName}></User></div>
-          })
-        }
-      
+ 
+         {
+            users.map((user)=>{
+              console.log(user.video)
+             return <div key={user.email}><User video={user.video} email={user.email} isAuthUser={user.email===email} isLoginUserOwner={user.email===email?false:isOwner} fullName={user.userDto.fullName}></User></div>
+           })
+         }
+     
     </div>
    </div>
   )

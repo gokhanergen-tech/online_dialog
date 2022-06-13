@@ -1,10 +1,13 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState} from "react";
+import { UsersContext } from "../../pages/room/room";
 import styles from "./user.module.scss";
 
 
 
-const User = ({ fullName, email, isLoginUserOwner, isAuthUser, addVideoObject }) => {
+const User = ({ video,fullName, email, isLoginUserOwner, isAuthUser}) => {
   const [isMenuActive, setActiveMenu] = useState(false)
+
+  const {addVideoObject}=React.useContext(UsersContext);
 
   const getItems = useCallback(() => {
     return [
@@ -24,8 +27,8 @@ const User = ({ fullName, email, isLoginUserOwner, isAuthUser, addVideoObject })
 
 
   return (
-    <div draggable="false" className={"bd-info rounded-3 d-flex " + styles.card}>
-      {true ? (
+    <div draggable="false" className={"bd-info d-flex " + styles.card}>
+      
         <video ref={(instance) => addVideoObject(instance, email)} draggable={false}
           className={"rounded-3 " + styles.video}
           controlsList="nodownload"
@@ -33,8 +36,8 @@ const User = ({ fullName, email, isLoginUserOwner, isAuthUser, addVideoObject })
           autoPlay
           onContextMenu={(e) => e.preventDefault()}
         ></video>
-      ) : (
-        <div className={"mx-auto " + styles.content}>
+        {
+          !video?   <div className={"mx-auto " + styles.content}>
           <img
             height={"90%"}
             width={"90%"}
@@ -42,8 +45,10 @@ const User = ({ fullName, email, isLoginUserOwner, isAuthUser, addVideoObject })
             src="/icons/user.svg"
             draggable="false"
           ></img>
-        </div>
-      )}
+        </div>:""
+        }
+     
+      
       <div className={"dropup position-absolute " + styles.option}>
         {
           (isLoginUserOwner || isAuthUser) && <>

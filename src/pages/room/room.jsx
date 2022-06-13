@@ -4,9 +4,7 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../../components/loading/loading";
-import Canvas from "../../components/room_canvas/canvas";
 
-import VideoContent from "../../components/video/video_content";
 import VideoMenu from "../../components/video_menu/video_menu";
 import { useUserJoinTheSocket } from "../../hooks/useUserSocketRoomInit";
 import { ROOM_ACTIONS } from "../../socket/sockets/roomSocketActions";
@@ -15,6 +13,10 @@ import styles from './room.module.css'
 
 const Users = React.lazy(() => import("../../components/room_users/room_users"))
 const Chat = React.lazy(() => import("../../components/room_chat/chat"))
+const Canvas = React.lazy(() => import("../../components/room_canvas/canvas"))
+const VideoContent = React.lazy(() => import("../../components/video/video_content"))
+
+export const UsersContext = React.createContext()
 
 var menuTimeOut = null;
 const clearEvent = (timeout) => {
@@ -43,7 +45,7 @@ const Room = () => {
   const [isCameraOpen, setCameraOpen] = useState(false);
 
 
-  const [users, socket, addVideoObject, closeCamera, setBaseVideoObject] = useUserJoinTheSocket(id, user, setLoading);
+  const [users, socket, addVideoObject, closeCamera, setBaseVideoObject] = useUserJoinTheSocket(id, user, setLoading, setRoom,setCameraOpen);
 
 
   const onChatEventMenuCloseClick = useCallback(() => {
@@ -90,11 +92,9 @@ const Room = () => {
       case 1:
         if (!isCameraOpen) {
           socket.emit(ROOM_ACTIONS.PERMISSON_CONTROL, { type: "VIDEO" })
-          setCameraOpen(true)
         }
         else {
           closeCamera();
-          setCameraOpen(false)
         }
         break;
 
@@ -124,7 +124,7 @@ const Room = () => {
 
   if (loading)
     return <Loading />
-  return <div className={styles.roomWrapper}>
+  return <UsersContext.Provider value={{ users, addVideoObject,setAllUsersActive }}><div className={styles.roomWrapper}>
 
     <div className={"row m-0 " + styles.contentTop}>
       <div className={"col bg-black h-100 " + styles.videoContent}>
@@ -143,8 +143,14 @@ const Room = () => {
           clearEvent(menuTimeOut)
         }} className={"p-0 overflow-hidden justify-content-center d-flex align-items-center h-100 " + (isVideoFullScreen ? "" : "position-relative")}>
           {
-            isWhiteBoardActive ? <Canvas isFullScreen={isVideoFullScreen} setFullScreenState={setVideoFullScreenState} /> :
-              <VideoContent setBaseVideoObject={setBaseVideoObject} setFullScreenState={setVideoFullScreenState} srcVideo={"/videos/test.mp4"} isFullScreen={isVideoFullScreen}></VideoContent>
+            isWhiteBoardActive ?
+              <Suspense fallback={<></>}>
+                <Canvas isFullScreen={isVideoFullScreen} setFullScreenState={setVideoFullScreenState} />
+              </Suspense>
+              :
+              <Suspense fallback={<></>}>
+                <VideoContent setBaseVideoObject={setBaseVideoObject} setFullScreenState={setVideoFullScreenState} srcVideo={"/videos/test.mp4"} isFullScreen={isVideoFullScreen}></VideoContent>
+              </Suspense>
           }
           <VideoMenu setClickMenu={handleClickMenuItem} isFullScreen={isVideoFullScreen} setFullScreenState={setVideoFullScreenState} isShow={isMenuShow}></VideoMenu>
         </div>
@@ -153,8 +159,7 @@ const Room = () => {
       <div className={"col-12 col-lg-4 col-xl-3 col-md-5 bg-white " + (!isShownChatEventMenu ? "d-none" : "") + " " + styles.chatEventMenu}>
         <div className="p-2 d-flex flex-column h-100">
           <Suspense fallback={<div>Loading...</div>}>
-            <Chat roomId={id} user={user} isActive={menuBottomActive === 0}
-              users={users.map(userRoom => ({ email: userRoom.email, name: userRoom?.userDto?.fullName, owner: userRoom?.userDto?.owner }))}
+            <Chat users={users.map(userRoom => ({ email: userRoom.email, name: userRoom?.userDto?.fullName, owner: userRoom?.userDto?.owner }))} roomId={id} user={user} isActive={menuBottomActive === 0}
               socket={socket} onClick={onChatEventMenuCloseClick} />
           </Suspense>
         </div>
@@ -163,7 +168,7 @@ const Room = () => {
 
     <div className={"row m-0  " + styles.contentBottom}>
       <Suspense fallback={<div>Loading...</div>}>
-        <Users addVideoObject={addVideoObject} isCameraOpen={isCameraOpen} socket={socket} setAllUsersActive={setAllUsersActive} isAllUsersActive={isAllUserActive} users={users}></Users>
+        <Users isAllUsersActive={isAllUserActive}></Users>
       </Suspense>
       <div className={"col-6 col-lg-4 col-xl-3 bg-dark p-0 h-100 " + styles.bottom_menu}>
         <div className="d-flex h-100">
@@ -176,7 +181,7 @@ const Room = () => {
         </div>
       </div>
     </div>
-  </div>
+  </div></UsersContext.Provider>
 };
 
 export default React.memo(Room);

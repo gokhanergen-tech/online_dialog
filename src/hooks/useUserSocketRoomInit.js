@@ -6,7 +6,7 @@ import { ROOM_ACTIONS } from "../socket/sockets/roomSocketActions";
 import freeice from 'freeice'
 
 
-const useUserJoinTheSocket = (roomId, userLogin, setLoading) => {
+const useUserJoinTheSocket = (roomId, userLogin, setLoading, setRoom, setCameraOpen) => {
   const [users, setUsers] = useStateWithCallback([]);
 
   const socketRef = useRef(null)
@@ -25,18 +25,29 @@ const useUserJoinTheSocket = (roomId, userLogin, setLoading) => {
 
   const addUser = useCallback((user, callback) => {
     if (!usersRef.current.find(roomUser => roomUser.email === user.email)) {
-      usersRef.current.unshift({ ...user })
+      usersRef.current.unshift({ video: false, ...user })
       setUsers([...usersRef.current], callback)
 
     }
 
-  }, [users, setUsers])
+  }, [setUsers])
 
   const removeUser = useCallback((user) => {
     if (user) {
       usersRef.current = usersRef.current.filter(userRoom => userRoom.email !== user.email)
       setUsers([...usersRef.current])
     }
+  }, [setUsers])
+
+  const updateUser = useCallback((email, state) => {
+    usersRef.current = (usersRef.current.map(user => {
+      if (user.email === email)
+        return {
+          ...user, ...state
+        }
+      return user;
+    }))
+    setUsers([...usersRef.current])
   }, [users, setUsers])
 
 
@@ -106,7 +117,9 @@ const useUserJoinTheSocket = (roomId, userLogin, setLoading) => {
         icecandidate && await connection.addIceCandidate(new RTCIceCandidate(icecandidate))
       })
 
-      socketRef.current.on(ROOM_ACTIONS.ON_JOIN, () => {
+      socketRef.current.on(ROOM_ACTIONS.ON_JOIN, ({ room }) => {
+        document.title = room.title;
+        setRoom(room)
         setLoading(false);
       })
 
@@ -147,15 +160,37 @@ const useUserJoinTheSocket = (roomId, userLogin, setLoading) => {
           })
         }
 
+        const setStreamToVideoObjects = (stream) => {
+          if (videoObjects.current[user.email]) {
+            if (videoObjects.current[user.email])
+              videoObjects.current[user.email].srcObject = stream;
+            if (baseVideoRef.current)
+              baseVideoRef.current.srcObject = stream;
+          } else {
+            const interval = setInterval(() => {
+              if (videoObjects.current[user.email]) {
+                if (videoObjects.current[user.email])
+                  videoObjects.current[user.email].srcObject = stream;
+                if (baseVideoRef.current)
+                  baseVideoRef.current.srcObject = stream;
+                clearInterval(interval)
+              }
+            }, 2000)
+          }
+        }
+
 
         connection.ontrack = ({
           streams: [remoteStream]
         }) => {
           if (remoteStream.getVideoTracks().length > 0) {
-            if(videoObjects.current[user.email])
-             videoObjects.current[user.email].srcObject = remoteStream;
-            if(baseVideoRef.current)
-             baseVideoRef.current.srcObject = remoteStream;
+            setStreamToVideoObjects(remoteStream);
+            remoteStream.getVideoTracks()[0].onmute = () => {
+              updateUser(user.email, { video: false })
+            }
+            remoteStream.getVideoTracks()[0].onunmute = () => {
+              updateUser(user.email, { video: true })
+            }
           }
         }
 
@@ -163,6 +198,7 @@ const useUserJoinTheSocket = (roomId, userLogin, setLoading) => {
 
       socketRef.current.on(ROOM_ACTIONS.LEAVE, ({ user }) => {
         removeUser(user)
+        connections.current[user.email] && (delete connections.current[user.email])
       })
 
     })
@@ -172,27 +208,24 @@ const useUserJoinTheSocket = (roomId, userLogin, setLoading) => {
       userCamera.current = await navigator.mediaDevices.getUserMedia({
         video: {
           deviceId: mediaDevices.current[2].deviceId,
-          width:{
-            max:1366,
-            ideal:1024
-          },
-          height:{
-            max:1024,
-            ideal:768
+          height: {
+            max: 1920,
+            ideal: 768
           }
         }
       })
 
+      updateUser(userLogin.email, { video: true })
+
       videoObjects.current[userLogin.email].srcObject = userCamera.current;
-
-
+      setCameraOpen(true)
       Object.keys(connections.current).forEach(async (email) => {
 
         if (email !== userLogin.email) {
           const connection = connections.current[email];
           const senders = await connection.getSenders();
 
-          const videoSender = senders.find(sender => sender.track.kind === "video");
+          const videoSender = senders.find(sender => sender?.track?.kind === "video");
           if (videoSender) {
             await videoSender.replaceTrack(userCamera.current.getVideoTracks()[0])
           } else {
@@ -223,7 +256,6 @@ const useUserJoinTheSocket = (roomId, userLogin, setLoading) => {
   }, [])
 
   const setBaseVideoObject = useCallback((instance) => {
-    console.log(instance)
     baseVideoRef.current = instance;
   }, [])
 
@@ -231,8 +263,9 @@ const useUserJoinTheSocket = (roomId, userLogin, setLoading) => {
     if (userCamera.current && userCamera.current.getVideoTracks()[0].readyState === "live") {
       userCamera.current.getTracks()
         .forEach(track => track.stop())
+      updateUser(userLogin.email, { video: false })
+      setCameraOpen(false)
     }
-
   }, [])
 
   return [users, socketRef.current, addVideoObject, closeCamera, setBaseVideoObject]
