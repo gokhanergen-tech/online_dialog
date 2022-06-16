@@ -1,4 +1,4 @@
-import React, { useCallback, useState} from "react";
+import React, { useCallback, useEffect, useRef, useState} from "react";
 import { UsersContext } from "../../pages/room/room";
 import styles from "./user.module.scss";
 
@@ -24,15 +24,12 @@ const User = ({ video,fullName, email, isLoginUserOwner, isAuthUser}) => {
     ]
   }, [isLoginUserOwner, isAuthUser])
 
-
-
   return (
     <div draggable="false" className={"bd-info d-flex " + styles.card}>
       
         <video ref={(instance) => addVideoObject(instance, email)} draggable={false}
           className={"rounded-3 " + styles.video}
           controlsList="nodownload"
-          muted
           autoPlay
           onContextMenu={(e) => e.preventDefault()}
         ></video>
@@ -61,9 +58,11 @@ const User = ({ video,fullName, email, isLoginUserOwner, isAuthUser}) => {
                   }} key={menuItem.index}>{menuItem.text}</li>))
               }
             </ul>}
-            <button
+            <button 
               className="bg-transparent border-0"
-              onClick={() => setActiveMenu(!isMenuActive)}
+              onClick={(e) => {
+                setActiveMenu(prev=>!prev)
+              }}
             >
               <img className={styles.threeDot} height={"20px"} width={"20px"} src="/icons/3dot.svg"></img>
             </button>

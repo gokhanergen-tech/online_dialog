@@ -21,7 +21,7 @@ const Interviews = () => {
       allRooms=allRooms.concat(rooms)
       dispatch(setInterviewRooms(allRooms))
     }catch(err){
-      console.log(err.response.data?.message)
+      console.log(err.response?.data?.message)
     }
   },[rooms,owner])
   

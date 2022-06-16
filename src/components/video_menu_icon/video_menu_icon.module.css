@@ -57,6 +57,20 @@
   transform: scale(1.2);
 }
 
+.active{
+    color: green;
+    animation:activeAnimation 1000ms alternate 0ms  infinite;
+    animation-timing-function: ease-in-out;
+}
+
+@keyframes activeAnimation{
+   from{
+     text-shadow: 0 0 40px rgb(0, 0, 0);
+   }to{
+     text-shadow: 0 0 20px black;
+   }
+}
+
 @keyframes anim{
     0%{
         background: -webkit-linear-gradient(rgb(255, 254, 254), rgb(255, 255, 255),rgb(255, 255, 255));

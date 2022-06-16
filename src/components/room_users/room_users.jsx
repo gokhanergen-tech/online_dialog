@@ -52,11 +52,11 @@ const RoomUsers = ({isAllUsersActive}) => {
   },[])
 
   return (
-    <div ref={wrappedRef} className={"col-6 col-lg-8 col-xl-9 "}>
+    <div ref={wrappedRef} className={"col p-0 "+styles.usersBase}>
      <div ref={usersRef} className={styles.room_users+" "+(isAllUsersActive&&styles.allUsersMode)}>
      
         {
-          isAllUsersActive&&<menu className='d-flex justify-content-end'>
+          isAllUsersActive&&<menu className='d-flex justify-content-end m-0 p-0'>
             <span onClick={()=>setAllUsersActive(false)} className={styles.fullUsersExit}>Close</span>
           </menu>
         }

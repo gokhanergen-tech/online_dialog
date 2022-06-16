@@ -102,7 +102,7 @@ option{
   border-radius: 0px 5px 5px 0px;
 }
 
-@media screen and (max-height:520px) and (min-width:720px){
+@media screen and (max-height:520px){
   .wrapped_content{
     flex-direction: row;
     gap: 1rem;
@@ -132,3 +132,10 @@ option{
   }
 }
 
+.messageTitle{
+  font-size: smaller;
+}
+
+.btnClose{
+  font-size: smaller;
+}

@@ -25,7 +25,8 @@
 }
 
 .time{
-  font-size: smaller;
+  font-size: 0.6rem;
+  width: 300px;
 }
 
 .privacyMessage{

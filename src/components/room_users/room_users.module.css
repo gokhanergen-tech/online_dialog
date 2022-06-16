@@ -1,94 +1,98 @@
-
-:root{
-  --usersCount:2
+:root {
+  --usersCount: 2
 }
 
-.room_users{
-    overflow-x: auto;
-    display:flex;
-    height: 100%;
-    gap: 0.5rem;
-    padding: 1rem 0;
- }
+.room_users {
+  overflow-x: auto;
+  display: flex;
+  height: 100%;
+  gap: 0.5rem;
+  padding: 1rem 0;
+}
 
-.room_users > div > div{
+.room_users>div>div {
   height: 110px;
   width: 200px;
 }
 
-.room_users > div {
+.room_users>div {
   width: auto;
   height: auto;
 }
 
-.allUsersMode{
- position: absolute;
- height: 100%;
- width: 100%;
- background-color: black;
- overflow: visible;
- top: 0;
- left: 0;
- padding: 1.5rem;
- overflow-y: auto;
- z-index: 9;
- display: flex;
- flex-wrap: wrap;
- justify-content: center;
- align-items: center;
+.allUsersMode {
+  position: absolute;
+  width: 100%;
+  background-color: black;
+  top: 0;
+  left: 0;
+  overflow-y: auto;
+  z-index: 9;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  padding: 0.7rem 0;
 }
 
-.allUsersMode > div{
+.allUsersMode>div {
   width: calc(95%/var(--usersCount));
   min-width: 25%;
-  height:calc(95%/(var(--usersCount)));
+  height: calc(95%/(var(--usersCount)));
   min-height: 50%;
 
 }
 
-.allUsersMode > menu{
-   position: fixed;
-   top: 0px;
-   right: 20px;
+.allUsersMode>menu {
+  position: fixed;
+  top: 0px;
+ 
 }
 
-.allUsersMode > div > div {
+.allUsersMode>div>div {
   width: 100%;
   height: 100%;
 }
 
-.allUsersMode::after{
-  content: "";
-  clear: both;
-  display: table;
+@media screen and (max-width:540px) {
+  .allUsersMode>div {
+    width: 59%;
+    height: 25%;
+    min-height: auto;
+  }
+
+  .allUsersMode {
+    gap: 0;
+    flex-direction: column;
+  }
 }
 
-.fullUsersExit{
+.fullUsersExit {
   color: white;
   cursor: pointer;
 }
 
- .room_users::-webkit-scrollbar {
-    height: 8px;
-  }
-  
-  /* Track */
-  .room_users::-webkit-scrollbar-track {
-    background: none; 
-  }
-   
-  /* Handle */
-  .room_users::-webkit-scrollbar-thumb {
-    background: rgb(136, 49, 49);
-    border-radius: 1rem;
-  }
+.room_users::-webkit-scrollbar {
+  height: 8px;
+}
+
+/* Track */
+.room_users::-webkit-scrollbar-track {
+  background: none;
+}
+
+/* Handle */
+.room_users::-webkit-scrollbar-thumb {
+  background: rgb(136, 49, 49);
+  border-radius: 1rem;
+}
 
 @media screen and (max-height:520px) {
-   
- .room_users{
-   display: none;
- }
-    
+  .room_users {
+    display: none;
+  }
 }
-  
- 
+
+.usersBase{
+  overflow-x:auto;
+}

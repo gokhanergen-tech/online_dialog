@@ -25,11 +25,11 @@
 
 .drop{
   list-style: none;
-  position: fixed;
+  position:absolute;
   background-color: #18141490;
   padding: 0;
-  z-index: 1;
-  transform: translate(-50%,-120%);
+  transform: translate(-100%,26%);
+  z-index: 8;
   
 }
 

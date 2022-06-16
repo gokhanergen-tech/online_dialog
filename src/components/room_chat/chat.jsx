@@ -76,8 +76,8 @@ const Chat = ({socket,users,user,onClick,isActive,roomId}) => {
   return (
     <div className={styles.wrapper_chat+" "+(!isActive?"d-none":"d-block")}>
       <div className={"p-1 border-bottom d-flex "+styles.title}>
-        <button onClick={onClick} className={"btn btn-close"}></button>
-        <h5 className="text-dark text-center w-100 text-center ">Messages</h5>
+        <button onClick={onClick} className={"btn btn-close "+styles.btnClose}></button>
+        <h5 className={"text-dark text-center w-100 text-center "+styles.messageTitle}>Messages</h5>
       </div>
 
       <div className={"d-flex "+styles.wrapped_content}>

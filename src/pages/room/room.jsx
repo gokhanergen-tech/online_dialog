@@ -40,12 +40,13 @@ const Room = () => {
   const [isVideoFullScreen, setVideoFullScreenState] = useState(false)
   const [isAllUserActive, setAllUsersActive] = useState(false)
   const [loading, setLoading] = useState(true)
+
   const [isWhiteBoardActive, setCanvasActive] = useState(false)
-
   const [isCameraOpen, setCameraOpen] = useState(false);
+  const [isScreenOpen, setScreenShareOpen] = useState(false);
 
 
-  const [users, socket, addVideoObject, closeCamera, setBaseVideoObject] = useUserJoinTheSocket(id, user, setLoading, setRoom,setCameraOpen);
+  const [users, socket, addVideoObject, closeCamera, setBaseVideoObject,setCanvasObject,closeScreenShare] = useUserJoinTheSocket(id, user, setLoading, setRoom,setCameraOpen,setScreenShareOpen);
 
 
   const onChatEventMenuCloseClick = useCallback(() => {
@@ -77,10 +78,12 @@ const Room = () => {
   const handleClickMenuItem = useCallback((index) => {
     switch (index) {
       case 5:
-        if (isVideoFullScreen)
+        if (isVideoFullScreen){
           setVideoFullScreenState(false)
-        else
+        }
+        else{
           setVideoFullScreenState(true)
+        }
         break;
       case 4:
         setLoading(true)
@@ -97,9 +100,15 @@ const Room = () => {
           closeCamera();
         }
         break;
+      case 2:
+        if(!isScreenOpen){
+          socket.emit(ROOM_ACTIONS.PERMISSON_CONTROL, { type: "SCREEN" })
+        }else{
+          closeScreenShare();
+        }
 
     }
-  }, [isVideoFullScreen, socket, isCameraOpen])
+  }, [isVideoFullScreen, socket, isCameraOpen,isScreenOpen])
 
   useEffect(() => {
 
@@ -114,8 +123,9 @@ const Room = () => {
     const eventSize = (e) => {
       setWindowWidth(window.innerWidth)
     }
-    window.addEventListener("resize", eventSize)
 
+    window.addEventListener("resize", eventSize)
+  
     return () => {
       clearEvent(menuTimeOut)
       window.removeEventListener("resize", eventSize)
@@ -145,18 +155,18 @@ const Room = () => {
           {
             isWhiteBoardActive ?
               <Suspense fallback={<></>}>
-                <Canvas isFullScreen={isVideoFullScreen} setFullScreenState={setVideoFullScreenState} />
+                <Canvas setCanvasObject={setCanvasObject} isFullScreen={isVideoFullScreen} setFullScreenState={setVideoFullScreenState} />
               </Suspense>
               :
               <Suspense fallback={<></>}>
                 <VideoContent setBaseVideoObject={setBaseVideoObject} setFullScreenState={setVideoFullScreenState} srcVideo={"/videos/test.mp4"} isFullScreen={isVideoFullScreen}></VideoContent>
               </Suspense>
           }
-          <VideoMenu setClickMenu={handleClickMenuItem} isFullScreen={isVideoFullScreen} setFullScreenState={setVideoFullScreenState} isShow={isMenuShow}></VideoMenu>
+          <VideoMenu isCameraActive={isCameraOpen} setClickMenu={handleClickMenuItem} isFullScreen={isVideoFullScreen} setFullScreenState={setVideoFullScreenState} isShow={isMenuShow}></VideoMenu>
         </div>
       </div>
 
-      <div className={"col-12 col-lg-4 col-xl-3 col-md-5 bg-white " + (!isShownChatEventMenu ? "d-none" : "") + " " + styles.chatEventMenu}>
+      <div className={"col col-md-auto bg-white " + (!isShownChatEventMenu ? "d-none" : "") + " " + styles.chatEventMenu}>
         <div className="p-2 d-flex flex-column h-100">
           <Suspense fallback={<div>Loading...</div>}>
             <Chat users={users.map(userRoom => ({ email: userRoom.email, name: userRoom?.userDto?.fullName, owner: userRoom?.userDto?.owner }))} roomId={id} user={user} isActive={menuBottomActive === 0}
@@ -170,8 +180,8 @@ const Room = () => {
       <Suspense fallback={<div>Loading...</div>}>
         <Users isAllUsersActive={isAllUserActive}></Users>
       </Suspense>
-      <div className={"col-6 col-lg-4 col-xl-3 bg-dark p-0 h-100 " + styles.bottom_menu}>
-        <div className="d-flex h-100">
+      <div className={"col-auto bg-dark p-0 h-100 " + styles.bottom_menu}>
+        <div className="d-flex h-100 flex-column">
           <button onClick={() => {
             changeBottomMenuState(0)
           }} className={styles.bottomMenuButton + " " + (menuBottomActive === 0 ? (styles.bottomMenuButtonActive) : "")}><i className={"bi bi-chat-left-dots"}></i></button>
