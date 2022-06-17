@@ -3,7 +3,6 @@ import { useCallback } from 'react';
 import ReactDOM from 'react-dom'
 import { useDispatch } from 'react-redux';
 import { addRoom } from '../../axios/http';
-import {useNavigate} from 'react-router-dom'
 
 import Modal from "../../components/modal/modal";
 import TextInput from '../text_input/text_input';
@@ -50,7 +49,7 @@ const AddRoom = ({addRoomToOwnerMenu}) => {
           dispatch(addInterviewRoom(room))
         }
         addRoomToOwnerMenu(room)
-        document.getElementById("modal").click();
+        document.getElementById("add_room_modal").click();
       }catch(err){
         errors["backendMessage"]=err.response.data?.message
       }
@@ -68,7 +67,7 @@ const AddRoom = ({addRoomToOwnerMenu}) => {
   },[])
 
   useEffect(()=>{
-   const modal=document.getElementById("modal")
+   const modal=document.getElementById("add_room_modal")
    modal.addEventListener("hidden.bs.modal",hiddenModalListener)
 
    return ()=>{
@@ -78,7 +77,7 @@ const AddRoom = ({addRoomToOwnerMenu}) => {
 
   return (
      ReactDOM.createPortal((
-        <Modal>
+        <Modal id={"add_room_modal"}>
            <div id={styles.wrappedModal} className={"modal-content"}>
     
              <div className="modal-header border-0">   

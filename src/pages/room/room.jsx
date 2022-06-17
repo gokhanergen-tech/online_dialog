@@ -44,9 +44,9 @@ const Room = () => {
   const [isWhiteBoardActive, setCanvasActive] = useState(false)
   const [isCameraOpen, setCameraOpen] = useState(false);
   const [isScreenOpen, setScreenShareOpen] = useState(false);
+  const [isMicrophoneOpen, setMicrophoneOpen] = useState(false);
 
-
-  const [users, socket, addVideoObject, closeCamera, setBaseVideoObject,setCanvasObject,closeScreenShare] = useUserJoinTheSocket(id, user, setLoading, setRoom,setCameraOpen,setScreenShareOpen);
+  const [users, socket, addVideoObject, closeCamera, setBaseVideoObject,setCanvasObject,closeScreenShare,closeMicrophone] = useUserJoinTheSocket(id, user, setLoading, setRoom,setCameraOpen,setScreenShareOpen,setMicrophoneOpen);
 
 
   const onChatEventMenuCloseClick = useCallback(() => {
@@ -106,9 +106,18 @@ const Room = () => {
         }else{
           closeScreenShare();
         }
+        break;
+      case 6:
+        if(!isMicrophoneOpen){
+          socket.emit(ROOM_ACTIONS.PERMISSON_CONTROL, { type: "MICROPHONE" })
+        }else{
+          closeMicrophone();
+        }
+        break;
+
 
     }
-  }, [isVideoFullScreen, socket, isCameraOpen,isScreenOpen])
+  }, [isVideoFullScreen, socket, isCameraOpen,isScreenOpen,isMicrophoneOpen])
 
   useEffect(() => {
 

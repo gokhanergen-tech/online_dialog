@@ -1,0 +1,35 @@
+:root{
+ --color:black;
+}
+.titleModal{
+    font-size: 1.3rem;
+    color: var(--color);
+}
+
+.cancelModalButton{
+  background:none;
+  border: none;
+  padding: 0.5rem 1rem;
+  transition: 200ms linear;
+  color: var(--color);
+}
+
+.deviceTitle{
+    color: var(--color);
+    border-bottom: 1px solid blue;
+    width: 100%;
+    margin-bottom: 0.5rem;
+    font-size: smaller;
+    font-weight: bold;
+}
+
+.select{
+    color: var(--color);
+    width: 100%;
+    border: 1px solid black;
+    padding: 0.2rem;
+    border-radius: 10px;
+    font-size: 0.7rem;
+}
+
+

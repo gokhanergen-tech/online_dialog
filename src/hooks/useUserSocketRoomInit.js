@@ -6,7 +6,7 @@ import { ROOM_ACTIONS } from "../socket/sockets/roomSocketActions";
 import freeice from 'freeice'
 
 
-const useUserJoinTheSocket = (roomId, userLogin, setLoading, setRoom, setCameraOpen, setScreenShareOpen) => {
+const useUserJoinTheSocket = (roomId, userLogin, setLoading, setRoom, setCameraOpen, setScreenShareOpen, setMicrophoneOpen) => {
   const [users, setUsers] = useStateWithCallback([]);
 
   const socketRef = useRef(null)
@@ -14,11 +14,13 @@ const useUserJoinTheSocket = (roomId, userLogin, setLoading, setRoom, setCameraO
   const baseVideoRef = useRef(null);
   const canvasObject = useRef(null);
   const userScreenShare = useRef(null);
+  const userMicrophone = useRef(null);
 
   const usersRef = useRef([])
   const connections = useRef({})
   const videoObjects = useRef({})
   const mediaDevices = useRef([])
+  const connectionsChannels = useRef({})
 
 
 
@@ -27,7 +29,10 @@ const useUserJoinTheSocket = (roomId, userLogin, setLoading, setRoom, setCameraO
 
   const addUser = useCallback((user, callback) => {
     if (!usersRef.current.find(roomUser => roomUser.email === user.email)) {
-      usersRef.current.unshift({ video: false, ...user })
+      if(user.email===userLogin.email)
+       usersRef.current.unshift({ video: false, isMicrophoneOpen: false, ...user })
+      else
+       usersRef.current.push({ video: false, isMicrophoneOpen: false, ...user })
       setUsers([...usersRef.current], callback)
 
     }
@@ -52,44 +57,54 @@ const useUserJoinTheSocket = (roomId, userLogin, setLoading, setRoom, setCameraO
     setUsers([...usersRef.current])
   }, [users, setUsers])
 
-  const sendStreamToAllUser = useCallback((stream,type) => {
+  const sendStreamToAllUser = useCallback((stream, type) => {
     Object.keys(connections.current).forEach(async (email) => {
 
       if (email !== userLogin.email) {
         const connection = connections.current[email];
         const senders = await connection.getSenders();
-        
-        let videoSender;
-        if(type==="SCREEN"){
-          videoSender=senders.find(sender => sender?.track === userScreenShare.current.getVideoTracks()[0]);
-        }else if(type==="VIDEO"){
-          videoSender=senders.find(sender => sender?.track === userCamera.current.getVideoTracks()[0]);
-        }else if(type==="CANVAS"){
-          videoSender=senders.find(sender => sender?.track instanceof 
-          CanvasCaptureMediaStreamTrack);
-        }
-        if (videoSender) {
-          connection.removeTrack(videoSender)
-        }
-        connection.addTrack(stream.getVideoTracks()[0], stream)
-        const offer = await connection.createOffer();
-        connection.setLocalDescription(offer);
 
-        socketRef.current.emit(ROOM_ACTIONS.SEND_OFFER, {
-          offer, email
+        let sender;
+        if (type === "SCREEN") {
+          sender = senders.find(sender => sender?.track === userScreenShare.current.getVideoTracks()[0]);
+        } else if (type === "VIDEO") {
+          sender = senders.find(sender => sender?.track === userCamera.current.getVideoTracks()[0]);
+        } else if (type === "CANVAS") {
+          sender = senders.find(sender => sender?.track instanceof
+            CanvasCaptureMediaStreamTrack);
+        } else if (type === "MICROPHONE") {
+          sender = senders.find(sender => sender?.track === userMicrophone.current.getAudioTracks()[0]);
+        }
+        if (sender) {
+          connection.removeTrack(sender)
+        }
+
+        stream.getTracks().forEach(track => {
+          connection.addTrack(track, stream)
         })
+        sendOffer(email, connection)
+
       }
     })
   }, [])
 
-  const sendOffer=useCallback(async (email,connection)=>{
+  const sendOffer = useCallback(async (email, connection) => {
+
     const offer = await connection.createOffer();
-    connection.setLocalDescription(offer);
+    await connection.setLocalDescription(offer);
 
     socketRef.current.emit(ROOM_ACTIONS.SEND_OFFER, {
       offer, email: email
     })
-  },[])
+
+  }, [])
+
+  const muteVideoFromAllUsers = useCallback((email) => {
+    Object.keys(connectionsChannels.current).forEach(email => {
+      if (email !== userLogin.email)
+        connectionsChannels.current[email].send(JSON.stringify({ type: "VIDEO_MUTE" }))
+    })
+  }, [])
 
 
   const closeAllEvents = () => {
@@ -183,34 +198,71 @@ const useUserJoinTheSocket = (roomId, userLogin, setLoading, setRoom, setCameraO
           })
         }
 
+        connectionsChannels.current[user.email] = connection.createDataChannel("channel")
+        connection.ondatachannel = (e) => {
+          e.channel.onmessage = (data) => {
+            const dataJSON = JSON.parse(data.data)
+            if (dataJSON.type === "MICROPHONE_CLOSE")
+              updateUser(user.email, { isMicrophoneOpen: false })
+            else if (dataJSON.type === "VIDEO_MUTE") {
+              baseVideoRef.current?.load()
+              updateUser(user.email, { video: false })
+            }
+          }
+        }
+
         if (user) {
           addUser({ ...user, video: false }, () => {
 
           })
         }
 
-        if (userCamera.current && userCamera.current.getVideoTracks()[0].readyState === "live") {
+        if (userCamera.current && userCamera.current.getTracks()[0].readyState === "live") {
           connection.addTrack(userCamera.current.getVideoTracks()[0], userCamera.current)
-          sendOffer(user.email,connection)
+          sendOffer(user.email, connection)
         }
 
-        if (userScreenShare.current && userScreenShare.current.getVideoTracks()[0].readyState === "live") {
+        if (userScreenShare.current && userScreenShare.current.getTracks()[0].readyState === "live") {
           connection.addTrack(userScreenShare.current.getVideoTracks()[0], userScreenShare.current)
-          sendOffer(user.email,connection)
+          sendOffer(user.email, connection)
+        }
+
+        if (userMicrophone.current && userMicrophone.current.getTracks()[0].readyState === "live") {
+          connection.addTrack(userMicrophone.current.getTracks()[0], userMicrophone.current)
+          sendOffer(user.email, connection)
         }
 
         const setStreamToVideoObjects = (stream) => {
-          if (videoObjects.current[user.email]) {
-            if (videoObjects.current[user.email])
-              videoObjects.current[user.email].srcObject = stream;
-            if (baseVideoRef.current)
+          const track = stream.getTracks()[0]
+          const kind = track.kind
+          const videoUserVideoObject = videoObjects.current[user.email];
+
+          if (videoUserVideoObject) {
+            if (!videoUserVideoObject.srcObject) {
+              videoUserVideoObject.srcObject = stream;
+            } else {
+              const hasTrack = videoUserVideoObject.srcObject.getTracks().find(track => track.kind === kind)
+              if (hasTrack) {
+                videoUserVideoObject.srcObject.removeTrack(hasTrack);
+              }
+              videoUserVideoObject.srcObject.addTrack(track);
+            }
+            if (baseVideoRef.current && kind === "video")
               baseVideoRef.current.srcObject = stream;
           } else {
             const interval = setInterval(() => {
-              if (videoObjects.current[user.email]) {
-                if (videoObjects.current[user.email])
-                  videoObjects.current[user.email].srcObject = stream;
-                if (baseVideoRef.current)
+              if (videoUserVideoObject) {
+                if (videoUserVideoObject)
+                  if (!videoUserVideoObject.srcObject) {
+                    videoUserVideoObject.srcObject = stream;
+                  } else {
+                    const hasTrack = videoUserVideoObject.srcObject.find(track => track.kind === kind)
+                    if (hasTrack) {
+                      videoUserVideoObject.srcObject.removeTrack(hasTrack);
+                    }
+                    videoUserVideoObject.srcObject.addTrack(track);
+                  }
+                if (baseVideoRef.current && kind === "video")
                   baseVideoRef.current.srcObject = stream;
                 clearInterval(interval)
               }
@@ -218,22 +270,22 @@ const useUserJoinTheSocket = (roomId, userLogin, setLoading, setRoom, setCameraO
           }
         }
 
-
         connection.ontrack = ({
           streams: [remoteStream]
         }) => {
-          console.log(remoteStream.getVideoTracks())
+          const track = remoteStream.getTracks()[0];
           if (remoteStream.getVideoTracks().length > 0) {
-
-            setStreamToVideoObjects(remoteStream);
-            remoteStream.getVideoTracks()[0].onmute = () => {
-              updateUser(user.email, { video: false })
-              baseVideoRef.current?.load()
-            }
-            remoteStream.getVideoTracks()[0].onunmute = () => {
+            track.onunmute = () => {
               updateUser(user.email, { video: true })
             }
+          } else if (remoteStream.getAudioTracks().length > 0) {
+            track.onunmute = () => {
+              updateUser(user.email, { isMicrophoneOpen: true })
+            }
           }
+
+          setStreamToVideoObjects(remoteStream);
+
         }
 
       })
@@ -246,10 +298,11 @@ const useUserJoinTheSocket = (roomId, userLogin, setLoading, setRoom, setCameraO
     })
 
     socketRef.current.on(ROOM_ACTIONS.ACCEPT_VIDEO_STREAM, async () => {
+      const selectedDevice=window.localStorage.getItem("videoDeviceId");
 
       const stream = await navigator.mediaDevices.getUserMedia({
         video: {
-          deviceId: mediaDevices.current[2].deviceId,
+          deviceId: (selectedDevice?selectedDevice:""),
           height: {
             max: 1920,
             ideal: 768
@@ -263,16 +316,14 @@ const useUserJoinTheSocket = (roomId, userLogin, setLoading, setRoom, setCameraO
 
 
       setCameraOpen(true)
-      sendStreamToAllUser(stream,"VIDEO");
-      userCamera.current=stream;
+      sendStreamToAllUser(stream, "VIDEO");
+      userCamera.current = stream;
     })
 
 
     socketRef.current.on(ROOM_ACTIONS.ACCEPT_SCREEN_STREAM, async () => {
-
       const stream = await navigator.mediaDevices.getDisplayMedia({
         video: {
-          deviceId: mediaDevices.current[2].deviceId,
           height: {
             max: 1920,
             ideal: 768
@@ -281,13 +332,28 @@ const useUserJoinTheSocket = (roomId, userLogin, setLoading, setRoom, setCameraO
       })
 
       setScreenShareOpen(true)
-      sendStreamToAllUser(stream,"SCREEN");
-      userScreenShare.current=stream;
+      sendStreamToAllUser(stream, "SCREEN");
+      userScreenShare.current = stream;
+    })
+
+    socketRef.current.on(ROOM_ACTIONS.ACCEPT_MICROPHONE_STREAM, async () => {
+      const selectedDevice=window.localStorage.getItem("audioDeviceId");
+      mediaDevices.current = await navigator.mediaDevices.enumerateDevices();
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: {
+          deviceId: (selectedDevice?selectedDevice:"")
+        }
+      })
+      setMicrophoneOpen(true)
+
+      sendStreamToAllUser(stream, "MICROPHONE");
+      userMicrophone.current = stream;
     })
 
     return () => {
       closeCamera();
       closeScreenShare();
+      closeMicrophone();
       socketRef.current?.emit(ROOM_ACTIONS.LEAVE, {})
     }
   }, [])
@@ -310,6 +376,7 @@ const useUserJoinTheSocket = (roomId, userLogin, setLoading, setRoom, setCameraO
         .forEach(track => track.stop())
       updateUser(userLogin.email, { video: false })
       setCameraOpen(false)
+      muteVideoFromAllUsers();
     }
   }, [])
 
@@ -319,10 +386,26 @@ const useUserJoinTheSocket = (roomId, userLogin, setLoading, setRoom, setCameraO
       userScreenShare.current.getTracks()
         .forEach(track => track.stop())
       setScreenShareOpen(false)
+      muteVideoFromAllUsers();
     }
   }, [])
 
-  return [users, socketRef.current, addVideoObject, closeCamera, setBaseVideoObject, setCanvasObject, closeScreenShare]
+  const closeMicrophone = useCallback(() => {
+    if (userMicrophone.current && userMicrophone.current.getAudioTracks()[0].readyState === "live") {
+      userMicrophone.current.getTracks()
+        .forEach(track => {
+          track.stop()
+        })
+      Object.keys(connections.current)
+        .forEach(email => {
+          if (email !== userLogin.email)
+            connectionsChannels.current[email].send(JSON.stringify({ type: "MICROPHONE_CLOSE" }))
+        })
+      setMicrophoneOpen(false)
+    }
+  }, [])
+
+  return [users, socketRef.current, addVideoObject, closeCamera, setBaseVideoObject, setCanvasObject, closeScreenShare, closeMicrophone]
 
 }
 

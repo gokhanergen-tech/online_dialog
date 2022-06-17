@@ -1,32 +1,39 @@
-import React, { useCallback, useEffect, useRef, useState} from "react";
+import React, { useCallback, useState} from "react";
 import { UsersContext } from "../../pages/room/room";
+import Settings from "../settings/settings";
 import styles from "./user.module.scss";
 
 
 
-const User = ({ video,fullName, email, isLoginUserOwner, isAuthUser}) => {
-  const [isMenuActive, setActiveMenu] = useState(false)
-
+const User = ({ video,fullName, email, isLoginUserOwner, isAuthUser,isMicrophoneOpen}) => {
+  const [isMenuActive, setActiveMenu] = useState(false)  
   const {addVideoObject}=React.useContext(UsersContext);
+  
 
   const getItems = useCallback(() => {
     return [
       {
         text: "Change Name", handle: () => {
-          alert("Name")
         }, willAdded: isAuthUser, index: 0
+      },
+      {
+        text: "Settings", handle: () => {
+
+        },properties:{"data-bs-toggle":"modal","data-bs-target":"#settings_modal"}, willAdded: isAuthUser, index: 1
       },
       {
         text: "Kick User", handle: () => {
           alert("Kick")
-        }, willAdded: isLoginUserOwner, index: 1
+        }, willAdded: isLoginUserOwner, index: 2
       }
     ]
   }, [isLoginUserOwner, isAuthUser])
 
   return (
-    <div draggable="false" className={"bd-info d-flex " + styles.card}>
-      
+    <div draggable="false" className={"bd-info d-flex " + styles.card+" "+(isMicrophoneOpen?styles.micActive:"")}>
+       {
+        isAuthUser&&<Settings></Settings>
+       }
         <video ref={(instance) => addVideoObject(instance, email)} draggable={false}
           className={"rounded-3 " + styles.video}
           controlsList="nodownload"
@@ -52,7 +59,7 @@ const User = ({ video,fullName, email, isLoginUserOwner, isAuthUser}) => {
             {isMenuActive && <ul className={"" + styles.drop}>
               {
                 getItems().filter((menuItem) => menuItem.willAdded).
-                  map(menuItem => (<li onClick={() => {
+                  map(menuItem => (<li {...menuItem?.properties} onClick={() => {
                     menuItem.handle()
                     setActiveMenu(false)
                   }} key={menuItem.index}>{menuItem.text}</li>))

@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState} from 'react'
 import ListOwnerMenu from '../list_owner/list_owner';
 import styles from './owner_menu.module.css'
 import AddRoom from '../add_room_modal/add_room';
-import { shallowEqual, useSelector } from 'react-redux';
 import { useCallback } from 'react';
 import { getOwnerRoomsByRoomType } from '../../axios/http';
 let closeTimeout=null;
@@ -51,7 +50,7 @@ const OwnerMenu = () => {
          <div>
                   <div className={styles.headerRooms}>
                       <h5 className='m-0'>Rooms</h5>
-                      <ListOwnerMenu buttonsTagList={[{button:{"data-bs-toggle":"modal","data-bs-target":"#modal"},tag:"New Room"}]} item={0} titleIcon={"Rooms Menu"}></ListOwnerMenu>
+                      <ListOwnerMenu buttonsTagList={[{button:{"data-bs-toggle":"modal","data-bs-target":"#add_room_modal"},tag:"New Room"}]} item={0} titleIcon={"Rooms Menu"}></ListOwnerMenu>
                   </div>
                   {
                       isRoomsShow&&<ul className={styles.rooms}>

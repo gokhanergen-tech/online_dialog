@@ -64,7 +64,7 @@ const RoomUsers = ({isAllUsersActive}) => {
          {
             users.map((user)=>{
               console.log(user.video)
-             return <div key={user.email}><User video={user.video} email={user.email} isAuthUser={user.email===email} isLoginUserOwner={user.email===email?false:isOwner} fullName={user.userDto.fullName}></User></div>
+             return <div key={user.email}><User isMicrophoneOpen={user.isMicrophoneOpen} video={user.video} email={user.email} isAuthUser={user.email===email} isLoginUserOwner={user.email===email?false:isOwner} fullName={user.userDto.fullName}></User></div>
            })
          }
      

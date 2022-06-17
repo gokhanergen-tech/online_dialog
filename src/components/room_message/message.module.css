@@ -1,18 +1,21 @@
 .message {
+  font-size: 0.6rem;
+  color: black;
+  margin: 0;
+}
+
+.message_body {
   box-shadow: 0 0 5px rgb(34, 28, 28);
-  font-size: 0.88rem;
-  padding: 0.4rem 0.4rem;
+  padding: 0.2rem 0.2rem;
   border-radius: 5px;
   word-wrap: break-word;
   width: 100%;
 }
 
-.message_body {
-}
-
 .messageMe {
   background-color: rgb(247, 247, 247);
   color: black;
+  
 }
 
 .messageOuther {
@@ -22,6 +25,7 @@
 .userName{
   font-size: smaller;
   color: black;
+  font-size: 0.6rem;
 }
 
 .time{

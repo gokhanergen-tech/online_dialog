@@ -13,6 +13,8 @@ const VideoMenu = ({isShow,isFullScreen,setClickMenu,isCameraActive}) => {
           <VideoMenuIcon index={3} onClick={setClickMenu} hoverText={"Users"} icon={"three-dots-vertical"}></VideoMenuIcon>
           <VideoMenuIcon index={4} onClick={setClickMenu} hoverText={"Leave the room"} icon={"telephone-x-fill"}></VideoMenuIcon>
           <VideoMenuIcon index={5} onClick={setClickMenu} hoverText={(isFullScreen?"Fullscreen exit":"Fullscreen")} icon={(isFullScreen?"fullscreen-exit":"fullscreen")}></VideoMenuIcon>
+          <VideoMenuIcon index={6} onClick={setClickMenu} hoverText={"Microphone"} icon={"mic"}></VideoMenuIcon>
+
         </div>
     </div>
   )
