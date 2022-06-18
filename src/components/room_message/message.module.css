@@ -1,7 +1,7 @@
 .message {
   font-size: 0.6rem;
-  color: black;
   margin: 0;
+  width: 85%;
 }
 
 .message_body {
@@ -10,6 +10,10 @@
   border-radius: 5px;
   word-wrap: break-word;
   width: 100%;
+}
+
+.message span{
+  color: black;
 }
 
 .messageMe {
@@ -30,7 +34,6 @@
 
 .time{
   font-size: 0.6rem;
-  width: 300px;
 }
 
 .privacyMessage{

@@ -10,12 +10,15 @@ const Message = ({ sameuser, me, messageObject, isPrivacy }) => {
       </div>}
       <div className={"mb-1 w-100 d-flex justify-content-between align-items-center  " + styles.message_body + " " + (!me ? styles.messageOuther : styles.messageMe) + " " + (isPrivacy ? styles.privacyMessage : "")}>
         <p className={styles.message}>
-          {message ? message : ""}
-        </p>
-        <small className="text-muted w-25 text-end">
-          <span className={"text-dark " + styles.time}>{String(dateMessage.getHours()).padStart(2, "0") + " " + String(dateMessage.getMinutes()).padStart(2, "0")}</span>
-        </small>
+          {message ? message.trim().split("\n").map((data,index)=>{
+            if(index<message.split("\n").length-1){
+              return <span key={index}>{data}<br></br></span>
+            }else
+             return <span key={index}>{data}</span>;
 
+          }) : ""}
+        </p>
+        <span className={"text-muted text-end " + styles.time}>{String(dateMessage.getHours()).padStart(2, "0") + " " + String(dateMessage.getMinutes()).padStart(2, "0")}</span>
       </div>
     </div>
   );

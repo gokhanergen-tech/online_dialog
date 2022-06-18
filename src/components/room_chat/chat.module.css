@@ -4,7 +4,6 @@
   display:flex;
   flex-direction: column-reverse;
   padding: 1rem 0.8rem;
-
 }
 
 .content::-webkit-scrollbar {
@@ -31,19 +30,30 @@
 
 
 .message{
- width: 98%;
- resize: none;
+ flex: 75%;
  margin: 1rem 0;
- word-wrap: break-word;
+ word-wrap:break-word;
  outline: none;
- color: black;
  border: 1px solid black;
  border-right: none;
  border-radius: 5px 0 0 5px;
+ overflow-y: auto;
 }
 
 .message:focus{
   box-shadow: 0 0 5px black;
+}
+
+.message div,.message{
+  color: black;
+}
+
+.message:empty::before{
+  content: attr(aria-label);
+}
+
+.message::-webkit-scrollbar-thumb{
+  background-color: black;
 }
 
 select{
@@ -60,7 +70,6 @@ option{
 }
 
 .wrapper_chat{
-
   height: 100%;
 }
 
@@ -100,6 +109,7 @@ option{
   color: white;
   height: 100%;
   border-radius: 0px 5px 5px 0px;
+  flex: 25%;
 }
 
 @media screen and (max-height:520px){

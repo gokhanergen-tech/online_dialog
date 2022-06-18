@@ -12,12 +12,16 @@ const Chat = ({ socket, users, user, onClick, isActive, roomId }) => {
 
   const [messages, addMessage] = useState({ "0": [] })
   const [selectedMessages, setSelectedMessages] = useState("0")
-  const [message, setMessage] = useState("");
 
   const handleSendMessage = useCallback((e) => {
     e.preventDefault();
+
+    let message=message=document.getElementsByClassName(styles.message).item(0).innerText;
+
     const isValid = isMessageValid(message);
-    setMessage("");
+    
+   
+   
     if (isValid) {
       if (selectedMessages === "0")
         socket.emit(ROOM_ACTIONS.SEND_MESSAGE, { message })
@@ -25,7 +29,7 @@ const Chat = ({ socket, users, user, onClick, isActive, roomId }) => {
         socket.emit(ROOM_ACTIONS.SEND_MESSAGE, { message, toUser: selectedMessages })
 
     }
-  }, [message])
+  }, [])
 
   useEffect(() => {
     const isOwner = user.userDto.owner;
@@ -129,15 +133,12 @@ const Chat = ({ socket, users, user, onClick, isActive, roomId }) => {
           </div>
 
           <div className=" h-75 d-flex mt-2 align-items-center ">
-            <textarea onKeyUp={(e) => {
-              if (e.key === "Enter")
-                handleSendMessage(e)
-            }} onChange={(e) => setMessage(e.target.value)} value={message}
+            <div contentEditable="true" aria-label="Write a message"
               className={"p-1 h-100 " + styles.message}
-              placeholder="White a message"
-              id="floatingTextarea2"></textarea>
+              id="floatingTextarea2"></div>
             <button className={styles.send_button} onClick={e => {
               handleSendMessage(e)
+              document.getElementsByClassName(styles.message).item(0).innerText=""
             }}>Send</button>
           </div>
         </div>
