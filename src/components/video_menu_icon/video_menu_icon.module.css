@@ -27,6 +27,7 @@
 
 .iconWrapper[hovertext]:hover::after{
     content: attr(hovertext);
+    pointer-events: none;
     background-color: rgb(31, 20, 20); 
     padding: 20px;
     padding-top: 10px;

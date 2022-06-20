@@ -19,17 +19,14 @@ const Chat = ({ socket, users, user, onClick, isActive, roomId }) => {
     let message=message=document.getElementsByClassName(styles.message).item(0).innerText;
 
     const isValid = isMessageValid(message);
-    
-   
-   
+
     if (isValid) {
       if (selectedMessages === "0")
         socket.emit(ROOM_ACTIONS.SEND_MESSAGE, { message })
       else
         socket.emit(ROOM_ACTIONS.SEND_MESSAGE, { message, toUser: selectedMessages })
-
     }
-  }, [])
+  }, [selectedMessages])
 
   useEffect(() => {
     const isOwner = user.userDto.owner;
@@ -60,6 +57,7 @@ const Chat = ({ socket, users, user, onClick, isActive, roomId }) => {
   useEffect(() => {
     socket.off(ROOM_ACTIONS.ON_MESSAGE)
     socket.on(ROOM_ACTIONS.ON_MESSAGE, ({ messageUser, selectedMessages: gettedSelected }) => {
+      
       let selected = messages[gettedSelected]
 
       if (messageUser && selected) {

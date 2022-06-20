@@ -56,8 +56,8 @@ const RoomUsers = ({isAllUsersActive}) => {
      <div ref={usersRef} className={styles.room_users+" "+(isAllUsersActive&&styles.allUsersMode)}>
      
         {
-          isAllUsersActive&&<menu className='d-flex justify-content-end m-0 p-0'>
-            <span onClick={()=>setAllUsersActive(false)} className={styles.fullUsersExit}>Close</span>
+          isAllUsersActive&&<menu className='d-flex justify-content-end w-100 m-0'>
+            <span onClick={()=>setAllUsersActive(false)} className={styles.fullUsersExit}>&#10006;</span>
           </menu>
         }
  
