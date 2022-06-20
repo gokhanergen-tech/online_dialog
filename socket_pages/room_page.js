@@ -12,12 +12,14 @@ const roomPage = (socket, io) => {
     }
 
     const initPermissions = () => {
-        if (socket.userData.user.userDto.owner)
-            socket.isCameraShare = true;
-        else {
-            socket.isCameraShare = false;
+        if (socket.userData.user.userDto.owner) {
+            socket.isScreenShare = true;
+        }else{
+            socket.isScreenShare = false;
         }
 
+        socket.isCameraShare = true;
+        socket.isMicrophoneShare = true; 
     }
 
     const findUser = async (email) => {
@@ -70,10 +72,12 @@ const roomPage = (socket, io) => {
                         if (!roomToMapMessages[roomId])
                             roomToMapMessages[roomId] = []
                     }
+                    
                     initPermissions();
                     socket.roomId = roomId;
+                    socket.roomType=room.roomTypeDto.roomType;
                     socket.join(roomId);
-                    socket.emit(ROOM_ACTIONS.ON_JOIN, {})
+                    socket.emit(ROOM_ACTIONS.ON_JOIN, { room })
                 } else {
                     socket.disconnect();
                 }
@@ -91,11 +95,10 @@ const roomPage = (socket, io) => {
 
     socket.on(ROOM_ACTIONS.SEND_MESSAGE, async ({ toUser, message }) => {
         const authUser = socket.userData;
-
         if (socket.roomId) {
             const roomId = socket.roomId;
             const currentDate = Date.now()
-
+            console.log(toUser)
             const editedMessage = {
                 user: authUser.user,
                 message: message,
@@ -103,9 +106,7 @@ const roomPage = (socket, io) => {
             };
 
             if (!toUser) {
-                if (hasRoom(roomId)) {
-                    io.to(roomId).emit(ROOM_ACTIONS.ON_MESSAGE, { messageUser: editedMessage, selectedMessages: "0" })
-                }
+                io.to(roomId).emit(ROOM_ACTIONS.ON_MESSAGE, { messageUser: editedMessage, selectedMessages: "0" })
             } else {
                 const socketUser = await findUser(toUser)
                 if (socketUser) {
@@ -121,13 +122,8 @@ const roomPage = (socket, io) => {
                             //send error message
                         }
                     } else {
-                        if (!socketUser.userData.user.userDto.owner) {
-                            //Send to room owner
-                            socketUser.emit(ROOM_ACTIONS.ON_MESSAGE, { messageUser: editedMessage, selectedMessages: authUser.user.email })
-                            socket.emit(ROOM_ACTIONS.ON_MESSAGE, { messageUser: editedMessage, selectedMessages: toUser })
-                        } else {
-                            //send error message
-                        }
+                        socketUser.emit(ROOM_ACTIONS.ON_MESSAGE, { messageUser: editedMessage, selectedMessages: authUser.user.email })
+                        socket.emit(ROOM_ACTIONS.ON_MESSAGE, { messageUser: editedMessage, selectedMessages: toUser })
                     }
                 }
             }
@@ -140,7 +136,7 @@ const roomPage = (socket, io) => {
         const socketUser = await findUser(email)
         if (socketUser)
             socketUser.emit(ROOM_ACTIONS.ICE_CANDIDATE, {
-                icecandidate,email:socket.userData.user.email
+                icecandidate, email: socket.userData.user.email
             })
     })
 
@@ -148,23 +144,29 @@ const roomPage = (socket, io) => {
         const socketUser = await findUser(email)
         if (socketUser)
             socketUser.emit(ROOM_ACTIONS.SESSION_DESCRIPTION, {
-                offer,email:socket.userData.user.email
+                offer, email: socket.userData.user.email
             })
     })
 
-    socket.on(ROOM_ACTIONS.PERMISSON_CONTROL,({type})=>{
-         switch(type){
+    socket.on(ROOM_ACTIONS.PERMISSON_CONTROL, ({ type }) => {
+        switch (type) {
             case "VIDEO":
-                if(socket.isCameraShare){
-                   socket.emit(ROOM_ACTIONS.ACCEPT_VIDEO_STREAM,{})
+                if (socket.isCameraShare) {
+                    socket.emit(ROOM_ACTIONS.ACCEPT_VIDEO_STREAM)
                 }
                 break;
-         }
+            case "SCREEN":
+                if (socket.isScreenShare) {
+                    socket.emit(ROOM_ACTIONS.ACCEPT_SCREEN_STREAM);
+                }
+                break;
+            case "MICROPHONE":
+                if (socket.isMicrophoneShare) {
+                    socket.emit(ROOM_ACTIONS.ACCEPT_MICROPHONE_STREAM);
+                }
+                break;
+        }
     })
-
-
-
-
 }
 
 module.exports = roomPage;

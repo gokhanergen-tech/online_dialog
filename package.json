@@ -14,6 +14,7 @@
   "author": "Anonim",
   "license": "ISC",
   "dependencies": {
+    "@socket.io/admin-ui": "^0.3.0",
     "axios": "^0.27.2",
     "cookie": "^0.5.0",
     "dotenv": "^16.0.0",
