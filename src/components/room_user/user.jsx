@@ -1,4 +1,4 @@
-import React, { useCallback, useState} from "react";
+import React, { useMemo, useState} from "react";
 import { UsersContext } from "../../pages/room/room";
 import Settings from "../settings/settings";
 import styles from "./user.module.scss";
@@ -10,7 +10,7 @@ const User = ({ video,fullName, email, isLoginUserOwner, isAuthUser,isMicrophone
   const {addVideoObject}=React.useContext(UsersContext);
   
 
-  const getItems = useCallback(() => {
+  const getItems = useMemo(() => {
     return [
       {
         text: "Change Name", handle: () => {
@@ -34,12 +34,12 @@ const User = ({ video,fullName, email, isLoginUserOwner, isAuthUser,isMicrophone
        {
         isAuthUser&&<Settings></Settings>
        }
-        <video ref={(instance) => addVideoObject(instance, email)} draggable={false}
-          className={"rounded-3 " + styles.video}
+        <video autoPlay="autoplay" muted ref={(instance) => addVideoObject(instance, email)} draggable={false}
+          className={"rounded-3 " + styles.video} 
           controlsList="nodownload"
-          autoPlay
           onContextMenu={(e) => e.preventDefault()}
         ></video>
+
         {
           !video?   <div className={"mx-auto " + styles.content}>
           <img
@@ -58,7 +58,7 @@ const User = ({ video,fullName, email, isLoginUserOwner, isAuthUser,isMicrophone
           (isLoginUserOwner || isAuthUser) && <>
             {isMenuActive && <ul className={"" + styles.drop}>
               {
-                getItems().filter((menuItem) => menuItem.willAdded).
+                getItems.filter((menuItem) => menuItem.willAdded).
                   map(menuItem => (<li {...menuItem?.properties} onClick={() => {
                     menuItem.handle()
                     setActiveMenu(false)

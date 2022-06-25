@@ -4,18 +4,20 @@ import { UsersContext } from '../../pages/room/room';
 import User from "../room_user/user";
 
 import styles from './room_users.module.css'
-const RoomUsers = ({isAllUsersActive}) => {
+const RoomUsers = ({isAllUsersActive,users,setAllUsersActive}) => {
 
   const usersRef=useRef(null)
   const wrappedRef=useRef(null)
 
   const {isOwner,email}=useSelector(state=>({isOwner:state.authReducer.user?.userDto.owner,email:state.authReducer.user?.email}))
-  const {users,setAllUsersActive}=React.useContext(UsersContext);
 
   useEffect(()=>{
-    usersRef.current.style.setProperty("--usersCount",users.length)
-  },[users])
+    const userCount=usersRef.current.style.getPropertyValue("--usersCount")
 
+    if(userCount!==users.length)
+     usersRef.current.style.setProperty("--usersCount",users.length)
+  },[users])
+ 
   useEffect(()=>{
     const usersSlider=usersRef.current;
     const bounding=wrappedRef.current.getBoundingClientRect();
@@ -63,7 +65,6 @@ const RoomUsers = ({isAllUsersActive}) => {
  
          {
             users.map((user)=>{
-              console.log(user.video)
              return <div key={user.email}><User isMicrophoneOpen={user.isMicrophoneOpen} video={user.video} email={user.email} isAuthUser={user.email===email} isLoginUserOwner={user.email===email?false:isOwner} fullName={user.userDto.fullName}></User></div>
            })
          }

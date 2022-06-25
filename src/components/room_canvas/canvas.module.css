@@ -4,6 +4,7 @@
     height: 100%;
     display: flex;
     justify-content: center;
+    padding-right: 90px;
 }
 
 canvas{
@@ -14,9 +15,7 @@ canvas{
 }
 
 .fullScreen{
-    padding: 0 !important;
     composes:fullScreen from '../video/video_content.module.css'; 
-    margin-right: 100px;
 }
 
 

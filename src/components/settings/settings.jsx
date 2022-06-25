@@ -11,7 +11,7 @@ const Settings = () => {
   const [selectedVideo,setSelectedVideo]=useState("")
 
   useEffect(() => {
-    const getDevices=()=>{
+    const getDevices=async ()=>{
       const getAllVideoDevices = async () => {
         const mediaDevices = await navigator.mediaDevices.enumerateDevices();
         const videoDevices = mediaDevices.filter(device => device.kind === "videoinput")
@@ -21,7 +21,12 @@ const Settings = () => {
         setVideoDevices(mappedVideoDevices)
         setAudioDevices(mappedAudioDevices)
       }
-      getAllVideoDevices();
+      try{
+        await getAllVideoDevices();
+      }catch(err){
+        console.log("You cannot share, there is a problem. Maybe, because of permission")
+      }
+      
     }
     const modal=document.getElementById("settings_modal");
     modal.addEventListener("shown.bs.modal",getDevices)

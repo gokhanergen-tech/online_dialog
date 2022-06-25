@@ -1,7 +1,14 @@
-.content{
-  height:70%;
-  overflow-y:scroll;
-  display:flex;
+.wrapper_chat {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+}
+
+.content {
+  height: 70%;
+  overflow-y: scroll;
+  display: flex;
   flex-direction: column-reverse;
   padding: 1rem 0.8rem;
 }
@@ -12,98 +19,96 @@
 
 /* Track */
 .content::-webkit-scrollbar-track {
-  background: none; 
+  background: none;
 }
- 
+
 /* Handle */
 .content::-webkit-scrollbar-thumb {
   background: black;
   border-radius: 1rem;
 }
 
-.chat_bottom{
-  height:15%;
+.chat_bottom {
+  height: 15%;
   display: flex;
   flex-direction: column;
   margin-top: 0.5rem;
 }
 
 
-.message{
- flex: 75%;
- margin: 1rem 0;
- word-wrap:break-words;
- outline: none;
- border: 1px solid black;
- border-right: none;
- border-radius: 5px 0 0 5px;
- overflow-y: auto;
+.message {
+  flex: 75%;
+  margin: 1rem 0;
+  word-wrap: break-words;
+  outline: none;
+  border: 1px solid black;
+  border-right: none;
+  border-radius: 5px 0 0 5px;
+  overflow-y: auto;
+  cursor: text;
 }
 
-.message:focus{
+.message:focus {
   box-shadow: 0 0 5px black;
 }
 
-.message div,.message{
+.message div,
+.message {
   color: black;
 }
 
-.message:empty::before{
+.message:empty::before {
   content: attr(aria-label);
 }
 
-.message::-webkit-scrollbar-thumb{
+.message::-webkit-scrollbar-thumb {
   background-color: black;
 }
 
-select{
+select {
   max-height: 50px !important;
 }
 
-.drop{
+.drop {
   background-color: rgb(202, 211, 241) !important;
 }
 
-option{
+option {
   color: black;
-  background-color:white ;
+  background-color: white;
 }
 
-.wrapper_chat{
-  height: 100%;
-}
-
-.chatColorChooser{
+.chatColorChooser {
   width: 40px;
-  height:40px;
+  height: 40px;
   overflow: hidden;
   border-radius: 50%;
   margin-left: auto;
 }
 
-.chatColorInput{
-  
+.chatColorInput {
+
   outline: none;
   cursor: pointer;
   border: none;
   width: 150%;
   height: 150%;
   position: relative;
-  top:-5px;
-  left:-5px;
+  top: -5px;
+  left: -5px;
   z-index: 0;
 }
 
-.userName{
-  
-}
+.userName {}
 
-.wrapped_content{
+.wrapped_content {
   height: 100%;
   flex-direction: column;
 }
 
-.send_button{
+
+
+.send_button {
   background-color: rgb(128, 128, 223);
   border: none;
   color: white;
@@ -112,40 +117,40 @@ option{
   flex: 25%;
 }
 
-@media screen and (max-height:520px)and (min-width:720px){
-  .wrapped_content{
+@media screen and (max-height:520px)and (min-width:720px) {
+  .wrapped_content {
     flex-direction: row;
     gap: 1rem;
     align-items: center;
   }
 
-  .content{
+  .content {
     width: 70%;
     flex-grow: 1;
     height: 80%;
   }
-  
-  .chat_bottom{
-      width: 30%;
-      height: 50%;
+
+  .chat_bottom {
+    width: 30%;
+    height: 50%;
   }
 }
 
-@media screen and (max-height:520px){
-  .wrapped_content{
+@media screen and (max-height:520px) {
+  .wrapped_content {
     height: 90%;
   }
 
-  .chatColorChooser{
+  .chatColorChooser {
     width: 30px;
-    height:30px;
+    height: 30px;
   }
 }
 
-.messageTitle{
+.messageTitle {
   font-size: smaller;
 }
 
-.btnClose{
+.btnClose {
   font-size: smaller;
 }

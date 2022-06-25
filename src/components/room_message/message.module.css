@@ -10,6 +10,11 @@
   border-radius: 5px;
   word-wrap: break-word;
   width: 100%;
+  transition: box-shadow 200ms linear;
+}
+
+.message_body:hover{
+  box-shadow: 0 0 10px rgb(34, 28, 28);
 }
 
 .message span{

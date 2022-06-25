@@ -57,6 +57,17 @@
   z-index: 2;
 }
 
+.openAudio{
+  background: transparent;
+  color: rgb(114, 100, 201);
+  bottom: 10px;
+  left: 10px;
+}
+
+.openAudio i{
+  color: rgb(114, 100, 201);
+}
+
 .chatEventMenu {
   -moz-transition: 200ms linear;
   -webkit-transition: 200ms linear;

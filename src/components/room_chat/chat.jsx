@@ -8,6 +8,10 @@ const isMessageValid = (message) => {
   return message && message.trim()
 }
 
+const getDocumentElementByClassName=(name,index)=>{
+  return document.getElementsByClassName(name).item(index)
+}
+
 const Chat = ({ socket, users, user, onClick, isActive, roomId }) => {
 
   const [messages, addMessage] = useState({ "0": [] })
@@ -83,7 +87,7 @@ const Chat = ({ socket, users, user, onClick, isActive, roomId }) => {
       </div>
 
       <div className={"d-flex " + styles.wrapped_content}>
-        <div className={" border " + styles.content}>
+        <div className={" " + styles.content}>
           {
             messages[selectedMessages]?.map((message, index) => {
               return <Message key={index} messageObject={{ message: message?.messageArray[0], fullName: message?.user?.userDto?.fullName, date: message.date }} isPrivacy={message?.privacyMessage ? true : false} sameuser={message.isSameUserMessage} me={user.email === message.user.email} />
@@ -131,7 +135,7 @@ const Chat = ({ socket, users, user, onClick, isActive, roomId }) => {
           </div>
 
           <div className=" h-75 d-flex mt-2 align-items-center ">
-            <div contentEditable="true" aria-label="Write a message"
+            <div type="text" contentEditable="true" aria-label="Write a message"
               className={"p-1 h-100 " + styles.message}
               id="floatingTextarea2"></div>
             <button className={styles.send_button} onClick={e => {

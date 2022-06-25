@@ -25,9 +25,6 @@ const suspense=(component,fallback)=>{
   </Suspense>
 }
 
-
-
-
 function Main(){
   return <>
     <Navigator></Navigator>

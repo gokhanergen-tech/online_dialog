@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../../components/loading/loading";
+import Popup from "../../components/popup/popup";
 
 import VideoMenu from "../../components/video_menu/video_menu";
 import { useUserJoinTheSocket } from "../../hooks/useUserSocketRoomInit";
@@ -30,7 +31,6 @@ const Room = () => {
 
   const navigate = useNavigate()
 
-
   const [menuBottomActive, setBottomMenuActive] = useState(0);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth)
   const [room, setRoom] = useState(null)
@@ -40,21 +40,21 @@ const Room = () => {
   const [isVideoFullScreen, setVideoFullScreenState] = useState(false)
   const [isAllUserActive, setAllUsersActive] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [soundOpen,setSoundOpen]=useState(true);
+  const [isAudioOpenAccept,setAudioOpenAccept]=useState(false)
 
   const [isWhiteBoardActive, setCanvasActive] = useState(false)
   const [isCameraOpen, setCameraOpen] = useState(false);
   const [isScreenOpen, setScreenShareOpen] = useState(false);
   const [isMicrophoneOpen, setMicrophoneOpen] = useState(false);
 
-  const [users, socket, addVideoObject, closeCamera, setBaseVideoObject,setCanvasObject,closeScreenShare,closeMicrophone] = useUserJoinTheSocket(id, user, setLoading, setRoom,setCameraOpen,setScreenShareOpen,setMicrophoneOpen);
-
+  const [users, socket, addVideoObject, closeCamera, setBaseVideoObject,setCanvasObject,closeScreenShare,closeMicrophone,closeCanvas,openAllSound] = useUserJoinTheSocket(id, user, setLoading, setRoom,setCameraOpen,setScreenShareOpen,setMicrophoneOpen,setCanvasActive,isAudioOpenAccept);
 
   const onChatEventMenuCloseClick = useCallback(() => {
     setChatEventMenuShow(false)
     changeBottomMenuState(-1)
   }, [])
-
-
+  
   const stateControl = useCallback((object) => {
     if ((isShownChatEventMenu) && windowWidth < 768) {
 
@@ -64,7 +64,7 @@ const Room = () => {
       if (object.style.display !== "block")
         object.style.display = "block";
     }
-  }, [windowWidth, isShownChatEventMenu])
+  }, [windowWidth,isShownChatEventMenu])
 
   const changeBottomMenuState = useCallback((state) => {
     if ([1, 0].includes(state)) {
@@ -114,10 +114,17 @@ const Room = () => {
           closeMicrophone();
         }
         break;
+      case 0:
+        if(!isWhiteBoardActive){
+          setCanvasActive(true)
+        }else{
+          closeCanvas();
+        }
+        break;
 
 
     }
-  }, [isVideoFullScreen, socket, isCameraOpen,isScreenOpen,isMicrophoneOpen])
+  }, [isVideoFullScreen, socket, isCameraOpen,isScreenOpen,isMicrophoneOpen,isWhiteBoardActive])
 
   useEffect(() => {
 
@@ -134,6 +141,7 @@ const Room = () => {
     }
 
     window.addEventListener("resize", eventSize)
+   
   
     return () => {
       clearEvent(menuTimeOut)
@@ -141,10 +149,16 @@ const Room = () => {
     }
   }, [])
 
+  const usersContextValues=React.useMemo(()=>{
+    return ({addVideoObject})
+  },[])
+
   if (loading)
     return <Loading />
-  return <UsersContext.Provider value={{ users, addVideoObject,setAllUsersActive }}><div className={styles.roomWrapper}>
-
+  return <div className={styles.roomWrapper}>
+    {
+      soundOpen&&<Popup setAudioOpenAccept={setAudioOpenAccept} setSoundOpen={setSoundOpen} openAllSound={openAllSound}></Popup>
+    }
     <div className={"row m-0 " + styles.contentTop}>
       <div className={"col bg-black h-100 " + styles.videoContent}>
         <div onMouseMove={() => {
@@ -171,7 +185,8 @@ const Room = () => {
                 <VideoContent setBaseVideoObject={setBaseVideoObject} setFullScreenState={setVideoFullScreenState} srcVideo={"/videos/test.mp4"} isFullScreen={isVideoFullScreen}></VideoContent>
               </Suspense>
           }
-          <VideoMenu isCameraActive={isCameraOpen} setClickMenu={handleClickMenuItem} isFullScreen={isVideoFullScreen} setFullScreenState={setVideoFullScreenState} isShow={isMenuShow}></VideoMenu>
+          <VideoMenu isWhiteBoardActive={isWhiteBoardActive} isScreenOpen={isScreenOpen} isCameraActive={isCameraOpen} isMicrophoneOpen={isMicrophoneOpen} setClickMenu={handleClickMenuItem} isFullScreen={isVideoFullScreen} setFullScreenState={setVideoFullScreenState} isShow={isMenuShow}></VideoMenu>
+          {!isAudioOpenAccept&&!soundOpen&&<button onClick={()=>setSoundOpen(true)} className={"position-absolute "+styles.openAudio}><i className="bi bi-soundwave"></i> Audio Dialog</button>}
         </div>
       </div>
 
@@ -186,9 +201,12 @@ const Room = () => {
     </div>
 
     <div className={"row m-0  " + styles.contentBottom}>
-      <Suspense fallback={<div>Loading...</div>}>
-        <Users isAllUsersActive={isAllUserActive}></Users>
+    <UsersContext.Provider value={usersContextValues}>
+      <Suspense  fallback={<div>Loading...</div>}>
+        <Users users={users} isAllUsersActive={isAllUserActive} setAllUsersActive={setAllUsersActive}></Users>
       </Suspense>
+    </UsersContext.Provider>
+    
       <div className={"col-auto bg-dark p-0 h-100 " + styles.bottom_menu}>
         <div className="d-flex h-100 flex-column">
           <button onClick={() => {
@@ -200,7 +218,7 @@ const Room = () => {
         </div>
       </div>
     </div>
-  </div></UsersContext.Provider>
+  </div>
 };
 
 export default React.memo(Room);

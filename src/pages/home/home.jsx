@@ -36,7 +36,7 @@ const Home = () => {
         <div className="row d-flex  justify-content-center ">
           <div className="col-sm-7 col-12 text-center">
             <Button
-              value={"Sing up"}
+              value={"Sing in"}
               onClick={onClick}
               customClassName={""}
             ></Button>

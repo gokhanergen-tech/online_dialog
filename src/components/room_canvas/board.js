@@ -18,8 +18,8 @@ const startCanvas = (canvas) => {
 		var n = e.getBoundingClientRect();
 		const scaleX = e.width / n.width;
 		const scaleY = e.height / n.height;
-		const clientX = (t.clientX ? t.clientX : t.touches.item(0)?.clientX)
-		const clientY = (t.clientY ? t.clientY : t.touches.item(0)?.clientY)
+		const clientX = (t.clientX ? t.clientX : t?.touches?.item(0)?.clientX)
+		const clientY = (t.clientY ? t.clientY : t?.touches?.item(0)?.clientY)
 		return {
 			x: e = (clientX - n.left) * scaleX,
 			y: (clientY - n.top) * scaleY
@@ -65,7 +65,7 @@ const startCanvas = (canvas) => {
 					(context.beginPath(),
 						context.rect(E.x - C / 2, E.y - C / 2, C, C), context.stroke()) :
 					(context.beginPath(),
-						context.arc(E.x, E.y, 2, 0, 2 * Math.PI),
+						context.arc(E.x, E.y, 4, 0, 2 * Math.PI),
 						context.fillStyle = "blue",
 						context.shadowColor = "#000000",
 						context.fill())
@@ -163,8 +163,8 @@ const startCanvas = (canvas) => {
 
 		const keyDown = e => {
 			var t;
-			"e" === e.key ? writeMode = !0 : "a" === e.key && 120 !== C && (C += 30, p.style.width = C + "px", p.style.height = C + "px"),
-				"s" === e.key && 30 !== C && (C -= 30, p.style.width = C + "px", p.style.height = C + "px"),
+			"e" === e.key ? writeMode = !0 : "a" === e.key && 120 !== C && (C += 30),
+				"s" === e.key && 30 !== C && (C -= 30),
 				"x" === e.key && writeMode && (eraseMode = !1, d.style.cursor = "none", (b = !b) || (k.forEach(e => {
 					e[0].isSelected = !1
 				}), k = [])),

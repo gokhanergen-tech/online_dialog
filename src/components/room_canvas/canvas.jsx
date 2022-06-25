@@ -20,7 +20,7 @@ const Canvas = ({ isFullScreen, setFullScreenState, setCanvasObject }) => {
      setInterval(()=>{
       ctx.drawImage(video,0,0)
      },1000/30)*/
-
+    
 
     window.onbeforeunload = () => {
       clear && clear();
@@ -33,13 +33,13 @@ const Canvas = ({ isFullScreen, setFullScreenState, setCanvasObject }) => {
   }, [])
 
   return (
-    <div className={styles.canvasBase}>
+    <div className={(isFullScreen ? styles.fullScreen : "")+" "+styles.canvasBase}>
       <canvas ref={instance => {
         setCanvasObject(instance);
         canvasRef.current = instance;
       }} onDoubleClick={() => {
         setFullScreenState(!isFullScreen)
-      }} className={(isFullScreen ? styles.fullScreen : "")} id="canvasUser" width={"1024"} height={"768"}>
+      }} id="canvasUser" width="1280" height="720">
       </canvas>
     </div>)
 

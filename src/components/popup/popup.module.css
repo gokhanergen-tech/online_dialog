@@ -1,0 +1,65 @@
+.wrapper {
+    position: fixed;
+    width: 100%;
+    height: 50%;
+    background-color: #00000090;
+    z-index: 15;
+    top: 0;
+    left: 0;
+    animation: slide 500ms ease-in-out;
+    padding: 1rem 0;
+}
+
+.base {
+    width: 500px;
+    height: 100%;
+    color: white;
+    border-radius: 0px 0px 20px 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.top {
+    height: 400px;
+    display: flex;
+    align-items: center;
+    font-size: smaller;
+}
+
+.top p{
+    color: rgb(219, 218, 218);
+}
+
+.bottom {
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup_button {
+    border: 0;
+    background-color: rgb(152, 97, 202);
+    color: white;
+    padding: 1rem 1.5rem;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    opacity: 0.5;
+    transition: opacity 500ms linear;
+}
+
+.popup_button:hover {
+    opacity: 1;
+}
+
+
+@keyframes slide {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0%);
+        opacity: 1;
+    }
+}
