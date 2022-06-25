@@ -4,8 +4,8 @@ const server = require("http").createServer();
 const { Server } = require("socket.io")
 const io = new Server(server, {
     crossOriginIsolated: true,
-    pingTimeout: 5000,
-    pingInterval: 10000,
+    pingTimeout: 15000,
+    pingInterval: 20000,
     cors:
     {
         origin: ["https://admin.socket.io", process.env.FRONTEND_IP],

@@ -14,12 +14,14 @@ const roomPage = (socket, io) => {
     const initPermissions = () => {
         if (socket.userData.user.userDto.owner) {
             socket.isScreenShare = true;
-        }else{
+            socket.isCanvasShare=true;
+        } else {
             socket.isScreenShare = false;
+            socket.isCanvasShare=false;
         }
 
         socket.isCameraShare = true;
-        socket.isMicrophoneShare = true; 
+        socket.isMicrophoneShare = true;
     }
 
     const findUser = async (email) => {
@@ -36,13 +38,11 @@ const roomPage = (socket, io) => {
     }
 
     socket.on("disconnecting", (reason) => {
-
         if (reason === "ping timeout" || reason === "transport close") {
             socket.rooms.forEach((roomId) => {
                 socket.broadcast.to(roomId).emit(ROOM_ACTIONS.LEAVE, { user: socket.userData.user })
             })
         }
-
     })
 
     socket.on(ROOM_ACTIONS.JOIN, async ({ roomId }) => {
@@ -57,27 +57,27 @@ const roomPage = (socket, io) => {
                     .filter(userRoom => userRoom.userData.user.email === user.email).map(userRoom => userRoom.roomId);
 
                 if (data.isOpen && !rooms.includes(roomId)) {
+                    const room = data.room;
+
                     if (io.to(roomId)) {
-
-                        io.to(roomId).emit(ROOM_ACTIONS.JOIN, { user })
-
+                        initPermissions();
+                        socket.roomId = roomId;
+                        socket.roomType = room.roomTypeDto.roomType;
+                        socket.emit(ROOM_ACTIONS.JOIN, { user })
                         sockets.forEach(socketUser => {
                             socket.emit(ROOM_ACTIONS.JOIN, { user: socketUser.userData.user })
                         })
-                        socket.emit(ROOM_ACTIONS.JOIN, { user })
-                    }
-                    const room = data.room;
+                        socket.emit(ROOM_ACTIONS.ON_JOIN, { room })
 
+                        io.to(roomId).emit(ROOM_ACTIONS.JOIN, { user })
+
+                    }
+            
                     if (room.roomTypeDto.roomType === "INTERVIEW_ROOM") {
                         if (!roomToMapMessages[roomId])
                             roomToMapMessages[roomId] = []
                     }
-                    
-                    initPermissions();
-                    socket.roomId = roomId;
-                    socket.roomType=room.roomTypeDto.roomType;
                     socket.join(roomId);
-                    socket.emit(ROOM_ACTIONS.ON_JOIN, { room })
                 } else {
                     socket.disconnect();
                 }
@@ -165,6 +165,11 @@ const roomPage = (socket, io) => {
                     socket.emit(ROOM_ACTIONS.ACCEPT_MICROPHONE_STREAM);
                 }
                 break;
+            case "CANVAS":
+                if(socket.isCanvasShare){
+                    socket.emit(ROOM_ACTIONS.ACCEPT_CANVAS_STREAM);
+                }
+                break
         }
     })
 }
